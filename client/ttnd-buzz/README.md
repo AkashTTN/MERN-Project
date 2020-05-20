@@ -1,0 +1,1 @@
+> You have reached the frontend of the application made in ReactJS.

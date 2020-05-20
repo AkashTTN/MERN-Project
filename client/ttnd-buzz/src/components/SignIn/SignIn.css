@@ -1,0 +1,33 @@
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.SignIn {
+    height: 100vh;
+    background: url('../../assets/images/signin-page-image.jpg') no-repeat center center/cover;
+}
+
+.Content {
+    padding: 20px 100px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 2px;
+}
+
+.Content p {
+    font-size: large;
+    color: #9c9c9c;
+}
+
+.SignInGoogle button {
+    color: white;
+    background-color: #e04b3a;
+    padding: 10px 40px;
+    border: none;
+    border-radius: 2px;
+    font-weight: bold;
+    font-size: large;
+    cursor: pointer;
+}

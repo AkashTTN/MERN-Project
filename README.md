@@ -1,5 +1,21 @@
 # MERN-Project 
-This project is not yet started. It is under active development.
+> This project is under active development. Below mentioned features are the end goal.
+
+## Quick Start
+
+``` bash
+# Install server dependencies
+cd server && npm i
+
+# Serve on localhost:4000 with nodemon
+cd server && npm start
+
+# Install client dependencies
+cd client/ttnd-buzz && npm i
+
+# Serve on localhost:3000
+cd client/ttnd-buzz && npm start
+```
 
 Main Features:  
 Application will have 3 features listed below:
