@@ -27,12 +27,12 @@ const SignIn = () => {
 
     return (
         <div className="SignIn flex-container">
-            <div className="Content flex-container">
+            <div className="SignInContent flex-container">
                 <img src={logo} alt="TTN-Logo" />
                 <p>Creat Your Own Buzz</p>
                 <form className="SignInGoogle" action={constants.SERVER_URL + '/auth/google'} method="GET">
                     <button type="submit">
-                        <i class="fab fa-google"></i>  
+                        <i className="fab fa-google"></i>  
                         &nbsp;&nbsp;Sign in with gmail
                     </button>
                 </form>

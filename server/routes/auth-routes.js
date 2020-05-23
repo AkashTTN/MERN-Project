@@ -49,7 +49,7 @@ router.get('/google/redirect',
         }
 
         // send userID (googleID) in jwt
-        jwt.sign({ userID }, keys.jwt.secret, { expiresIn: '30s' }, (err, token) => {
+        jwt.sign({ userID }, keys.jwt.secret, { expiresIn: '1day' }, (err, token) => {
             res.redirect(constants.CLIENT_URL + `/feed?token=${token}`)
         });
 

@@ -11,13 +11,13 @@ cd server && npm i
 cd server && npm start
 
 # Install client dependencies
-cd client/ttnd-buzz && npm i
+cd client && npm i
 
 # Serve on localhost:3000
-cd client/ttnd-buzz && npm start
+cd client && npm start
 ```
 
-Main Features:  
+### Main Features:  
 Application will have 3 features listed below:
 1. Buzz
 2. Complaints

@@ -1,0 +1,27 @@
+.Complaints {
+	border: 2px solid #ccc;
+	border-radius: 4px;
+}
+
+.ComplaintsHeader h3 {
+	text-align: left;
+	padding: 10px;
+	background-color: #f2f2f2;
+}
+
+.ComplaintsListHeadings {
+	background-color: white;
+	border-top: 2px solid #ccc;
+	border-bottom: 2px solid #ccc;
+}
+
+.ComplaintsListHeadings > div {
+	flex: 1;
+	padding: 20px;
+	border-right: 2px solid #ccc;
+	text-align: center;
+}
+
+.ComplaintsListHeadings > div:last-child {
+	border: none;
+}

@@ -1,0 +1,137 @@
+.Form {
+	border: 2px solid #ccc;
+	border-radius: 4px;
+	background-color: white;
+	margin-bottom: 40px;
+}
+
+.form-group label {
+	text-align: left;
+	margin-bottom: 10px;
+}
+
+.form-group textarea {
+	padding: 10px;
+	width: 100%;
+	border: 2px solid #ccc;
+	border-radius: 4px;
+}
+
+.form-group {
+	flex-direction: row;
+	margin: 10px;
+}
+
+.form-group:nth-last-child(2) {
+	justify-content: flex-end;
+}
+
+.form-group > div {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
+.form-group > div:first-child {
+	margin-right: 10px;
+}
+
+.Form form div:nth-child(4) {
+	flex-direction: column;
+}
+
+#SubmitComplaint {
+	margin-left: auto;
+	background: #f7f7f7;
+	color: #f4b585;
+	padding: 10px 40px;
+	border: 2px solid #ccc;
+	border-radius: 4px;
+}
+
+#SubmitComplaint:hover {
+	cursor: pointer;
+}
+
+.ComplaintField {
+	font-size: 18px;
+	padding: 10px;
+	background-color: transparent;
+	outline: none;
+	border: 2px solid #ccc;
+	border-radius: 4px;
+}
+
+.ComplaintFieldLabel {
+	color: #ccc;
+	font-size: 16px;
+}
+
+.FormHeader {
+	text-align: left;
+	padding: 10px;
+	background-color: #f2f2f2;
+}
+
+#ImageAttachment {
+	opacity: 0%;
+}
+
+.form-group .image-attachment-overlay {
+	position: absolute;
+	flex-direction: row;
+	align-items: center;
+}
+
+.image-attachment-overlay:hover {
+	cursor: pointer;
+}
+
+.form-group .image-attachment-overlay > label {
+	margin-bottom: 0;
+}
+
+.BuzzFormBody > textarea {
+	padding: 10px;
+	width: 100%;
+	border: none;
+	border-bottom: 2px solid #ccc;
+	border-top: 2px solid #ccc;
+}
+
+.BuzzFormFooter {
+	justify-content: flex-start;
+	align-items: center;
+}
+
+#BuzzImageAttachment {
+	opacity: 0%;
+	width: 10px;
+	position: absolute;
+}
+
+.SubmitBuzz {
+	margin-left: auto;
+	margin-right: 20px;
+	align-items: center;
+	justify-content: center;
+}
+
+.SubmitBuzz > button {
+	position: absolute;
+	opacity: 0%;
+	width: 40px;
+}
+
+.SubmitBuzz > button:hover {
+	cursor: pointer;
+}
+
+.BuzzCategory {
+	font-size: 18px;
+	padding: 10px;
+	background-color: transparent;
+	outline: none;
+	border: none;
+	margin-right: 20px;
+}
