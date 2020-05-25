@@ -6,7 +6,7 @@ function extractDataFromToken(req, res, next) {
         if (err) {
             res.sendStatus(403);
         } else {
-            req.body = {
+            req.user = {
                 authData
             };
             next()

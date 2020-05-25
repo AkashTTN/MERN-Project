@@ -1,0 +1,24 @@
+.Post {
+	padding: 10px;
+}
+
+.PostContainerOne > p {
+	font-size: 20px;
+}
+
+.PostContainerTwo {
+	margin-left: 10px;
+}
+
+#PostCreatedMonth,
+#PostUserEmail {
+	color: lightgrey;
+}
+
+#PostUserEmail {
+	margin-bottom: 10px;
+}
+
+#PostText {
+	font-size: 16px;
+}

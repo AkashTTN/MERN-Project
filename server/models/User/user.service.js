@@ -3,12 +3,12 @@ const {
 } = require('./user.model');
 
 module.exports.create = async ({
-    googleID,
+    googleId,
     name,
     email
 }) => {
     const user = await UserModel.create({
-        googleID,
+        googleId,
         name,
         email,
     });
@@ -18,6 +18,6 @@ module.exports.create = async ({
 };
 
 module.exports.getUserById = async (id) => {
-    const user = await UserModel.find({ googleID: id });
+    const user = await UserModel.find({ googleId: id });
     return user;
 };

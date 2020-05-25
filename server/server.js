@@ -11,6 +11,10 @@ const extractDataFromToken = require('./middlewares/extractDataFromToken')
 const authRoutes = require('./routes/auth-routes')
 const userRoutes = require('./routes/user-routes')
 
+const response = require('v-response').ApiResponse
+const multer = require('multer')
+const upload = multer({ dest: 'uploads/' })
+
 // connecting to our database
 mongoose.connect("mongodb://localhost:27017/testdb", {
     useNewUrlParser: "true",
@@ -59,6 +63,13 @@ app.use(passport.initialize())
 // setup routes
 app.use('/auth', authRoutes)
 app.use('/user', extractToken, extractDataFromToken, userRoutes)
+
+// test routes 
+app.post('/', upload.single('image1'), (req, res) => {
+    console.log('Request body', req.body.data)
+
+    res.status(200).json(response(true, 200, "Form data submitted successfully", req.body.data))
+})
 
 app.listen(4000, () => {
     console.log('Server listening on port 4000')

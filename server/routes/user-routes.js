@@ -1,6 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const users = require('../models/User/user.controller')
+const complaints = require('../models/Complaint/complaint.controller')
+const posts = require('../models/Post/post.controller')
+const response = require('v-response').ApiResponse
+const multer = require('multer')
+const upload = multer({ dest: 'uploads/' })
 
 router
     .get('/feed', async (req, res) => {
@@ -8,12 +13,80 @@ router
         // const queryString = `/feed?username=${encodeURIComponent(req.user.displayName)}`
         // res.redirect(constants.CLIENT_URL + queryString)
 
-        const user = await users.getUserById(req.body.authData.userID)
+        const user = await users.getUserById(req.user.authData.userID)
 
-        res.send({
-            user
-        })
+        res.status(200).json(response(true, 200, "Retrieved user feed data", { user }))
+
+    })
+
+    .get('/complaints', async (req, res) => {
+
+        const userComplaints = await complaints.getAllComplaintsByUserId(req.user.authData.userID)
+        res.status(200).json(response(true, 200, "All complaints made by current user", userComplaints))
+
+    })
+
+    .post('/post', upload.single('image1'), async (req, res) => {
+
+        console.log('post request body',  req.body)
+
+        const { buzzText, buzzCategory } = JSON.parse(req.body.data)
+
+        if (!buzzText || buzzText.trim().length === 0) {
+            res.status(200).json(response(false, 406, "Cannot create a buzz with empty text"))
+        }
+
+        const { email } = await users.getUserById(req.user.authData.userID)
+
+        const data = {
+            imageUrl: req.body.file ? 'link to file hosted on server' : '',
+            text: buzzText,
+            category: buzzCategory,
+            googleId: req.user.authData.userID,
+            email
+        }
+
+        const post = await posts.create(data)
+        res.status(200).json(response(true, 200, "Post created successfully", post))
+
+    })
+
+    .post('/complaint', upload.single('image1'), async (req, res) => {
+
+        console.log('complaint request body',  req.body)
+
+        const { concernText, issueTitle, department, email, name } = JSON.parse(req.body.data)
+
+        if (!concernText || concernText.trim().length === 0) {
+            res.status(200).json(response(false, 406, "Cannot create a complaint with empty text"))
+        }
+
+        const data = {
+            imageUrl: req.body.file ? 'link to file hosted on server' : '',
+            text: concernText,
+            googleId: req.user.authData.userID,
+            email,
+            issueTitle,
+            department,
+            name
+        }
+
+        const complaint = await complaints.create(data)
+        res.status(200).json(response(true, 200, "Complaint created successfully", complaint))
+
+    })
+
+    .get('/posts', async (req, res) => {
+
+        let { limit, skip } = req.query
+
+        limit = +limit
+        skip = +skip
         
+        const postsToBeSent = await posts.getPosts({ limit, skip })
+
+        res.status(200).json(response(true, 200, "Retrived posts", postsToBeSent))
+
     })
 
 module.exports = router

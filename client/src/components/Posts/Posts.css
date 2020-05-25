@@ -1,0 +1,12 @@
+.Posts {
+	border: 2px solid #ccc;
+	border-radius: 4px;
+	background-color: white;
+	margin-bottom: 40px;
+}
+
+.PostsHeader {
+	text-align: left;
+	padding: 10px;
+	background-color: #f2f2f2;
+}

@@ -1,11 +1,7 @@
 const users = require('./user.service');
 
-module.exports.create = async ({ name, googleID, email }) => {
-    return users.create({
-        name,
-        googleID,
-        email,
-    })
+module.exports.create = async (data) => {
+    return users.create(data)
 };
 
 module.exports.getUserById = async (id) => {

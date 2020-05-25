@@ -7,13 +7,21 @@ const userSchema = new Schema(
             type: String,
             required: true
         },
-        googleID: {
-            type: Number,
+        googleId: {
+            type: String,
             required: true
         },
         email: {
             type: String,
             required: true
+        },
+        likedPosts: {
+            type: Array,
+            default: []
+        },
+        dislikedPosts: {
+            type: Array,
+            default: []
         }
     }
 );
