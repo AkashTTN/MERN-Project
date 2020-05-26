@@ -80,6 +80,7 @@ router
 
         let { limit, skip } = req.query
 
+        // convert to number from string
         limit = +limit
         skip = +skip
         

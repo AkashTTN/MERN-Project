@@ -23,15 +23,13 @@ const reducer = (state=initialState, action) => {
             }
 
         case actionTypes.SET_AUTH_DATA:
-            return {
-                ...state,
-                error: false
-            }
+            return state
 
         case actionTypes.SET_AUTH_DATA_SUCCESS:
             return {
                 ...state,
-                user: action.payload.user
+                user: action.payload.user,
+                error: false
             }
 
         case actionTypes.SET_AUTH_DATA_FAILED:

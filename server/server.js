@@ -37,7 +37,6 @@ mongoose.connection.on("connected", (err, res) => {
 app.use(cors({
     "origin": constants.CLIENT_URL,
     "methods": "GET,POST,DELETE",
-    "credentials": true
 }))
 
 // parsing request body

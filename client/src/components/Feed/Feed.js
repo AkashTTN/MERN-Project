@@ -97,14 +97,14 @@ const Feed = React.memo(({ user, error, setAuthData }) => {
     // with redux
     useEffect(
         () => {
-            setAuthData()
+            if(error) {
+                setRedirect(true)
+            } else {
+                setAuthData()
+            }
         },
-        [setAuthData]
+        [setAuthData, setRedirect, error]
     )
-
-    if (error) {
-        setRedirect(true)
-    }
 
     const logoutHandler = useCallback(
         () => {

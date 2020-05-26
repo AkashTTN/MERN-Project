@@ -96,8 +96,8 @@ const Form = ({ userEmail, userName, formType, submitForm, postSubmitted, compla
                         <div>
                             <label className="ComplaintFieldLabel" htmlFor="department">Select Department</label>
 
-                            <select defaultValue={'none'} onChange={handleOnChange} className="ComplaintField" name="department" id="department">
-                                <option value="none" disabled hidden></option>
+                            <select defaultValue={''} onChange={handleOnChange} className="ComplaintField" name="department" id="department" required>
+                                <option value="" disabled hidden></option>
                                 <option value="admin">Admin</option>
                                 <option value="management">Management</option>
                                 <option value="hr">HR</option>
@@ -108,8 +108,8 @@ const Form = ({ userEmail, userName, formType, submitForm, postSubmitted, compla
                         <div>
                             <label className="ComplaintFieldLabel" htmlFor="issueTitle">Issue Title</label>
 
-                            <select defaultValue={'none'} onChange={handleOnChange} className="ComplaintField" name="issueTitle" id="issueTitle">
-                                <option value="none" disabled hidden></option>
+                            <select defaultValue={''} onChange={handleOnChange} className="ComplaintField" name="issueTitle" id="issueTitle" required>
+                                <option value="" disabled hidden></option>
                                 <option value="hardware">Hardware</option>
                                 <option value="infrastructure">Infrastructure</option>
                                 <option value="others">Others</option>
@@ -130,7 +130,7 @@ const Form = ({ userEmail, userName, formType, submitForm, postSubmitted, compla
 
                     <div className="form-group flex-container">
                         <label className="ComplaintFieldLabel" htmlFor="concern" >Your Concern</label>
-                        <textarea id="concern" onChange={handleOnChange} name="concernText"></textarea>
+                        <textarea id="concern" onChange={handleOnChange} name="concernText" required></textarea>
                     </div>
 
                     <div className="form-group flex-container">
@@ -155,11 +155,11 @@ const Form = ({ userEmail, userName, formType, submitForm, postSubmitted, compla
                 <form onSubmit={handleOnSubmit}>
                     <h3 className="FormHeader" >Create Buzz</h3>
                     <div className="BuzzFormBody" >
-                        <textarea id="buzz" onChange={handleOnChange} name="buzzText" placeholder="Share your thoughts..."></textarea>
+                        <textarea id="buzz" onChange={handleOnChange} name="buzzText" placeholder="Share your thoughts..." required ></textarea>
                     </div>
                     <div className="BuzzFormFooter flex-container">
-                        <select defaultValue={'none'} onChange={handleOnChange} className="BuzzCategory" name="buzzCategory" id="buzzCategory">
-                            <option value="none" disabled hidden>
+                        <select defaultValue={''} onChange={handleOnChange} className="BuzzCategory" name="buzzCategory" id="buzzCategory" required>
+                            <option value="" disabled hidden>
                                 Category
                             </option>
                             <option value="lostAndFound">Lost & Found</option>

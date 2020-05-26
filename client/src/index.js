@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
+
 import authReducer from '../src/store/reducers/auth'
 import buzzReducer from '../src/store/reducers/buzz'
 import complaintReducer from '../src/store/reducers/complaint'
