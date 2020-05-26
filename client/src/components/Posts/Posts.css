@@ -5,6 +5,10 @@
 	margin-bottom: 40px;
 }
 
+.Posts > p {
+	padding: 10px;
+}
+
 .PostsHeader {
 	text-align: left;
 	padding: 10px;

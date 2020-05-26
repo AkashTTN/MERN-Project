@@ -15,14 +15,14 @@ router
 
         const user = await users.getUserById(req.user.authData.userID)
 
-        res.status(200).json(response(true, 200, "Retrieved user feed data", { user }))
+        return res.status(200).json(response(true, 200, "Retrieved user feed data", { user }))
 
     })
 
     .get('/complaints', async (req, res) => {
 
         const userComplaints = await complaints.getAllComplaintsByUserId(req.user.authData.userID)
-        res.status(200).json(response(true, 200, "All complaints made by current user", userComplaints))
+        return res.status(200).json(response(true, 200, "All complaints made by current user", userComplaints))
 
     })
 
@@ -33,7 +33,7 @@ router
         const { buzzText, buzzCategory } = JSON.parse(req.body.data)
 
         if (!buzzText || buzzText.trim().length === 0) {
-            res.status(200).json(response(false, 406, "Cannot create a buzz with empty text"))
+            return res.status(200).json(response(false, 406, "Cannot create a buzz with empty text"))
         }
 
         const { email } = await users.getUserById(req.user.authData.userID)
@@ -47,7 +47,7 @@ router
         }
 
         const post = await posts.create(data)
-        res.status(200).json(response(true, 200, "Post created successfully", post))
+        return res.status(200).json(response(true, 200, "Post created successfully", post))
 
     })
 
@@ -58,7 +58,7 @@ router
         const { concernText, issueTitle, department, email, name } = JSON.parse(req.body.data)
 
         if (!concernText || concernText.trim().length === 0) {
-            res.status(200).json(response(false, 406, "Cannot create a complaint with empty text"))
+            return res.status(200).json(response(false, 406, "Cannot create a complaint with empty text"))
         }
 
         const data = {
@@ -72,7 +72,7 @@ router
         }
 
         const complaint = await complaints.create(data)
-        res.status(200).json(response(true, 200, "Complaint created successfully", complaint))
+        return res.status(200).json(response(true, 200, "Complaint created successfully", complaint))
 
     })
 
@@ -80,13 +80,17 @@ router
 
         let { limit, skip } = req.query
 
+        if(isNaN(limit) && isNaN(skip)) {
+            return res.status(200).json(response(false, 406, "Invalid limit/skip"))
+        }
+
         // convert to number from string
         limit = +limit
         skip = +skip
         
         const postsToBeSent = await posts.getPosts({ limit, skip })
 
-        res.status(200).json(response(true, 200, "Retrived posts", postsToBeSent))
+        return res.status(200).json(response(true, 200, "Retrived posts", postsToBeSent))
 
     })
 

@@ -61,7 +61,7 @@ const Form = ({ userEmail, userName, formType, submitForm, postSubmitted, compla
 
             submitForm({data: formDataToBeSent, type: formType})
         },
-        [files, formData, submitForm, formType]
+        [files, formData, submitForm, formType, userEmail, userName]
     )
 
     // updating number of files using vanila js
@@ -98,10 +98,10 @@ const Form = ({ userEmail, userName, formType, submitForm, postSubmitted, compla
 
                             <select defaultValue={''} onChange={handleOnChange} className="ComplaintField" name="department" id="department" required>
                                 <option value="" disabled hidden></option>
-                                <option value="admin">Admin</option>
-                                <option value="management">Management</option>
-                                <option value="hr">HR</option>
-                                <option value="it">IT</option>
+                                <option value="ADMIN">Admin</option>
+                                <option value="MANAGEMENT">Management</option>
+                                <option value="HR">HR</option>
+                                <option value="IT">IT</option>
                             </select>
 
                         </div>

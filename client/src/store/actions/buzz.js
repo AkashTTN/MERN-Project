@@ -10,13 +10,21 @@ export const getPosts = ({ limit = 5, skip = 0 } = {}) => {
             }
         })
             .then(res => res.json())
-            .then(posts => {
-                if (skip === 0) {
-                    dispatch({ type: actionTypes.GET_POSTS_SUCCESS, payload: { posts: posts.data } })
+            .then(response => {
+                if (response.code === 200) {
+                    if (skip === 0) {
+                        dispatch({ type: actionTypes.GET_POSTS_SUCCESS, payload: { posts: response.data } })
+                    } else {
+                        dispatch({ type: actionTypes.GET_NEXT_POSTS_SUCCESS, payload: { posts: response.data } })
+                    }
                 } else {
-                    dispatch({ type: actionTypes.GET_NEXT_POSTS_SUCCESS, payload: { posts: posts.data } })
+                    throw new Error(response.message)
                 }
+
             })
-            .catch(err => dispatch({ type: actionTypes.GET_POSTS_FAILED }))
+            .catch(err => {
+                console.log(err)
+                dispatch({ type: actionTypes.GET_POSTS_FAILED })
+            })
     }
 }

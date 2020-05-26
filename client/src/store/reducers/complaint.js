@@ -11,7 +11,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.GET_COMPLAINTS_SUCCESS:
             return {
                 ...state,
-                complaints: action.payload
+                complaints: action.payload.complaints
             }
 
         case actionTypes.GET_COMPLAINTS_FAILED:

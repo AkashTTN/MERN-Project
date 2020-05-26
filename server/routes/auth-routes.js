@@ -19,7 +19,7 @@ router.get('/google', passport.authenticate('google', {
 
 router.get('/google/failed', (req, res) => {
 
-    res.send({ message: 'Google Authentication Failed' })
+    return res.send({ message: 'Google Authentication Failed' })
 
 })
 
@@ -50,14 +50,14 @@ router.get('/google/redirect',
 
         // send userID (googleID) in jwt
         jwt.sign({ userID }, keys.jwt.secret, { expiresIn: '1day' }, (err, token) => {
-            res.redirect(constants.CLIENT_URL + `/feed?token=${token}`)
+            return res.redirect(constants.CLIENT_URL + `/feed?token=${token}`)
         });
 
     })
 
 router.delete('/logout', (req, res) => {
     req.logout()
-    res.status(200).send({ message: 'Logout Successful.' })
+    return res.status(200).send({ message: 'Logout Successful.' })
 })
 
 module.exports = router

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
+
 import { getPosts } from '../../store/actions'
 
 import Post from './Post/Post'
@@ -46,12 +47,16 @@ const Posts = ({ posts, getPosts, postSubmitted }) => {
     )
 
     if (posts) {
-        skip = posts.length
-        postsArray = posts.map((post, index) => {
-            return (
-                <Post data={post} key={index} />
-            )
-        })
+        if(posts.length === 0) {
+            postsArray = <p>No posts yet.</p>
+        } else {
+            skip = posts.length
+            postsArray = posts.map((post, index) => {
+                return (
+                    <Post data={post} key={index} />
+                )
+            })
+        }
     }
 
     return (

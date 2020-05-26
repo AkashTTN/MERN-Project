@@ -11,7 +11,7 @@ module.exports.create = async ({
 }) => {
 
     const complaint = await ComplaintModel.create({
-        status: 'open',
+        status: 'Open',
         createdBy: { name, email, googleId },
         department,
         imageUrl,

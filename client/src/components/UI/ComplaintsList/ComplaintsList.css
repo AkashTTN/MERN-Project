@@ -1,15 +1,25 @@
 .Complaints {
 	border: 2px solid #ccc;
 	border-radius: 4px;
+	background-color: white;
 }
 
-.ComplaintsHeader h3 {
+.Complaints > div:last-child {
+	border-bottom: none;
+}
+
+.Complaints > p {
+	padding: 10px;
+}
+
+.ComplaintsHeader > h3 {
 	text-align: left;
 	padding: 10px;
 	background-color: #f2f2f2;
 }
 
 .ComplaintsListHeadings {
+	font-weight: bold;
 	background-color: white;
 	border-top: 2px solid #ccc;
 	border-bottom: 2px solid #ccc;
