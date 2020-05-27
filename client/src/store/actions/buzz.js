@@ -3,6 +3,7 @@ import constants from '../../components/config/constants'
 
 export const getPosts = ({ limit = 5, skip = 0 } = {}) => {
     return (dispatch, getState) => {
+
         const { token } = getState().authData
         fetch(constants.SERVER_URL + `/user/posts?limit=${limit}&skip=${skip}`, {
             headers: {

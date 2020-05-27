@@ -1,6 +1,9 @@
 import extractToken from './extractToken'
 import extractDataFromToken from './extractDataFromToken'
 
-function verifyToken(req, res, next) {}
+function isAuthenticated(req, res, next) {
+    extractToken()
+
+}
 
 module.exports = verifyToken

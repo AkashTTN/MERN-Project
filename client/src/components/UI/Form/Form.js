@@ -120,11 +120,11 @@ const Form = ({ userEmail, userName, formType, submitForm, postSubmitted, compla
                     <div className="form-group flex-container">
                         <div>
                             <label className="ComplaintFieldLabel" htmlFor="name" >Your Name</label>
-                            <input className="ComplaintField" onChange={handleOnChange} name="name" id="name" type="text" value={userName} disabled />
+                            <input className="ComplaintField" name="name" id="name" type="text" value={userName} disabled />
                         </div>
                         <div>
                             <label className="ComplaintFieldLabel" htmlFor="email" >Email Id</label>
-                            <input className="ComplaintField" onChange={handleOnChange} name="email" id="email" type="email" value={userEmail} disabled />
+                            <input className="ComplaintField" name="email" id="email" type="email" value={userEmail} disabled />
                         </div>
                     </div>
 
