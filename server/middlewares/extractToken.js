@@ -1,5 +1,5 @@
 // Extract Token
-function extractToken(req, res, next) {
+function extractToken(req) {
     // Get auth header value
     const bearerHeader = req.headers['authorization'];
     // Check if bearer is undefined
@@ -10,11 +10,10 @@ function extractToken(req, res, next) {
         const bearerToken = bearer[1];
         // Set the token
         req.token = bearerToken;
-        // Next middleware
-        return next();
+        
     } else {
-        // Forbidden
-        return res.sendStatus(403);
+        // Throw error
+        return new Error('Authorization Header not found');
     }
 
 }

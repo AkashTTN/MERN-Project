@@ -120,7 +120,8 @@
 .SubmitBuzz > button {
 	position: absolute;
 	opacity: 0%;
-	width: 40px;
+	width: 30px;
+	height: 20px;
 }
 
 .SubmitBuzz > button:hover {

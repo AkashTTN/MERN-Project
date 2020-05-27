@@ -1,143 +1,26 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom';
-
 import { connect } from 'react-redux'
-import constants from '../config/constants'
-import { setAuthData } from '../../store/actions'
+
+import { removeAuthData, setAuthData } from '../../store/actions'
 
 import NavList from '../NavList/NavList';
-import Form from '../UI/Form/Form'
-import Posts from '../Posts/Posts'
-import ComplaintsList from '../UI/ComplaintsList/ComplaintsList';
+import Form from "../UI/Form/Form";
+import Posts from "../Posts/Posts";
+import ComplaintsList from '../UI/ComplaintsList/ComplaintsList'
 
 import './Feed.css'
+import logo from '../../assets/images/ttn-logo.png'
 
-const Feed = React.memo(({ user, error, setAuthData }) => {
+const Feed = React.memo(({ removeAuthData, setAuthData, mode, user, authError, isAuthenticated }) => {
 
     const [redirect, setRedirect] = useState(false)
-    // without redux
-    // const [token, setToken] = useState(null)
-    // const [user, setUser] = useState(null)
-    const [mode, setMode] = useState('BUZZ')
-
-
-    // const makeRequest = useCallback(
-    //     ({ endpoint, queryString = null, formData = null } = {}) => {
-    //         let requestHeaders = {
-    //             'Authorization': 'bearer ' + token,
-    //         }
-    //         let requestURL = constants.SERVER_URL + endpoint
-
-    //         if (queryString) {
-    //             requestURL += queryString
-    //         } else if (formData) {
-    //             requestHeaders['body'] = formData
-    //         }
-
-    //         fetch(requestURL, {
-    //             headers: {
-    //                 ...requestHeaders
-    //             }
-    //         })
-    //             .then(res => res.json())
-    //             .then(data => {
-    //                 setUser(data.user)
-    //             })
-    //             .catch(err => {
-    //                 setRedirect(true)
-    //             })
-
-    //     },
-    //     [setRedirect, setUser]
-    // )
-
-    // without redux
-    // const getFeedData = useCallback(
-    //     (token) => {
-    //         fetch(constants.SERVER_URL + '/user/feed', {
-    //             headers: {
-    //                 'Authorization': 'bearer ' + token
-    //             }
-    //         })
-    //             .then(res => res.json())
-    //             .then(res => {
-    //                 setUser(res.data.user)
-    //             })
-    //             .catch(err => {
-    //                 setRedirect(true)
-    //             })
-    //     },
-    //     [setRedirect, setUser]
-    // )
-
-    // useEffect(
-    //     () => {
-
-    //         // Check local storage for saved token
-    //         let token = window.localStorage.getItem('token')
-    //         if (token) {
-    //             setToken(token)
-    //             getFeedData(token)
-    //         } else {
-    //             // Check query string for token
-    //             const urlParams = new URLSearchParams(window.location.search);
-    //             token = urlParams.get('token')
-    //             if (!token) {
-    //                 setRedirect(true)
-    //             } else {
-    //                 setToken(token)
-    //                 getFeedData(token)
-    //             }
-    //         }
-
-    //     },
-    //     [setUser, setToken, setRedirect, getFeedData]
-    // )
-
-    // with redux
-    useEffect(
-        () => {
-            if(error) {
-                setRedirect(true)
-            } else {
-                setAuthData()
-            }
-        },
-        [setAuthData, setRedirect, error]
-    )
-
-    const logoutHandler = useCallback(
-        () => {
-
-            // fetch(constants.SERVER_URL + '/auth/logout', { method: 'DELETE' })
-            //     .then(response => {
-            //         if (response.status === 200) {
-            //             setRedirect(true)
-            //         }
-            //     })
-
-            // Remove token from storage
-            window.localStorage.removeItem('token')
-            setRedirect(true)
-
-        },
-        [setRedirect]
-    )
-
-    const changeModeHandler = useCallback(
-        (newMode) => {
-            console.log('fired', newMode)
-            setMode(newMode)
-        },
-        [setMode]
-    )
 
     let feed = null
-
     let feedBodyContent = null
 
     switch (mode) {
-        case 'BUZZ':
+        case 'buzz':
             feedBodyContent = (
                 <>
                     <Form formType="Buzz" />
@@ -146,37 +29,72 @@ const Feed = React.memo(({ user, error, setAuthData }) => {
             )
             break
 
-        case 'COMPLAINTS':
+        case 'complaints':
             feedBodyContent = (
                 <>
                     <Form formType="Complaint" />
                     <ComplaintsList />
                 </>
             )
-            break
-
-        case 'RESOLVED':
-            break
-
-        default:
-            break;
     }
+
+    // with redux
+    useEffect(
+        () => {
+            if (authError || !isAuthenticated) {
+                if (window.localStorage.getItem('token')) {
+                    setAuthData()
+                } else {
+                    setRedirect(true)
+                }
+            }
+        },
+        [setRedirect, authError, isAuthenticated, setAuthData]
+    )
+
+    const logoutHandler = useCallback(
+        () => {
+
+            // Remove token from storage
+            removeAuthData()
+
+            // Clear token from localStorage
+            window.localStorage.removeItem('token')
+
+            // Redirect to sign in page
+            setRedirect(true)
+
+        },
+        [setRedirect, removeAuthData]
+    )
 
     if (user) {
         feed = (
             <>
                 <div className="FeedHeader">
-                    <p>Welcome {user.name}</p>
-                    <button onClick={logoutHandler}>Logout</button>
+                    <div className="Logout flex-container">
+                        <button className="LogoutButton" onClick={logoutHandler}>Logout</button>
+                        <i className="fas fa-sign-out-alt"></i>
+                    </div>
+                    <div className="FeedHeaderImage flex-container">
+                        {
+                            mode === 'buzz' 
+                            ? <p>POSTING YOUR THOUGHTS</p>
+                            : <p>CREATING BUZZ AROUND YOU</p>
+                        }
+                        <p>NEVER BEEN SO EASY..</p>
+                    </div>
+                    <img className="FeedHeaderLogo" src={logo} alt="TTN-Logo" />
                 </div>
                 <div className="FeedBody flex-container">
                     <div className="FeedBodyNav" >
-                        <NavList isAdmin={user.role === 'admin'} changeFeedMode={changeModeHandler} />
+                        <NavList isAdmin={user.role === 'admin'} />
                     </div>
-                    <div className="FeedBodyContent" >
+                    <div className="FeedBodyContent">
                         {feedBodyContent}
                     </div>
                 </div>
+
             </>
         )
     }
@@ -190,13 +108,10 @@ const Feed = React.memo(({ user, error, setAuthData }) => {
 
 const mapStateToProps = state => {
     return {
-        error: state.authData.error,
+        isAuthenticated: state.authData.token || false,
+        authError: state.authData.error,
         user: state.authData.user
     }
 }
 
-const mapDispatchToProps = {
-    setAuthData
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Feed)
+export default connect(mapStateToProps, { removeAuthData, setAuthData })(Feed)

@@ -9,9 +9,6 @@ const upload = multer({ dest: 'uploads/' })
 
 router
     .get('/feed', async (req, res) => {
-        // const queryString = `/signin?success=true&username=${encodeURIComponent(req.user.displayName)}`
-        // const queryString = `/feed?username=${encodeURIComponent(req.user.displayName)}`
-        // res.redirect(constants.CLIENT_URL + queryString)
 
         const user = await users.getUserById(req.user.authData.userID)
 
@@ -28,7 +25,7 @@ router
 
     .post('/post', upload.single('image1'), async (req, res) => {
 
-        console.log('post request body',  req.body)
+        // console.log('post request body',  req.body)
 
         const { buzzText, buzzCategory } = JSON.parse(req.body.data)
 
@@ -53,7 +50,7 @@ router
 
     .post('/complaint', upload.single('image1'), async (req, res) => {
 
-        console.log('complaint request body',  req.body)
+        // console.log('complaint request body',  req.body)
 
         const { concernText, issueTitle, department, email, name } = JSON.parse(req.body.data)
 
@@ -90,7 +87,7 @@ router
         
         const postsToBeSent = await posts.getPosts({ limit, skip })
 
-        return res.status(200).json(response(true, 200, "Retrived posts", postsToBeSent))
+        return res.status(200).json(response(true, 200, "Retrieved posts", postsToBeSent))
 
     })
 

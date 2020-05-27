@@ -1,18 +1,17 @@
 const GoogleStrategy = require('passport-google-oauth20');
-const keys = require('./keys');
-const constants = require('./constants')
+const config = require('./config');
 
 function initialize(passport) {
     passport.use(new GoogleStrategy({
-        clientID: keys.google.clientID,
-        clientSecret: keys.google.clientSecret,
+        clientID: config.google.clientID,
+        clientSecret: config.google.clientSecret,
         callbackURL: '/auth/google/redirect'
     }, (accessToken, refreshToken, profile, done) => {
 
         const userHostDomain = profile._json.hd;
 
         // Additional check to verify host domain of authentication user
-        if (userHostDomain === constants.GOOGLE_USER_HOST_DOMAIN) {
+        if (userHostDomain === config.google.GOOGLE_USER_HOST_DOMAIN) {
             return done(null, profile)
         }
 

@@ -1,5 +1,6 @@
 export {
-    setAuthData
+    setAuthData,
+    removeAuthData
 } from './auth'
 
 export {

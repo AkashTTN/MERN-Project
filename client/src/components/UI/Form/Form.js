@@ -153,7 +153,7 @@ const Form = ({ userEmail, userName, formType, submitForm, postSubmitted, compla
             form = (
 
                 <form onSubmit={handleOnSubmit}>
-                    <h3 className="FormHeader" >Create Buzz</h3>
+                    <h3 className="FormHeader" ><i className="fas fa-pencil-alt"></i>&nbsp;&nbsp;Create Buzz</h3>
                     <div className="BuzzFormBody" >
                         <textarea id="buzz" onChange={handleOnChange} name="buzzText" placeholder="Share your thoughts..." required ></textarea>
                     </div>

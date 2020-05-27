@@ -3,9 +3,11 @@ import constants from '../../components/config/constants'
 
 export const setAuthData = () => {
     return dispatch => {
+        dispatch({ type: actionTypes.SET_AUTH_DATA })
         // Check local storage for saved token
         let token = window.localStorage.getItem('token')
         if (token) {
+            window.localStorage.setItem('token', token)
             dispatch({
                 type: actionTypes.SIGN_IN_SUCCESS,
                 payload: {
@@ -24,6 +26,7 @@ export const setAuthData = () => {
                 return
             } else {
                 // Token found
+                window.localStorage.setItem('token', token)
                 dispatch({
                     type: actionTypes.SIGN_IN_SUCCESS,
                     payload: {
@@ -32,7 +35,6 @@ export const setAuthData = () => {
                 })
             }
         }
-        dispatch({ type: actionTypes.SET_AUTH_DATA })
 
         fetch(constants.SERVER_URL + '/user/feed', {
             headers: {
@@ -46,5 +48,12 @@ export const setAuthData = () => {
             .catch(err => {
                 dispatch({ type: actionTypes.SET_AUTH_DATA_FAILED })
             })
+    }
+}
+
+
+export const removeAuthData = () => {
+    return {
+        type: actionTypes.SIGN_OUT_SUCCESS
     }
 }

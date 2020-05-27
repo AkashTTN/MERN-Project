@@ -61,7 +61,7 @@ const Posts = ({ posts, getPosts, postSubmitted }) => {
 
     return (
         <div className="Posts" ref={postsDiv}>
-            <h3 className="PostsHeader" >Recent Buzz</h3>
+            <h3 className="PostsHeader" ><i className="fas fa-at"></i>&nbsp;&nbsp;Recent Buzz</h3>
             {postsArray}
         </div>
     )

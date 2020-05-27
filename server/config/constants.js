@@ -1,5 +1,28 @@
-module.exports = {
-    // allow google users with only this domain
-    GOOGLE_USER_HOST_DOMAIN: 'tothenew.com',
-    CLIENT_URL: 'http://localhost:3000'
+const constants = {
+    dev: {
+        client: {
+            url: 'http://localhost:3000'
+        },
+        db: {
+            url: 'mongodb://localhost:27017/testdb'
+        }
+    },
+    stage: {
+        client: {
+            url: 'http://localhost:3000'
+        },
+        db: {
+            url: 'mongodb://localhost:27017/testdb'
+        }
+    },
+    prod: {
+        client: {
+            url: 'http://localhost:3000'
+        },
+        db: {
+            url: 'mongodb://localhost:27017/testdb'
+        }
+    }
 }
+
+module.exports = constants[process.env.NODE_ENV || 'dev']

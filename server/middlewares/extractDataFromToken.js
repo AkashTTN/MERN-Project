@@ -1,15 +1,14 @@
-const keys = require('../config/keys')
+const config = require('../config/config')
 const jwt = require('jsonwebtoken')
 
-function extractDataFromToken(req, res, next) {
-    jwt.verify(req.token, keys.jwt.secret, (err, authData) => {
+function extractDataFromToken(req) {
+    jwt.verify(req.token, config.jwt.secret, (err, authData) => {
         if (err) {
-            res.sendStatus(403);
+            return new Error(err);
         } else {
             req.user = {
                 authData
             };
-            next()
         }
     });
 }

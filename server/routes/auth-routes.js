@@ -3,20 +3,21 @@ const router = express.Router()
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 
+const config = require('../config/config')
 const constants = require('../config/constants')
-const keys = require('../config/keys')
 
 const users = require('../models/User/user.controller')
 
 router.get('/google', passport.authenticate('google', {
     // Only show accounts that match the hosted domain.
-    hd: constants.GOOGLE_USER_HOST_DOMAIN,
+    hd: config.google.GOOGLE_USER_HOST_DOMAIN,
     // Ensure the user can always select an account when sent to Google.
     prompt: 'select_account',
     scope: ['profile', 'email'],
     session: false
 }))
 
+// currently not reachable
 router.get('/google/failed', (req, res) => {
 
     return res.send({ message: 'Google Authentication Failed' })
@@ -25,7 +26,7 @@ router.get('/google/failed', (req, res) => {
 
 router.get('/google/redirect',
     passport.authenticate('google', {
-        failureRedirect: constants.CLIENT_URL,
+        failureRedirect: constants.client.url,
         failureFlash: true,
         session: false
     }),
@@ -49,15 +50,10 @@ router.get('/google/redirect',
         }
 
         // send userID (googleID) in jwt
-        jwt.sign({ userID }, keys.jwt.secret, { expiresIn: '1day' }, (err, token) => {
-            return res.redirect(constants.CLIENT_URL + `/feed?token=${token}`)
+        jwt.sign({ userID }, config.jwt.secret, { expiresIn: '1day' }, (err, token) => {
+            return res.redirect(constants.client.url + `?token=${token}`)
         });
 
     })
-
-router.delete('/logout', (req, res) => {
-    req.logout()
-    return res.status(200).send({ message: 'Logout Successful.' })
-})
 
 module.exports = router
