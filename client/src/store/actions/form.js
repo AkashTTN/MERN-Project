@@ -4,8 +4,15 @@ import constants from '../../components/config/constants'
 
 export const submitForm = ({ data, type } = {}) => {
     return (dispatch, getState) => {
-        const endpoint = type === 'Complaint' ? '/user/complaint' : '/user/post'
         const { token } = getState().authData
+        let endpoint = ''
+        if (type === 'Complaint') {
+            endpoint = '/user/complaint'
+            dispatch({ type: actionTypes.SUBMIT_COMPLAINT })
+        } else {
+            endpoint = '/user/post'
+            dispatch({ type: actionTypes.SUBMIT_POST })
+        }
         fetch(constants.SERVER_URL + endpoint, {
             method: "POST",
             body: data,

@@ -37,7 +37,7 @@ mongoose.connection.on("connected", (err, res) => {
 
 // setting up cors
 app.use(cors({
-    "origin": constants.client.url,
+    "origin": "*",
     "methods": "*",
 }))
 

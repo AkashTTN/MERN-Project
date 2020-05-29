@@ -8,13 +8,26 @@ const Form = ({ userEmail, userName, formType, submitForm, postSubmitted, compla
 
     const [numFiles, setNumFiles] = useState(0)
     const [files, setFiles] = useState('')
-    const [formData, setFormData] = useState({})
+    const [formData, setFormData] = useState({
+        department: '',
+        concernText: '',
+        issueTitle: '',
+        buzzCategory: '',
+        buzzText: ''
+    })
+
     let form = null
 
     // reset formData on on changing form or when the component rerenders and if the form is submitted
     useEffect(
         () => {
-            setFormData({})
+            setFormData({
+                department: '',
+                concernText: '',
+                issueTitle: '',
+                buzzCategory: '',
+                buzzText: ''
+            })
             setNumFiles(0)
             setFiles('')
         },
@@ -40,11 +53,14 @@ const Form = ({ userEmail, userName, formType, submitForm, postSubmitted, compla
 
     const handleOnSubmit = useCallback(
         (e) => {
+            
             e.preventDefault()
+            
             const formDataToBeSent = new FormData();
+
             // Adding files to form data
             for (let i = 0; i < files.length; i++) {
-                formDataToBeSent.append(`image${i + 1}`, files[i]);
+                formDataToBeSent.append(`images`, files[i]);
             }
 
             // adding name and email to formData
@@ -53,37 +69,10 @@ const Form = ({ userEmail, userName, formType, submitForm, postSubmitted, compla
 
             formDataToBeSent.append("data", JSON.stringify(formData))
 
-            // for testing
-            // fetch(constants.SERVER_URL, {
-            //     method: "POST",
-            //     body: formDataToBeSent
-            // })
-
-            submitForm({data: formDataToBeSent, type: formType})
+            submitForm({ data: formDataToBeSent, type: formType })
         },
         [files, formData, submitForm, formType, userEmail, userName]
     )
-
-    // updating number of files using vanila js
-    // useEffect(
-    //     () => {
-    //         if (form) {
-    //             inputElement = formType === 'Buzz'
-    //                 ? document.getElementById("BuzzImageAttachment")
-    //                 : document.getElementById("ImageAttachment")
-    //             inputElement.addEventListener("change", getNumberOfUploadedFiles, false);
-    //         }
-    //     },
-    //     [form]
-    // )
-
-    // const getNumberOfUploadedFiles = useCallback(
-    //     () => {
-    //         const fileList = inputElement.files
-    //         setNumFiles(fileList.length)
-    //     },
-    //     [inputElement, setNumFiles]
-    // )
 
     switch (formType) {
         case 'Complaint':
@@ -96,7 +85,7 @@ const Form = ({ userEmail, userName, formType, submitForm, postSubmitted, compla
                         <div>
                             <label className="ComplaintFieldLabel" htmlFor="department">Select Department</label>
 
-                            <select defaultValue={''} onChange={handleOnChange} className="ComplaintField" name="department" id="department" required>
+                            <select value={formData.department} onChange={handleOnChange} className="ComplaintField" name="department" id="department" required>
                                 <option value="" disabled hidden></option>
                                 <option value="ADMIN">Admin</option>
                                 <option value="MANAGEMENT">Management</option>
@@ -108,7 +97,7 @@ const Form = ({ userEmail, userName, formType, submitForm, postSubmitted, compla
                         <div>
                             <label className="ComplaintFieldLabel" htmlFor="issueTitle">Issue Title</label>
 
-                            <select defaultValue={''} onChange={handleOnChange} className="ComplaintField" name="issueTitle" id="issueTitle" required>
+                            <select value={formData.issueTitle} onChange={handleOnChange} className="ComplaintField" name="issueTitle" id="issueTitle" required>
                                 <option value="" disabled hidden></option>
                                 <option value="hardware">Hardware</option>
                                 <option value="infrastructure">Infrastructure</option>
@@ -130,7 +119,7 @@ const Form = ({ userEmail, userName, formType, submitForm, postSubmitted, compla
 
                     <div className="form-group flex-container">
                         <label className="ComplaintFieldLabel" htmlFor="concern" >Your Concern</label>
-                        <textarea id="concern" onChange={handleOnChange} name="concernText" required></textarea>
+                        <textarea id="concern" onChange={handleOnChange} name="concernText" value={formData['concernText']} required></textarea>
                     </div>
 
                     <div className="form-group flex-container">
@@ -155,10 +144,10 @@ const Form = ({ userEmail, userName, formType, submitForm, postSubmitted, compla
                 <form onSubmit={handleOnSubmit}>
                     <h3 className="FormHeader" ><i className="fas fa-pencil-alt"></i>&nbsp;&nbsp;Create Buzz</h3>
                     <div className="BuzzFormBody" >
-                        <textarea id="buzz" onChange={handleOnChange} name="buzzText" placeholder="Share your thoughts..." required ></textarea>
+                        <textarea id="buzz" onChange={handleOnChange} name="buzzText" value={formData.buzzText} placeholder="Share your thoughts..." required ></textarea>
                     </div>
                     <div className="BuzzFormFooter flex-container">
-                        <select defaultValue={''} onChange={handleOnChange} className="BuzzCategory" name="buzzCategory" id="buzzCategory" required>
+                        <select value={formData.buzzCategory} onChange={handleOnChange} className="BuzzCategory" name="buzzCategory" id="buzzCategory" required>
                             <option value="" disabled hidden>
                                 Category
                             </option>

@@ -3,6 +3,10 @@ const Schema = mongoose.Schema;
 
 const complaintSchema = new Schema(
     {
+        complaintId: {
+            type: String,
+            required: true
+        },
         createdAt: {
             type: Date,
             default: Date.now,
@@ -21,11 +25,11 @@ const complaintSchema = new Schema(
         assignedTo: {
             name: {
                 type: String,
-                default: null
+                default: 'N/A'
             },
             googleId: {
                 type: String,
-                default: null
+                default: 'N/A'
             },
             default: {}
         },

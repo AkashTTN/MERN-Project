@@ -10,6 +10,12 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.SUBMIT_COMPLAINT:
+            return {
+                ...state,
+                complaintSubmitted: false
+            }
+            
         case actionTypes.SUBMIT_COMPLAINT_SUCCESS:
             return {
                 ...state,

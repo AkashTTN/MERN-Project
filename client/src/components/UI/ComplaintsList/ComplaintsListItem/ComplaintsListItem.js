@@ -7,7 +7,7 @@ const ComplaintsListItem = ({ isAdmin, complaint }) => {
     return (
         <div className="ComplaintsListItem flex-container">
             <div>{complaint.department}</div>
-            <div>{complaint.issueId}</div>
+            <div>{complaint.complaintId}</div>
             {
                 isAdmin
                     ? <div>{complaint.createdBy.name}</div> : null
