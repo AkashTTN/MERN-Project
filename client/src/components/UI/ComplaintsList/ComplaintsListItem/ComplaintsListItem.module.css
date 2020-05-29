@@ -1,0 +1,42 @@
+.ComplaintsListItem {
+	background-color: white;
+	border-bottom: 2px solid #ccc;
+}
+
+.ComplaintsListItem > div {
+	flex: 1;
+	padding: 20px;
+	border-right: 2px solid #ccc;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.ComplaintsListItem > div:last-child {
+	padding: 0;
+	border: none;
+}
+
+.ComplaintStatus {
+	border: none;
+	text-align-last: center;
+	font-size: 18px;
+	background-color: transparent;
+}
+
+.Open {
+	color: #f19ea4;
+}
+
+.Resolved {
+	color: #8bd4a2;
+}
+
+.InProgress {
+	color: #7891fc;
+}
+
+.Black {
+	color: black;
+}

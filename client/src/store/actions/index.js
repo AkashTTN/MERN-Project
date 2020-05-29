@@ -8,7 +8,8 @@ export {
 } from './buzz'
 
 export { 
-    getComplaints
+    getComplaints,
+    changeComplaintStatus
 } from './complaint'
 
 export {

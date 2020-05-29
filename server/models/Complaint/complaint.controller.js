@@ -5,8 +5,8 @@ module.exports.create = async (data) => {
     return response
 }
 
-module.exports.changeStatusById = async (id) => {
-    const response = await complaints.changeStatusById(id)
+module.exports.changeStatusById = async (data) => {
+    const response = await complaints.changeStatusById(data)
     return response
 }
 

@@ -22,6 +22,10 @@ const userSchema = new Schema(
         dislikedPosts: {
             type: Array,
             default: []
+        },
+        role: {
+            type: String,
+            default: 'emplyoee'
         }
     }
 );

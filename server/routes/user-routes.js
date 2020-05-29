@@ -8,6 +8,7 @@ const multer = require('multer')
 const fs = require('fs');
 
 const generateUniqueId = require('../middlewares/generateUniqueId')
+const isAdmin = require('../middlewares/isAdmin')
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -40,7 +41,7 @@ router
 
         try {
             const user = await users.getUserById(req.user.authData.userID)
-    
+
             return res.status(200).json(response(true, 200, "Retrieved user feed data", { user }))
         } catch (error) {
             throw new Error(error)
@@ -137,6 +138,38 @@ router
         const postsToBeSent = await posts.getPosts({ limit, skip })
 
         return res.status(200).json(response(true, 200, "Retrieved posts", postsToBeSent))
+
+    })
+
+    .patch('/complaint', isAdmin, (req, res, next) => {
+        return res.status(200).json(response(false, 406, 'Complaint ID required.'))
+    })
+
+    .patch('/complaint/:complaintId', isAdmin, async (req, res) => {
+
+        const complaintId = req.params.complaintId
+        const status = req.query.status
+
+        if (complaintId.trim().length === 0) {
+            return res.status(200).json(response(false, 406, 'Complaint ID required.'))
+        }
+
+        if (!status) {
+            return res.status(200).json(response(false, 406, 'Updated Complaint status required'))
+        }
+
+        try {
+            const complaint = await complaints.changeStatusById({ complaintId, status })
+
+            if (complaint.nModified === 1) {
+                res.status(200).json(response(true, 200, 'Complaint status changed', { complaint: { updatedStatus: status } }))
+            } else {
+                res.status(200).json(response(false, 406, 'Complaint status unchanged'))
+            }
+
+        } catch (error) {
+            throw new Error(error)
+        }
 
     })
 

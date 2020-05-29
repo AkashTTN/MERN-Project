@@ -29,8 +29,8 @@ module.exports.create = async ({
 
 }
 
-module.exports.changeStatusById = async ({ id, status }) => {
-    const response = await ComplaintModel.updateOne({ complaintId: id }, { $set: { status } })
+module.exports.changeStatusById = async ({ complaintId, status }) => {
+    const response = await ComplaintModel.updateOne({ complaintId }, { $set: { status } })
     return response
 }
 

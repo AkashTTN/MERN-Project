@@ -30,6 +30,9 @@
 	padding: 20px;
 	border-right: 2px solid #ccc;
 	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .ComplaintsListHeadings > div:last-child {
