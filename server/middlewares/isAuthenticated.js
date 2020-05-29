@@ -1,5 +1,6 @@
 const extractToken = require('./extractToken')
 const extractDataFromToken = require('./extractDataFromToken')
+const response = require('v-response').ApiResponse
 
 function isAuthenticated(req, res, next) {
     try {
@@ -9,7 +10,7 @@ function isAuthenticated(req, res, next) {
     } catch (error) {
         console.error(error)
         // Forbidden
-        res.sendStatus(403)
+        res.status(200).json(response(false, 403, 'You are unauthorized.'))
     }
 }
 
