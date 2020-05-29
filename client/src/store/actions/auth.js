@@ -43,6 +43,10 @@ export const setAuthData = () => {
         })
             .then(res => res.json())
             .then(res => {
+                if(res.code === 403) {
+                    window.localStorage.removeItem('token')
+                    return dispatch({type: actionTypes.SET_AUTH_DATA_FAILED})
+                }
                 dispatch({ type: actionTypes.SET_AUTH_DATA_SUCCESS, payload: { user: res.data.user } })
             })
             .catch(err => {

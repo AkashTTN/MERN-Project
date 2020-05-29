@@ -13,7 +13,7 @@ function extractToken(req) {
         
     } else {
         // Throw error
-        return new Error('Authorization Header not found');
+        throw new Error('Authorization Header not found');
     }
 
 }
