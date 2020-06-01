@@ -37,12 +37,12 @@ router
 
     .use('/uploads/complaints', express.static('uploads/complaints'))
 
-    .get('/feed', async (req, res) => {
+    .get('/', async (req, res) => {
 
         try {
             const user = await users.getUserById(req.user.authData.userID)
 
-            return res.status(200).json(response(true, 200, "Retrieved user feed data", { user }))
+            return res.status(200).json(response(true, 200, "Retrieved user data", { user }))
         } catch (error) {
             throw new Error(error)
         }

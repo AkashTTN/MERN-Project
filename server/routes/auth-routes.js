@@ -50,7 +50,7 @@ router.get('/google/redirect',
         }
 
         // send userID (googleID) in jwt
-        jwt.sign({ userID, role: user.role }, config.jwt.secret, { expiresIn: '1day' }, (err, token) => {
+        jwt.sign({ userID, role: user.role }, config.jwt.secret, { expiresIn: '30s' }, (err, token) => {
             return res.redirect(constants.client.url + `?token=${token}`)
         });
 
