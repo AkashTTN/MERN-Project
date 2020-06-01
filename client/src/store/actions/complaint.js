@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes'
 import constants from '../../components/config/constants'
+import { removeAuthData } from './'
 
 export const getComplaints = () => {
     return (dispatch, getState) => {
@@ -11,10 +12,15 @@ export const getComplaints = () => {
         })
             .then(res => res.json())
             .then(response => {
-                if (response.code === 200) {
-                    return dispatch({ type: actionTypes.GET_COMPLAINTS_SUCCESS, payload: { complaints: response.data } })
+                if (response.code === 403) {
+                    dispatch(removeAuthData())
+                    throw new Error(response.message)
+                } else {
+                    if (response.code === 200) {
+                        return dispatch({ type: actionTypes.GET_COMPLAINTS_SUCCESS, payload: { complaints: response.data } })
+                    }
+                    throw new Error(response.message)
                 }
-                throw new Error(response.message)
             })
             .catch(err => {
                 console.log(err)

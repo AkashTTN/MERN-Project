@@ -1,6 +1,17 @@
 import * as actionTypes from './actionTypes'
 import constants from '../../components/config/constants'
 
+
+export const removeAuthData = () => {
+    // remove token from local storage
+    window.localStorage.removeItem('token')
+
+    // clear data from redux store
+    return {
+        type: actionTypes.SIGN_OUT_SUCCESS
+    }
+}
+
 export const setAuthData = () => {
     return dispatch => {
         dispatch({ type: actionTypes.SET_AUTH_DATA })
@@ -36,28 +47,21 @@ export const setAuthData = () => {
             }
         }
 
-        fetch(constants.SERVER_URL + '/user/feed', {
+        fetch(constants.SERVER_URL + '/user', {
             headers: {
                 'Authorization': 'bearer ' + token
             }
         })
             .then(res => res.json())
             .then(res => {
+                console.log('response', res)
                 if(res.code === 403) {
-                    window.localStorage.removeItem('token')
-                    return dispatch({type: actionTypes.SET_AUTH_DATA_FAILED})
+                    return dispatch(removeAuthData())
                 }
                 dispatch({ type: actionTypes.SET_AUTH_DATA_SUCCESS, payload: { user: res.data.user } })
             })
             .catch(err => {
                 dispatch({ type: actionTypes.SET_AUTH_DATA_FAILED })
             })
-    }
-}
-
-
-export const removeAuthData = () => {
-    return {
-        type: actionTypes.SIGN_OUT_SUCCESS
     }
 }

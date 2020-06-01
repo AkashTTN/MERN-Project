@@ -55,11 +55,8 @@ const Feed = React.memo(({ removeAuthData, setAuthData, mode, user, authError, i
     const logoutHandler = useCallback(
         () => {
 
-            // Remove token from storage
+            // Remove token from storage and clear auth data from store
             removeAuthData()
-
-            // Clear token from localStorage
-            window.localStorage.removeItem('token')
 
             // Redirect to sign in page
             setRedirect(true)
