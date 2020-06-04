@@ -2,7 +2,8 @@ import * as actionTypes from '../actions/actionTypes'
 
 const initialState = {
     complaints: null,
-    error: false
+    error: false,
+    loading: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -26,16 +27,25 @@ const reducer = (state = initialState, action) => {
                 complaints: updatedComplaints
             }
 
+        case actionTypes.GET_COMPLAINTS:
+            return {
+                ...state,
+                error: false,
+                loading: true
+            }
+
         case actionTypes.GET_COMPLAINTS_SUCCESS:
             return {
                 ...state,
-                complaints: action.payload.complaints
+                complaints: action.payload.complaints,
+                loading: false
             }
 
         case actionTypes.GET_COMPLAINTS_FAILED:
             return {
                 ...state,
-                error: true
+                error: true,
+                loading: false
             }
 
         default: return state

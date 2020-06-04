@@ -4,7 +4,7 @@
 }
 
 .ComplaintsListItem > div {
-	flex: 1;
+	flex: 25%;
 	padding: 20px;
 	border-right: 2px solid #ccc;
 	text-align: center;
@@ -23,6 +23,11 @@
 	text-align-last: center;
 	font-size: 18px;
 	background-color: transparent;
+}
+
+.ComplaintId {
+	text-decoration: underline;
+	color: #8ab4f8;
 }
 
 .Open {

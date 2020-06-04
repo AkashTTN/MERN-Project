@@ -30,7 +30,10 @@ const reducer = (state=initialState, action) => {
             }
 
         case actionTypes.SET_AUTH_DATA:
-            return state
+            return {
+                ...state,
+                error: false
+            }
 
         case actionTypes.SET_AUTH_DATA_SUCCESS:
             return {

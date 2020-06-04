@@ -2,7 +2,7 @@ import React, { useCallback, useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux'
 
-import { removeAuthData, setAuthData } from '../../store/actions'
+import { removeAuthData, setAuthData, getFormConfig } from '../../store/actions'
 
 import NavList from '../NavList/NavList';
 import Form from "../UI/Form/Form";
@@ -12,7 +12,15 @@ import ComplaintsList from '../UI/ComplaintsList/ComplaintsList'
 import './Feed.css'
 import logo from '../../assets/images/ttn-logo.png'
 
-const Feed = React.memo(({ removeAuthData, setAuthData, mode, user, authError, isAuthenticated }) => {
+const Feed = React.memo(({
+    removeAuthData,
+    setAuthData,
+    getFormConfig,
+    mode,
+    user,
+    authError,
+    isAuthenticated
+}) => {
 
     const [redirect, setRedirect] = useState(false)
 
@@ -36,6 +44,10 @@ const Feed = React.memo(({ removeAuthData, setAuthData, mode, user, authError, i
                     <ComplaintsList />
                 </>
             )
+            break
+
+        default: feedBodyContent = <p>Incorrect feed mode.</p>
+
     }
 
     // with redux
@@ -44,12 +56,13 @@ const Feed = React.memo(({ removeAuthData, setAuthData, mode, user, authError, i
             if (authError || !isAuthenticated) {
                 if (window.localStorage.getItem('token')) {
                     setAuthData()
+                    getFormConfig()
                 } else {
                     setRedirect(true)
                 }
             }
         },
-        [setRedirect, authError, isAuthenticated, setAuthData]
+        [setRedirect, authError, isAuthenticated, setAuthData, getFormConfig]
     )
 
     const logoutHandler = useCallback(
@@ -75,9 +88,9 @@ const Feed = React.memo(({ removeAuthData, setAuthData, mode, user, authError, i
                     </div>
                     <div className="FeedHeaderImage flex-container">
                         {
-                            mode === 'buzz' 
-                            ? <p>POSTING YOUR THOUGHTS</p>
-                            : <p>CREATING BUZZ AROUND YOU</p>
+                            mode === 'buzz'
+                                ? <p>POSTING YOUR THOUGHTS</p>
+                                : <p>CREATING BUZZ AROUND YOU</p>
                         }
                         <p>NEVER BEEN SO EASY..</p>
                     </div>
@@ -105,10 +118,10 @@ const Feed = React.memo(({ removeAuthData, setAuthData, mode, user, authError, i
 
 const mapStateToProps = state => {
     return {
-        isAuthenticated: state.authData.token || false,
+        isAuthenticated: !!state.authData.token,
         authError: state.authData.error,
         user: state.authData.user
     }
 }
 
-export default connect(mapStateToProps, { removeAuthData, setAuthData })(Feed)
+export default connect(mapStateToProps, { removeAuthData, setAuthData, getFormConfig })(Feed)

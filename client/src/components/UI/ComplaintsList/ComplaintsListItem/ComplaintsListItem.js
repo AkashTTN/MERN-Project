@@ -4,6 +4,13 @@ import { connect } from 'react-redux'
 import { changeComplaintStatus } from '../../../../store/actions'
 
 import inputClasses from './ComplaintsListItem.module.css'
+import { Link } from 'react-router-dom'
+
+const complaintStatusMap = {
+    Resolved: 'Resolved',
+    Open: 'Open',
+    'In Progress': 'InProgress'
+}
 
 const ComplaintsListItem = ({ isAdmin, complaint, changeComplaintStatus }) => {
 
@@ -11,7 +18,7 @@ const ComplaintsListItem = ({ isAdmin, complaint, changeComplaintStatus }) => {
 
     let statusDropDown = null
 
-    classes.push(inputClasses[complaint.status])
+    classes.push(inputClasses[complaintStatusMap[complaint.status]])
 
     const handleOnChange = useCallback(
         (e) => {
@@ -35,13 +42,17 @@ const ComplaintsListItem = ({ isAdmin, complaint, changeComplaintStatus }) => {
     const statusComponent = (
         isAdmin
             ? statusDropDown
-            : <div>{complaint.status}</div>
+            : <div className={inputClasses[complaintStatusMap[complaint.status]]}>{complaint.status}</div>
     )
 
     return (
         <div className={[inputClasses.ComplaintsListItem, 'flex-container'].join(' ')}>
             <div>{complaint.department}</div>
-            <div>{complaint.complaintId}</div>
+            <div>
+                <Link to={`/complaints/${complaint.complaintId}`}>
+                    <div className={inputClasses.ComplaintId}>{complaint.complaintId}</div>
+                </Link>
+            </div>
             {
                 isAdmin
                     ? <div>{complaint.createdBy.name}</div> : null

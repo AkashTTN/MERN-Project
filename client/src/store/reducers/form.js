@@ -1,11 +1,12 @@
 import * as actionTypes from '../actions/actionTypes'
 
 const initialState = {
-    error: false,
+    formConfigError: false,
     submittedComplaint: null,
     complaintSubmitted: false,
     submittedPost: null,
-    postSubmitted: false
+    postSubmitted: false,
+    formConfig: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -15,7 +16,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 complaintSubmitted: false
             }
-            
+
         case actionTypes.SUBMIT_COMPLAINT_SUCCESS:
             return {
                 ...state,
@@ -26,13 +27,18 @@ const reducer = (state = initialState, action) => {
         case actionTypes.SUBMIT_COMPLAINT_FAILED:
             return {
                 ...state,
-                error: true,
                 complaintSubmitted: false
             }
+
+        case actionTypes.SUBMIT_POST:
+            return {
+                ...state,
+                postSubmitted: false
+            }
+
         case actionTypes.SUBMIT_POST_SUCCESS:
             return {
                 ...state,
-                error: false,
                 submittedPost: action.payload.submittedPost,
                 postSubmitted: true
             }
@@ -40,9 +46,28 @@ const reducer = (state = initialState, action) => {
         case actionTypes.SUBMIT_POST_FAILED:
             return {
                 ...state,
-                error: true,
                 postSubmitted: false
             }
+
+        case actionTypes.GET_FORM_CONFIG:
+            return {
+                ...state,
+                formConfigError: false
+            }
+
+        case actionTypes.GET_FORM_CONFIG_SUCCESS:
+            return {
+                ...state,
+                formConfig: action.payload.formConfig,
+                formConfigError: false
+            }
+
+        case actionTypes.GET_FORM_CONFIG_FAILED:
+            return {
+                ...state,
+                formConfigError: true
+            }
+
         default: return state
     }
 }

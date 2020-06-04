@@ -5,6 +5,10 @@
 	margin-bottom: 40px;
 }
 
+.Form > p {
+	padding: 10px;
+}
+
 .form-group label {
 	text-align: left;
 	margin-bottom: 10px;

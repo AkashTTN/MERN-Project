@@ -54,7 +54,6 @@ export const setAuthData = () => {
         })
             .then(res => res.json())
             .then(res => {
-                console.log('response', res)
                 if(res.code === 403) {
                     return dispatch(removeAuthData())
                 }

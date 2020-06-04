@@ -7,11 +7,16 @@ export {
     getPosts
 } from './buzz'
 
-export { 
+export {
     getComplaints,
-    changeComplaintStatus
+    changeComplaintStatus,
 } from './complaint'
 
 export {
-    submitForm
+    submitForm,
+    getFormConfig
 } from './form'
+
+export {
+    getImages
+} from './images'

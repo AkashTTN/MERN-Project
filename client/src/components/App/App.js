@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import withAuth from '../hoc/withAuth'
 import SignIn from '../SignIn/SignIn';
 import Feed from '../Feed/Feed';
+import Complaint from '../Complaint/Complaint'
 
 import './App.css';
 
@@ -17,8 +18,11 @@ function App() {
           <Route path="/buzz" >
             <Feed mode="buzz" />
           </Route>
-          <Route path="/complaints" >
+          <Route exact path="/complaints" >
             <Feed mode="complaints" />
+          </Route>
+          <Route path="/complaints/:id">
+            <Complaint />
           </Route>
           {/* <Route path='/home' component={withAuth(Feed)} /> */}
         </Switch>

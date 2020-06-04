@@ -8,6 +8,7 @@ import authReducer from '../src/store/reducers/auth'
 import buzzReducer from '../src/store/reducers/buzz'
 import complaintReducer from '../src/store/reducers/complaint'
 import formReducer from '../src/store/reducers/form'
+import imagesReducer from '../src/store/reducers/images'
 
 import App from './components/App/App';
 
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
   authData: authReducer,
   buzz: buzzReducer,
   complaint: complaintReducer,
-  form: formReducer
+  form: formReducer,
+  images: imagesReducer
 })
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))

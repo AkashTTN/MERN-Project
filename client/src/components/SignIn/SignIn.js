@@ -3,22 +3,23 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 
 import constants from '../config/constants'
-import { setAuthData } from '../../store/actions'
+import { setAuthData, getFormConfig } from '../../store/actions'
 
 import './SignIn.css'
 import logo from '../../assets/images/ttn-logo.png'
 
-const SignIn = ({ history, isAuthenticated, setAuthData }) => {
+const SignIn = ({ history, isAuthenticated, setAuthData, getFormConfig }) => {
 
     useEffect(
         () => {
             if (window.location.search) {
                 setAuthData()
+                getFormConfig()
             } else if (isAuthenticated || window.localStorage.getItem('token')) {
                 history.push('/buzz')
             }
         },
-        [isAuthenticated, setAuthData, history]
+        [isAuthenticated, setAuthData, getFormConfig, history]
     )
 
     // const onSubmitHandler = useCallback(
@@ -60,7 +61,8 @@ const SignIn = ({ history, isAuthenticated, setAuthData }) => {
 }
 
 const mapDispatchToProps = {
-    setAuthData
+    setAuthData,
+    getFormConfig
 }
 
 const mapStateToProps = state => {

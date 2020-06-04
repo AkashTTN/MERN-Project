@@ -8,10 +8,10 @@ export const submitForm = ({ data, type } = {}) => {
         const { token } = getState().authData
         let endpoint = ''
         if (type === 'Complaint') {
-            endpoint = '/user/complaint'
+            endpoint = '/user/complaints'
             dispatch({ type: actionTypes.SUBMIT_COMPLAINT })
         } else {
-            endpoint = '/user/post'
+            endpoint = '/user/posts'
             dispatch({ type: actionTypes.SUBMIT_POST })
         }
         fetch(constants.SERVER_URL + endpoint, {
@@ -45,6 +45,29 @@ export const submitForm = ({ data, type } = {}) => {
                 } else {
                     dispatch({ type: actionTypes.SUBMIT_POST_FAILED })
                 }
+            })
+    }
+}
+
+export const getFormConfig = () => {
+    return (dispatch, getState) => {
+        dispatch({ type: actionTypes.GET_FORM_CONFIG })
+        const { token } = getState().authData
+        fetch(constants.SERVER_URL + '/user/form-config', {
+            headers: {
+                'Authorization': 'bearer ' + token
+            }
+        })
+            .then(res => res.json())
+            .then(response => {
+                if (response.code === 200) {
+                    return dispatch({ type: actionTypes.GET_FORM_CONFIG_SUCCESS, payload: { formConfig: response.data.formConfig } })
+                }
+                throw new Error(response.message)
+            })
+            .catch(err => {
+                console.error(err)
+                dispatch({ type: actionTypes.GET_FORM_CONFIG_FAILED })
             })
     }
 }

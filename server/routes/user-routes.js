@@ -10,19 +10,21 @@ const fs = require('fs');
 const generateUniqueId = require('../middlewares/generateUniqueId')
 const isAdmin = require('../middlewares/isAdmin')
 
+const UIConfig = require('../config/constants').UIConfig
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        if (req.url === '/complaint') {
+        if (req.url === '/complaints') {
             // Create directory if not present
             fs.mkdir(`./uploads/complaints/${req.user.authData.userID}/${req.uniqueId}`, { recursive: true }, (err) => {
                 if (err) throw err;
+                // directory where the file will be stored
+                cb(null, `./uploads/complaints/${req.user.authData.userID}/${req.uniqueId}`)
             });
 
+        } else if (req.url === '/posts') {
             // directory where the file will be stored
-            cb(null, `uploads/complaints/${req.user.authData.userID}/${req.uniqueId}`)
-        } else if (req.url === '/post') {
-            // directory where the file will be stored
-            cb(null, `uploads/posts/${req.user.authData.userID}/${req.uniqueId}`)
+            cb(null, `./uploads/posts/${req.user.authData.userID}/${req.uniqueId}`)
         }
     },
     filename: function (req, file, cb) {
@@ -49,6 +51,10 @@ router
 
     })
 
+    .get('/form-config', (req, res) => {
+        res.status(200).json(response(true, 200, 'Form Config Data', { formConfig: UIConfig.formConfig }))
+    })
+
     .get('/complaints', async (req, res) => {
 
         try {
@@ -60,32 +66,7 @@ router
 
     })
 
-    .post('/post', generateUniqueId, upload.array('images', 1), async (req, res) => {
-
-        console.log('post request body', req.files)
-
-        const { buzzText, buzzCategory } = JSON.parse(req.body.data)
-
-        if (!buzzText || buzzText.trim().length === 0) {
-            return res.status(200).json(response(false, 406, "Cannot create a buzz with empty text"))
-        }
-
-        const { email } = await users.getUserById(req.user.authData.userID)
-
-        const data = {
-            imageUrl: req.body.file ? 'link to file hosted on server' : '',
-            text: buzzText,
-            category: buzzCategory,
-            googleId: req.user.authData.userID,
-            email
-        }
-
-        const post = await posts.create(data)
-        return res.status(200).json(response(true, 200, "Post created successfully", post))
-
-    })
-
-    .post('/complaint', generateUniqueId, upload.array('images'), async (req, res) => {
+    .post('/complaints', generateUniqueId, upload.array('images'), async (req, res) => {
 
         // console.log('complaint request', req)
 
@@ -123,29 +104,11 @@ router
 
     })
 
-    .get('/posts', async (req, res) => {
-
-        let { limit, skip } = req.query
-
-        if (isNaN(limit) && isNaN(skip)) {
-            return res.status(200).json(response(false, 406, "Invalid limit/skip"))
-        }
-
-        // convert to number from string
-        limit = +limit
-        skip = +skip
-
-        const postsToBeSent = await posts.getPosts({ limit, skip })
-
-        return res.status(200).json(response(true, 200, "Retrieved posts", postsToBeSent))
-
-    })
-
-    .patch('/complaint', isAdmin, (req, res, next) => {
+    .patch('/complaints', isAdmin, (req, res, next) => {
         return res.status(200).json(response(false, 406, 'Complaint ID required.'))
     })
 
-    .patch('/complaint/:complaintId', isAdmin, async (req, res) => {
+    .patch('/complaints/:complaintId', isAdmin, async (req, res) => {
 
         const complaintId = req.params.complaintId
         const status = req.query.status
@@ -170,6 +133,51 @@ router
         } catch (error) {
             throw new Error(error)
         }
+
+    })
+
+    // post routes
+
+    .get('/posts', async (req, res) => {
+
+        let { limit, skip } = req.query
+
+        if (isNaN(limit) && isNaN(skip)) {
+            return res.status(200).json(response(false, 406, "Invalid limit/skip"))
+        }
+
+        // convert to number from string
+        limit = +limit
+        skip = +skip
+
+        const postsToBeSent = await posts.getPosts({ limit, skip })
+
+        return res.status(200).json(response(true, 200, "Retrieved posts", postsToBeSent))
+
+    })
+
+    .post('/posts', generateUniqueId, upload.array('images', 1), async (req, res) => {
+
+        console.log('post request body', req.files)
+
+        const { buzzText, buzzCategory } = JSON.parse(req.body.data)
+
+        if (!buzzText || buzzText.trim().length === 0) {
+            return res.status(200).json(response(false, 406, "Cannot create a buzz with empty text"))
+        }
+
+        const { email } = await users.getUserById(req.user.authData.userID)
+
+        const data = {
+            imageUrl: req.body.file ? 'link to file hosted on server' : '',
+            text: buzzText,
+            category: buzzCategory,
+            googleId: req.user.authData.userID,
+            email
+        }
+
+        const post = await posts.create(data)
+        return res.status(200).json(response(true, 200, "Post created successfully", post))
 
     })
 

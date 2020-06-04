@@ -26,7 +26,7 @@
 }
 
 .ComplaintsListHeadings > div {
-	flex: 1;
+	flex: 25%;
 	padding: 20px;
 	border-right: 2px solid #ccc;
 	text-align: center;
