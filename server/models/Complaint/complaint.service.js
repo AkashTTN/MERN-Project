@@ -21,7 +21,7 @@ module.exports.create = async ({
         text
     });
 
-    const newComplaintObject = {...complaint._doc}
+    const newComplaintObject = { ...complaint._doc }
     delete newComplaintObject['_id']
     return {
         complaint: newComplaintObject
@@ -42,4 +42,14 @@ module.exports.getAllComplaints = async () => {
 module.exports.getAllComplaintsByUserId = async (id) => {
     const complaints = await ComplaintModel.find({ "createdBy.googleId": id }, { _id: 0 })
     return complaints
+}
+
+module.exports.getComplaintsCount = async () => {
+    const numberOfComplaints = await ComplaintModel.countDocuments().exec()
+    return numberOfComplaints
+}
+
+module.exports.getComplaintsCountById = async (id) => {
+    const numberOfComplaints = await ComplaintModel.countDocuments({ "createdBy.googleId": id }).exec()
+    return numberOfComplaints
 }

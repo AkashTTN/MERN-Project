@@ -19,3 +19,13 @@ module.exports.getAllComplaintsByUserId = async (id) => {
     const response = await complaints.getAllComplaintsByUserId(id)
     return response
 }
+
+module.exports.getComplaintsCount = async () => {
+    const response = await complaints.getComplaintsCount()
+    return response
+}
+
+module.exports.getComplaintsCountById = async (id) => {
+    const response = await complaints.getComplaintsCountById(id)
+    return response
+}

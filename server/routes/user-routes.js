@@ -55,13 +55,35 @@ router
         res.status(200).json(response(true, 200, 'Form Config Data', { formConfig: UIConfig.formConfig }))
     })
 
+    .get('/complaints/count', isAdmin, async (req, res) => {
+
+        try {
+            const totalNoOfComplaints = await complaints.getComplaintsCount()
+            return res.status(200).json(response(true, 200, 'Complaints count retrieved', { totalComplaints: totalNoOfComplaints }))
+        } catch (error) {
+            next(error)
+        }
+
+    })
+
+    .get('/complaints/countById', async (req, res) => {
+
+        try {
+            const totalNoOfComplaints = await complaints.getComplaintsCountById(req.user.authData.userID)
+            return res.status(200).json(response(true, 200, 'Complaints count by user retrieved', { totalComplaints: totalNoOfComplaints }))
+        } catch (error) {
+            next(error)
+        }
+
+    })
+
     .get('/complaints', async (req, res) => {
 
         try {
             const userComplaints = await complaints.getAllComplaintsByUserId(req.user.authData.userID)
             return res.status(200).json(response(true, 200, "All complaints made by current user", userComplaints))
         } catch (error) {
-            throw new Error(error)
+            next(error)
         }
 
     })
@@ -99,7 +121,7 @@ router
             const complaint = await complaints.create(data)
             return res.status(200).json(response(true, 200, "Complaint created successfully", complaint))
         } catch (error) {
-            throw new Error(error)
+            next(error)
         }
 
     })
@@ -131,7 +153,7 @@ router
             }
 
         } catch (error) {
-            throw new Error(error)
+            next(error)
         }
 
     })
