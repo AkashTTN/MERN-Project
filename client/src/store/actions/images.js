@@ -1,11 +1,14 @@
 import * as actionTypes from './actionTypes'
 
-export const getImages = ({ imageUrl, type }) => {
+export const getImages = ({ imageUrl, type, buzzId=null }) => {
     return (dispatch, getState) => {
         if (type === 'complaint') {
             dispatch({ type: actionTypes.GET_COMPLAINT_IMAGES })
         } else {
             dispatch({ type: actionTypes.GET_BUZZ_IMAGES })
+            if(!buzzId) {
+                return dispatch({ type: actionTypes.GET_BUZZ_IMAGES_FAILED })
+            }
         }
 
         const { token } = getState().authData
@@ -31,7 +34,7 @@ export const getImages = ({ imageUrl, type }) => {
                 if (type === 'complaint') {
                     return dispatch({ type: actionTypes.GET_COMPLAINT_IMAGES_SUCCESS, payload: { images: res } })
                 } else if (type === 'buzz') {
-                    return dispatch({ type: actionTypes.GET_BUZZ_IMAGES_SUCCESS, payload: { images: res } })
+                    return dispatch({ type: actionTypes.GET_BUZZ_IMAGES_SUCCESS, payload: { buzzId, images: res } })
                 }
             })
             .catch(err => {

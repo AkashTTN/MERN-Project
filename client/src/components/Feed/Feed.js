@@ -83,8 +83,9 @@ const Feed = React.memo(({
             <>
                 <div className="FeedHeader">
                     <div className="Logout flex-container">
-                        <button className="LogoutButton" onClick={logoutHandler}>Logout</button>
-                        <i className="fas fa-sign-out-alt"></i>
+                        <button className="LogoutButton" onClick={logoutHandler}>
+                            Logout <i className="fas fa-sign-out-alt"></i>
+                        </button>
                     </div>
                     <div className="FeedHeaderImage flex-container">
                         {

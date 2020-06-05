@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 
 import { getImages } from '../../../store/actions'
 
-import './Images.css'
+import classes from './Images.module.css'
 
-const Images = ({ imageUrl, type, error, buzzImages, complaintImages, getImages }) => {
+const Images = ({ imageUrl, buzzId = null, type, error, buzzImages, complaintImages, getImages }) => {
 
     let images = null
     let imageUrlArray = (type === 'complaint' ? complaintImages : buzzImages)
@@ -15,9 +15,9 @@ const Images = ({ imageUrl, type, error, buzzImages, complaintImages, getImages 
             if (imageUrl.length === 0) {
                 return
             }
-            getImages({ imageUrl, type })
+            getImages({ imageUrl, type, buzzId })
         },
-        [getImages, imageUrl, type]
+        [getImages, imageUrl, type, buzzId]
     )
 
     if (error) {
@@ -28,20 +28,30 @@ const Images = ({ imageUrl, type, error, buzzImages, complaintImages, getImages 
                 images = <p>No images to display</p>
             }
         } else {
-            images = (
-                imageUrlArray.map((item, index) => {
-                    return (
-                        <div key={index} >
-                            <img src={item} alt={`complaint-${index + 1}`} />
-                        </div>
-                    )
-                })
-            )
+
+            if (type === 'buzz') {
+                images = (
+                    <div className={classes.BuzzImage} >
+                        <img src={imageUrlArray[buzzId]} alt="buzz-pic" />
+                    </div>
+                )
+
+            } else {
+                images = (
+                    imageUrlArray.map((item, index) => {
+                        return (
+                            <div key={index} >
+                                <img src={item} alt={`complaint-${index + 1}`} />
+                            </div>
+                        )
+                    })
+                )
+            }
         }
     }
 
     return (
-        <div className="Images">
+        <div className={classes.Images}>
             {images}
         </div>
     )
