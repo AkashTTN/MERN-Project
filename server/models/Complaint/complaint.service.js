@@ -21,7 +21,7 @@ module.exports.create = async ({
         text
     });
 
-    const newComplaintObject = {...complaint._doc}
+    const newComplaintObject = { ...complaint._doc }
     delete newComplaintObject['_id']
     return {
         complaint: newComplaintObject
@@ -30,7 +30,7 @@ module.exports.create = async ({
 }
 
 module.exports.changeStatusById = async ({ complaintId, status }) => {
-    const response = await ComplaintModel.updateOne({ complaintId }, { $set: { status } })
+    const response = await ComplaintModel.findOneAndUpdate({ complaintId }, { $set: { status } }, { new: true })
     return response
 }
 

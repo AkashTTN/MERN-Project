@@ -109,11 +109,7 @@ router
 
     })
 
-    .patch('/complaints', isAdmin, (req, res, next) => {
-        return res.status(200).json(response(false, 406, 'Complaint ID required.'))
-    })
-
-    .patch('/complaints/:complaintId', isAdmin, async (req, res) => {
+    .patch('/:complaintId', isAdmin, async (req, res) => {
 
         const complaintId = req.params.complaintId
         const status = req.query.status

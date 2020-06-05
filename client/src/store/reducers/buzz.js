@@ -5,8 +5,13 @@ const initialState = {
     error: false,
 }
 
+const reset = () => ({ ...initialState })
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+
+        case actionTypes.SIGN_OUT_SUCCESS: reset()
+
         case actionTypes.GET_POSTS:
             return {
                 ...state,
