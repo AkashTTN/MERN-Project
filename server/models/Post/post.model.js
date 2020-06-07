@@ -2,7 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const postSchema = new Schema(
-    {
+    {   
+        buzzId: {
+            type: String,
+            required: true
+        },
         createdAt: {
             type: Date,
             default: Date.now,
@@ -23,19 +27,22 @@ const postSchema = new Schema(
             required: true
         },
         imageUrl: {
-            type: String
+            type: Array,
+            default: []
         },
         category: {
             type: String,
             required: true
         },
-        likeCount: Number,
-        dislikeCount: Number,
+        likedBy: {
+            type: [String],
+        },
+        dislikedBy: {
+            type: [String]
+        }
     }
 );
 
 const PostModel = mongoose.model('post', postSchema);
 
-module.exports = {
-    PostModel
-};
+module.exports = PostModel;

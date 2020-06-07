@@ -1,5 +1,5 @@
 .Complaints {
-	border: 2px solid #ccc;
+	border: 1px solid #ccc;
 	border-radius: 4px;
 	background-color: white;
 }
@@ -21,14 +21,14 @@
 .ComplaintsListHeadings {
 	font-weight: bold;
 	background-color: white;
-	border-top: 2px solid #ccc;
-	border-bottom: 2px solid #ccc;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
 }
 
 .ComplaintsListHeadings > div {
 	flex: 25%;
 	padding: 20px;
-	border-right: 2px solid #ccc;
+	border-right: 1px solid #ccc;
 	text-align: center;
 	display: flex;
 	justify-content: center;

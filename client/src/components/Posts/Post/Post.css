@@ -2,12 +2,18 @@
 	padding: 10px;
 }
 
+.PostContainerOne {
+	flex: .05;
+}
+
 .PostContainerOne > p {
-	font-size: 20px;
+	font-size: 35px;
+	font-style: italic;
 }
 
 .PostContainerTwo {
 	margin-left: 10px;
+	flex: .95;
 }
 
 #PostCreatedMonth,
@@ -20,5 +26,5 @@
 }
 
 #PostText {
-	font-size: 16px;
+	font-size: 24px;
 }

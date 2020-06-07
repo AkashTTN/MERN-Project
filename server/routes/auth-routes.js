@@ -34,21 +34,18 @@ router.get('/google/redirect',
 
         let user = await users.getUserById(req.user.id)
         let userID
-
+        
         if (user) {
             userID = user.googleId
         } else {
-
             // create user if it does not already exists
             user = await users.create({
                 googleId: req.user.id,
                 name: req.user.displayName,
                 email: req.user.emails[0].value
             })
-
             userID = user.googleId
         }
-
         // send userID (googleID) in jwt
         jwt.sign({ userID, role: user.role }, config.jwt.secret, { expiresIn: '1day' }, (err, token) => {
             return res.redirect(constants.client.url + `?token=${token}`)

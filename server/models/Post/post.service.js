@@ -1,8 +1,7 @@
-const {
-    PostModel
-} = require('./post.model');
+const PostModel = require('./post.model');
 
 module.exports.create = async ({
+    buzzId,
     text,
     email,
     imageUrl,
@@ -11,47 +10,74 @@ module.exports.create = async ({
 }) => {
 
     const post = await PostModel.create({
+        buzzId,
         text,
         imageUrl,
         user: { email, googleId },
         category
     });
 
+    const newPostObject = { ...post._doc }
+    delete newPostObject['_id']
     return {
-        post
+        buzz: newPostObject
     };
+
 };
 
 module.exports.getPosts = async ({ limit, skip }) => {
-    const posts = await PostModel.find({}).sort({ createdAt: -1 }).skip(skip).limit(limit)
+    const posts = await PostModel.find({}, { _id: 0 }).sort({ createdAt: -1 }).skip(skip).limit(limit)
     return posts
 }
 
-module.exports.changeLikeCount = async ({ buzzId, type }) => {
-    let response;
-    switch (type) {
-        case 'increment':
-            response = await PostModel.updateOne({ id: buzzId }, { $inc: { likeCount: 1 } })
-            break
-        case 'decrement':
-            response = await PostModel.updateOne({ id: buzzId }, { $inc: { likeCount: -1 } })
-
+module.exports.changeLike = async ({ buzzId, status, googleId }) => {
+    let response
+    if (status) {
+        response = await PostModel.findOneAndUpdate(
+            { buzzId },
+            {
+                $pull: { dislikedBy: googleId },
+                $addToSet: { likedBy: googleId }
+            },
+            { new: true }
+        )
+    } else {
+        response = await PostModel.findOneAndUpdate(
+            { buzzId },
+            {
+                $pull: { likedBy: googleId }
+            },
+            { new: true }
+        )
     }
+
+    return response
 };
 
-module.exports.changeDislikeCount = async ({ buzzId, type }) => {
-    let response;
-    switch (type) {
-        case 'increment':
-            response = await PostModel.updateOne({ id: buzzId }, { $inc: { dislikeCount: 1 } })
-            break
-        case 'decrement':
-            response = await PostModel.updateOne({ id: buzzId }, { $inc: { dislikeCount: -1 } })
-
+module.exports.changeDislike = async ({ buzzId, status, googleId }) => {
+    let response
+    if (status) {
+        response = await PostModel.findOneAndUpdate(
+            { buzzId },
+            {
+                $pull: { likedBy: googleId },
+                $addToSet: { dislikedBy: googleId },
+            },
+            { new: true }
+        )
+    } else {
+        response = await PostModel.findOneAndUpdate(
+            { buzzId },
+            {
+                $pull: { dislikedBy: googleId }
+            },
+            { new: true }
+        )
     }
+    return response
 };
 
 module.exports.getPostById = async (id) => {
-    const post = await UserModel.find({ id });
+    const post = await UserModel.find({ buzzId: id });
     return post;
 };

@@ -1,13 +1,19 @@
 import React, { useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
 
-import { getPosts } from '../../store/actions'
+import { getPosts, changeLikeDislike } from '../../store/actions'
 
 import Post from './Post/Post'
 
 import './Posts.css'
 
-const Posts = ({ posts, getPosts, postSubmitted }) => {
+const Posts = ({
+    posts,
+    getPosts,
+    postSubmitted,
+    changeLikeDislike,
+    userId
+}) => {
 
     const postsDiv = useRef(null)
 
@@ -32,7 +38,7 @@ const Posts = ({ posts, getPosts, postSubmitted }) => {
 
     useEffect(
         () => {
-            if(postSubmitted) {
+            if (postSubmitted) {
                 getPosts({ limit, skip: 0 })
             }
         },
@@ -47,13 +53,25 @@ const Posts = ({ posts, getPosts, postSubmitted }) => {
     )
 
     if (posts) {
-        if(posts.length === 0) {
+        if (posts.length === 0) {
             postsArray = <p>No posts yet.</p>
         } else {
             skip = posts.length
             postsArray = posts.map((post, index) => {
+
+                const likeStatus = post.likedBy.includes(userId)
+                const dislikeStatus = post.dislikedBy.includes(userId)
+
                 return (
-                    <Post data={post} key={index} />
+                    <Post
+                        key={index}
+                        data={post}
+                        likeStatus={likeStatus}
+                        dislikeStatus={dislikeStatus}
+                        onChange={changeLikeDislike}
+                        likeCount={post.likedBy.length}
+                        dislikeCount={post.dislikedBy.length}
+                    />
                 )
             })
         }
@@ -70,13 +88,15 @@ const Posts = ({ posts, getPosts, postSubmitted }) => {
 const mapStateToProps = state => {
     return {
         posts: state.buzz.posts,
-        postSubmitted: state.form.postSubmitted
+        postSubmitted: state.form.postSubmitted,
+        userId: state.authData.user.googleId
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        getPosts: ({ limit, skip }) => dispatch(getPosts({ limit, skip }))
+        getPosts: ({ limit, skip }) => dispatch(getPosts({ limit, skip })),
+        changeLikeDislike: (data) => dispatch(changeLikeDislike(data))
     }
 }
 

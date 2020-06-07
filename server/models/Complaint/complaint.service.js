@@ -1,4 +1,4 @@
-const { ComplaintModel } = require('./complaint.model')
+const ComplaintModel = require('./complaint.model')
 
 module.exports.create = async ({
     complaintId,
@@ -30,7 +30,7 @@ module.exports.create = async ({
 }
 
 module.exports.changeStatusById = async ({ complaintId, status }) => {
-    const response = await ComplaintModel.updateOne({ complaintId }, { $set: { status } })
+    const response = await ComplaintModel.findOneAndUpdate({ complaintId }, { $set: { status } }, { new: true })
     return response
 }
 

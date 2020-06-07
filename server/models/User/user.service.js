@@ -1,6 +1,4 @@
-const {
-    UserModel
-} = require('./user.model');
+const UserModel = require('./user.model');
 
 module.exports.create = async ({
     googleId,
@@ -12,9 +10,12 @@ module.exports.create = async ({
         name,
         email,
     });
-    return {
-        user
-    };
+
+    const newUserObject = { ...user._doc }
+    delete newUserObject['_id']
+    
+    return newUserObject
+
 };
 
 module.exports.getUserById = async (id) => {

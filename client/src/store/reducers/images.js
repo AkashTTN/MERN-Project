@@ -1,7 +1,7 @@
 import * as actionTypes from '../actions/actionTypes'
 
 const initialState = {
-    buzz: [],
+    buzz: {},
     complaint: [],
     buzzError: false,
     complaintError: false,
@@ -18,7 +18,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.GET_BUZZ_IMAGES_SUCCESS:
             return {
                 ...state,
-                buzz: action.payload.images
+                buzz: { ...state.buzz, [action.payload.buzzId]: action.payload.images }
             }
 
         case actionTypes.GET_BUZZ_IMAGES_FAILED:

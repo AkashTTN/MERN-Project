@@ -1,5 +1,5 @@
 .Posts {
-	border: 2px solid #ccc;
+	border: 1px solid #ccc;
 	border-radius: 4px;
 	background-color: white;
 	margin-bottom: 40px;
@@ -13,4 +13,12 @@
 	text-align: left;
 	padding: 10px;
 	background-color: #f2f2f2;
+}
+
+.Posts > div {
+	border-bottom: 1px solid #ccc;
+}
+
+.Posts > div:last-child {
+	border-bottom: none;
 }

@@ -15,14 +15,6 @@ const userSchema = new Schema(
             type: String,
             required: true
         },
-        likedPosts: {
-            type: Array,
-            default: []
-        },
-        dislikedPosts: {
-            type: Array,
-            default: []
-        },
         role: {
             type: String,
             default: 'emplyoee'
@@ -32,6 +24,4 @@ const userSchema = new Schema(
 
 const UserModel = mongoose.model('user', userSchema);
 
-module.exports = {
-    UserModel
-};
+module.exports = UserModel;

@@ -6,16 +6,20 @@ const initialState = {
     loading: false
 }
 
+const reset = () => ({ ...initialState })
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
 
-        case actionTypes.CHANGE_COMPLAINT_STATUS: 
+        case actionTypes.SIGN_OUT_SUCCESS: reset()
+
+        case actionTypes.CHANGE_COMPLAINT_STATUS:
             return state
 
         case actionTypes.CHANGE_COMPLAINT_STATUS_SUCCESS:
 
             const updatedComplaints = state.complaints.map((complaint) => {
-                if(complaint.complaintId === action.payload.complaintId) {
+                if (complaint.complaintId === action.payload.complaintId) {
                     complaint.status = action.payload.complaintStatus
                     return complaint
                 }
