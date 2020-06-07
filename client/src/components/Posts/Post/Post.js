@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react'
+import moment from 'moment'
 
 import Images from '../../UI/Images/Images'
 import LikeDislike from '../../LikeDislike/LikeDislike'
@@ -32,7 +33,10 @@ const Post = React.memo(({
                 <p id="PostCreatedMonth" >{month}</p>
             </div>
             <div className="PostContainerTwo">
-                <p id="PostUserEmail" >{data.user.email}</p>
+                <p id="PostUserEmail" >
+                    {data.user.email}&nbsp;&middot;&nbsp;
+                    {moment(data.createdAt).fromNow()}
+                </p>
                 <p id="PostText" >{data.text}</p>
                 <Images imageUrl={data.imageUrl} type='buzz' buzzId={data.buzzId} />
                 <LikeDislike
