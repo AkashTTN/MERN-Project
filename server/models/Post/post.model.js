@@ -34,14 +34,6 @@ const postSchema = new Schema(
             type: String,
             required: true
         },
-        likeCount: {
-            type: Number,
-            default: 0
-        },
-        dislikeCount: {
-            type: Number,
-            default: 0
-        },
         likedBy: {
             type: [String],
         },
