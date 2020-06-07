@@ -21,6 +21,9 @@ function App() {
           <Route exact path="/complaints" >
             <Feed mode="complaints" />
           </Route>
+          <Route path="/resolved">
+            <Feed mode="resolved" />
+          </Route>
           <Route path="/complaints/:id">
             <Complaint />
           </Route>

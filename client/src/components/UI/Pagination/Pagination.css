@@ -1,0 +1,22 @@
+.Pagination {
+    list-style: none;
+}
+
+.PageName {
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.PaginationContainer {
+    justify-content: center;
+}
+
+.PageName:active,
+.PageName:hover {
+    color: coral;
+    cursor: pointer;
+    background-color: rgb(247, 244, 244);
+}

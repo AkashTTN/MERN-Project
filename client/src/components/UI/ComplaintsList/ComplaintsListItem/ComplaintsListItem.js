@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import { changeComplaintStatus } from '../../../../store/actions'
 
 import inputClasses from './ComplaintsListItem.module.css'
-import { Link } from 'react-router-dom'
 
 const complaintStatusMap = {
     Resolved: 'Resolved',
@@ -12,7 +12,7 @@ const complaintStatusMap = {
     'In Progress': 'InProgress'
 }
 
-const ComplaintsListItem = ({ isAdmin, complaint, changeComplaintStatus }) => {
+const ComplaintsListItem = ({ isAdmin, mode, complaint, changeComplaintStatus }) => {
 
     let classes = ['ComplaintField', inputClasses.ComplaintStatus]
 
@@ -22,15 +22,25 @@ const ComplaintsListItem = ({ isAdmin, complaint, changeComplaintStatus }) => {
 
     const handleOnChange = useCallback(
         (e) => {
-            changeComplaintStatus({ complaintId: complaint.complaintId, status: e.target.value })
+            changeComplaintStatus({
+                complaintId: complaint.complaintId,
+                status: e.target.value
+            })
         },
         [changeComplaintStatus, complaint.complaintId]
     )
 
-    if (isAdmin) {
+    if (isAdmin && (mode === 'resolved')) {
         statusDropDown = (
             <div className={classes.ComplaintStatusToggleDiv}>
-                <select value={complaint.status} onChange={handleOnChange} className={classes.join(' ')} name="complaintStatus" id="complaintStatus" required>
+                <select
+                    value={complaint.status}
+                    onChange={handleOnChange}
+                    className={classes.join(' ')}
+                    name="complaintStatus"
+                    id="complaintStatus"
+                    required
+                >
                     <option className={inputClasses.Black} value="Open">Open</option>
                     <option className={inputClasses.Black} value="Resolved">Resolved</option>
                     <option className={inputClasses.Black} value="In Progress">In Progress</option>
@@ -40,9 +50,11 @@ const ComplaintsListItem = ({ isAdmin, complaint, changeComplaintStatus }) => {
     }
 
     const statusComponent = (
-        isAdmin
+        isAdmin && (mode === 'resolved')
             ? statusDropDown
-            : <div className={inputClasses[complaintStatusMap[complaint.status]]}>{complaint.status}</div>
+            : <div className={inputClasses[complaintStatusMap[complaint.status]]}>
+                {complaint.status}
+            </div>
     )
 
     return (
@@ -54,7 +66,7 @@ const ComplaintsListItem = ({ isAdmin, complaint, changeComplaintStatus }) => {
                 </Link>
             </div>
             {
-                isAdmin
+                isAdmin && (mode === 'resolved')
                     ? <div>{complaint.createdBy.name}</div> : null
             }
             <div>{complaint.assignedTo.name}</div>

@@ -3,7 +3,8 @@ import * as actionTypes from '../actions/actionTypes'
 const initialState = {
     complaints: null,
     error: false,
-    loading: false
+    loading: false,
+    totalComplaints: 0
 }
 
 const reset = () => ({ ...initialState })
@@ -20,8 +21,10 @@ const reducer = (state = initialState, action) => {
 
             const updatedComplaints = state.complaints.map((complaint) => {
                 if (complaint.complaintId === action.payload.complaintId) {
-                    complaint.status = action.payload.complaintStatus
-                    return complaint
+                    return {
+                        ...complaint,
+                        status: action.payload.complaintStatus
+                    }
                 }
                 return complaint
             })
@@ -42,6 +45,7 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 complaints: action.payload.complaints,
+                totalComplaints: action.payload.totalComplaints,
                 loading: false
             }
 

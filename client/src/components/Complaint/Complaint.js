@@ -32,6 +32,7 @@ const Complaint = ({ complaints, isAuthenticated }) => {
             <div className="ComplaintDetails">
                 <h3>Complaint Details</h3>
                 <p>Id: {complaint.complaintId}</p>
+                <p>Created At: {new Date(complaint.createdAt).toDateString()}</p>
                 <p>Status: {complaint.status}</p>
                 <p>Locked By: {complaint.createdBy.name}</p>
                 <p>Assigned To: {complaint.assignedTo.name}</p>

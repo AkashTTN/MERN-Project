@@ -41,7 +41,15 @@ const Feed = React.memo(({
             feedBodyContent = (
                 <>
                     <Form formType="Complaint" />
-                    <ComplaintsList />
+                    <ComplaintsList mode={mode} />
+                </>
+            )
+            break
+        
+        case 'resolved':
+            feedBodyContent = (
+                <>
+                    <ComplaintsList mode={mode} />
                 </>
             )
             break

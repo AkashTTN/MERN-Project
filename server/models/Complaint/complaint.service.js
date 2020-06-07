@@ -30,18 +30,53 @@ module.exports.create = async ({
 }
 
 module.exports.changeStatusById = async ({ complaintId, status }) => {
-    const response = await ComplaintModel.findOneAndUpdate({ complaintId }, { $set: { status } }, { new: true })
+    const response = await ComplaintModel.findOneAndUpdate(
+        { complaintId },
+        { $set: { status } },
+        { new: true }
+    )
     return response
 }
 
-module.exports.getAllComplaints = async () => {
-    const complaints = await ComplaintModel.find({}, { _id: 0 })
+module.exports.getAllComplaints = async ({ limit, skip }) => {
+    const complaints = await ComplaintModel.find({}, { _id: 0 }).skip(skip).limit(limit)
     return complaints
 }
 
-module.exports.getAllComplaintsByUserId = async (id) => {
-    const complaints = await ComplaintModel.find({ "createdBy.googleId": id }, { _id: 0 })
-    return complaints
+module.exports.getAllComplaintsByUserId = async ({ id, limit, skip }) => {
+    // const complaints = await ComplaintModel.find(
+    //     { "createdBy.googleId": id },
+    //     { _id: 0 }
+    // ).skip(skip).limit(limit)
+
+    // return complaints
+    // const complaintsCursor = await ComplaintModel.aggregate([
+    //     { $match: { "createdBy.googleId": id } },
+    //     { $project: { _id: 0 } },
+    //     { $skip: skip },
+    //     { $limit: limit }
+    // ])
+
+    const response = await ComplaintModel.aggregate([
+        {
+            "$facet": {
+                "userComplaints": [
+                    { $match: { "createdBy.googleId": id } },
+                    { $project: { _id: 0 } },
+                    { $skip: skip },
+                    { $limit: limit }
+                ],
+                "count": [
+                    {
+                        $count: "totalComplaints"
+                    }
+                ]
+            }
+        }
+    ])
+
+    return response[0]
+
 }
 
 module.exports.getComplaintsCount = async () => {
@@ -50,6 +85,8 @@ module.exports.getComplaintsCount = async () => {
 }
 
 module.exports.getComplaintsCountById = async (id) => {
-    const numberOfComplaints = await ComplaintModel.countDocuments({ "createdBy.googleId": id }).exec()
+    const numberOfComplaints = await ComplaintModel.countDocuments(
+        { "createdBy.googleId": id }
+    ).exec()
     return numberOfComplaints
 }

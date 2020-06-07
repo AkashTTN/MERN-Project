@@ -10,13 +10,13 @@ module.exports.changeStatusById = async (data) => {
     return response
 }
 
-module.exports.getAllComplaints = async () => {
-    const response = await complaints.getAllComplaints()
+module.exports.getAllComplaints = async (data) => {
+    const response = await complaints.getAllComplaints(data)
     return response
 }
 
-module.exports.getAllComplaintsByUserId = async (id) => {
-    const response = await complaints.getAllComplaintsByUserId(id)
+module.exports.getAllComplaintsByUserId = async (data) => {
+    const response = await complaints.getAllComplaintsByUserId(data)
     return response
 }
 
