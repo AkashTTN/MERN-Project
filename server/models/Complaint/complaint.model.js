@@ -65,6 +65,4 @@ complaintSchema.pre('save', async function(next) {
 
 const ComplaintModel = mongoose.model('complaint', complaintSchema);
 
-module.exports = {
-    ComplaintModel
-};
+module.exports = ComplaintModel;

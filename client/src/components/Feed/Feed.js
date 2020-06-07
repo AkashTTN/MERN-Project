@@ -87,7 +87,7 @@ const Feed = React.memo(({
                             Logout <i className="fas fa-sign-out-alt"></i>
                         </button>
                     </div>
-                    <div className="FeedHeaderImage flex-container">
+                    <div className="FeedHeaderImage flex-container darken">
                         {
                             mode === 'buzz'
                                 ? <p>POSTING YOUR THOUGHTS</p>

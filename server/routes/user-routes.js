@@ -38,17 +38,18 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({ storage })
+const postsRoutes = require('./posts-routes')
 
 router
 
     .use('/uploads/complaints', express.static('uploads/complaints'))
     .use('/uploads/posts', express.static('uploads/posts'))
+    .use('/posts', postsRoutes)
 
     .get('/', async (req, res) => {
 
         try {
             const user = await users.getUserById(req.user.authData.userID)
-
             return res.status(200).json(response(true, 200, "Retrieved user data", { user }))
         } catch (error) {
             throw new Error(error)
@@ -134,60 +135,6 @@ router
         } catch (error) {
             throw new Error(error)
         }
-
-    })
-
-    // post routes
-
-    .get('/posts', async (req, res) => {
-
-        let { limit, skip } = req.query
-
-        if (isNaN(limit) && isNaN(skip)) {
-            return res.status(200).json(response(false, 406, "Invalid limit/skip"))
-        }
-
-        // convert to number from string
-        limit = +limit
-        skip = +skip
-
-        const postsToBeSent = await posts.getPosts({ limit, skip })
-
-        return res.status(200).json(response(true, 200, "Retrieved posts", postsToBeSent))
-
-    })
-
-    .post('/posts', generateUniqueId, upload.array('images', 1), async (req, res) => {
-
-        // console.log('post request body', req.files)
-
-        const { buzzText, buzzCategory } = JSON.parse(req.body.data)
-
-        if (!buzzText || buzzText.trim().length === 0) {
-            return res.status(200).json(response(false, 406, "Cannot create a buzz with empty text"))
-        }
-
-        let imageUrlArray = []
-
-        if (req.files) {
-            req.files.forEach((file) => {
-                imageUrlArray.push(`http://localhost:4000/user/${file.path}`)
-            })
-        }
-
-        const { email } = await users.getUserById(req.user.authData.userID)
-
-        const data = {
-            buzzId: req.uniqueId,
-            imageUrl: imageUrlArray,
-            text: buzzText,
-            category: buzzCategory,
-            googleId: req.user.authData.userID,
-            email
-        }
-
-        const post = await posts.create(data)
-        return res.status(200).json(response(true, 200, "Post created successfully", post))
 
     })
 

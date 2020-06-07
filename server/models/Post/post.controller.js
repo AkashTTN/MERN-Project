@@ -4,13 +4,13 @@ module.exports.create = async (data) => {
     return posts.create(data)
 };
 
-module.exports.changeLikeCount = async (data) => {
-    const response = await posts.changeLikeCount(data)
+module.exports.changeLike = async (data) => {
+    const response = await posts.changeLike(data)
     return response   
 }
 
-module.exports.changeDislikeCount = async (data) => {
-    const response = await posts.changeDislikeCount(data)
+module.exports.changeDislike = async (data) => {
+    const response = await posts.changeDislike(data)
     return response   
 }
 

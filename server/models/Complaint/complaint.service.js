@@ -1,4 +1,4 @@
-const { ComplaintModel } = require('./complaint.model')
+const ComplaintModel = require('./complaint.model')
 
 module.exports.create = async ({
     complaintId,

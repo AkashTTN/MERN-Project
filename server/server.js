@@ -20,7 +20,8 @@ const constants = require('./config/constants')
 // connecting to our database
 mongoose.connect(constants.db.url, {
     useNewUrlParser: "true",
-    useUnifiedTopology: "true"
+    useUnifiedTopology: "true",
+    useFindAndModify: false
 });
 
 mongoose.connection.on("error", err => {

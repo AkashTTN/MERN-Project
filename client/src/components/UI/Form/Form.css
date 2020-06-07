@@ -1,5 +1,5 @@
 .Form {
-	border: 2px solid #ccc;
+	border: 1px solid #ccc;
 	border-radius: 4px;
 	background-color: white;
 	margin-bottom: 40px;
@@ -17,7 +17,7 @@
 .form-group textarea {
 	padding: 10px;
 	width: 100%;
-	border: 2px solid #ccc;
+	border: 1px solid #ccc;
 	border-radius: 4px;
 }
 
@@ -28,6 +28,10 @@
 
 .form-group:nth-last-child(2) {
 	justify-content: flex-end;
+}
+
+.form-group > div {
+	overflow: hidden;
 }
 
 .form-group > div {
@@ -49,7 +53,7 @@
 	background: #f7f7f7;
 	color: #f4b585;
 	padding: 10px 40px;
-	border: 2px solid #ccc;
+	border: 1px solid #ccc;
 	border-radius: 4px;
 }
 
@@ -62,7 +66,7 @@
 	padding: 10px;
 	background-color: transparent;
 	outline: none;
-	border: 2px solid #ccc;
+	border: 1px solid #ccc;
 	border-radius: 4px;
 }
 
@@ -79,6 +83,7 @@
 
 #ImageAttachment {
 	opacity: 0%;
+	width: 140px;
 }
 
 .form-group .image-attachment-overlay {
@@ -91,6 +96,10 @@
 	cursor: pointer;
 }
 
+.image-attachment-overlay > i {
+	color: grey;
+}
+
 .form-group .image-attachment-overlay > label {
 	margin-bottom: 0;
 }
@@ -99,13 +108,17 @@
 	padding: 10px;
 	width: 100%;
 	border: none;
-	border-bottom: 2px solid #ccc;
-	border-top: 2px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-top: 1px solid #ccc;
 }
 
 .BuzzFormFooter {
 	justify-content: flex-start;
 	align-items: center;
+}
+
+.BuzzFormFooter > i:hover {
+	cursor: pointer;
 }
 
 #BuzzImageAttachment {
@@ -128,6 +141,10 @@
 	height: 20px;
 }
 
+.SubmitBuzz > i {
+	color: #f4b585;
+}
+
 .SubmitBuzz > button:hover {
 	cursor: pointer;
 }
@@ -139,4 +156,5 @@
 	outline: none;
 	border: none;
 	margin-right: 20px;
+	color: grey;
 }

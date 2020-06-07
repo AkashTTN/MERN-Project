@@ -4,7 +4,7 @@ const constants = {
             url: 'http://localhost:3000'
         },
         db: {
-            url: 'mongodb://localhost:27017/testdb'
+            url: 'mongodb://localhost:27017/ttnd-buzz'
         },
         UIConfig: {
             formConfig: {
@@ -44,7 +44,7 @@ const constants = {
             url: 'http://localhost:3000'
         },
         db: {
-            url: 'mongodb://localhost:27017/testdb'
+            url: 'mongodb://localhost:27017/ttnd-buzz'
         },
         UIConfig: {
             formConfig: {

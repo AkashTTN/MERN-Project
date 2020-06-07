@@ -1,3 +1,8 @@
+.darken {
+	background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)),
+		url(/static/media/feed-header-image.99848743.jpg);
+}
+
 .Feed {
 	background-color: #f4f8fb;
 }
@@ -9,36 +14,36 @@
 }
 
 .FeedHeader {
-    padding-top: 10px;
-    margin-bottom: 20px;
-    position: relative;
+	padding-top: 10px;
+	margin-bottom: 20px;
+	position: relative;
 }
 
 .FeedHeaderImage {
-    background: url('../../assets/images/feed-header-image.jpg') no-repeat center center/cover;
-    height: 200px;
-    flex-direction: column;
-    justify-content: center;
-    padding-left: 40px;
+	background: url('../../assets/images/feed-header-image.jpg') no-repeat center center/cover;
+	height: 200px;
+	flex-direction: column;
+	justify-content: center;
+	padding-left: 40px;
 }
 
 .FeedHeaderImage > p {
-    color: white;
-    font-weight: bold;
-    font-size: 24px;
+	color: white;
+	font-weight: bold;
+	font-size: 24px;
 }
 
 .FeedHeaderLogo {
-    width: 100px;
-    height: 100px;
-    position: absolute;
-    top: -10px;
-    left: 40px;
-    box-shadow: 0 0 10px grey;
+	width: 100px;
+	height: 100px;
+	position: absolute;
+	top: -10px;
+	left: 40px;
+	box-shadow: 0 0 10px grey;
 }
 
 .FeedBody {
-    padding: 20px 40px;
+	padding: 20px 40px;
 }
 
 .FeedBodyNav {
@@ -52,9 +57,9 @@
 
 .Logout {
 	justify-content: flex-end;
-    align-items: center;
-    margin-bottom: 10px;
-    margin-right: 40px;
+	align-items: center;
+	margin-bottom: 10px;
+	margin-right: 40px;
 }
 
 .Logout > i {
@@ -67,17 +72,16 @@
 	font-size: 16px;
 	margin-right: 10px;
 	color: #f4b585;
-    background-color: transparent;
-    cursor: pointer;
+	background-color: transparent;
+	cursor: pointer;
 }
 
-
 @media only screen and (max-width: 950px) {
-    .FeedBody {
-        flex-direction: column;
-    }
-    .FeedBodyNav {
-        margin-right: 0;
-        margin-bottom: 40px;    
-    }
+	.FeedBody {
+		flex-direction: column;
+	}
+	.FeedBodyNav {
+		margin-right: 0;
+		margin-bottom: 40px;
+	}
 }

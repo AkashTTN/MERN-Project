@@ -1,6 +1,14 @@
 .NavList {
-    border: 2px solid #e2e3e5;
+    border: 1px solid #e2e3e5;
     border-radius: 2px;
     list-style: none;
     background-color: white;
+}
+
+.NavList > a {
+    border-bottom: 1px solid #e2e3e5;
+}
+
+.NavList > a:last-child {
+    border-bottom: none;
 }

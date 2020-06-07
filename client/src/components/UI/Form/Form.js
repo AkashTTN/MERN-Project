@@ -25,6 +25,7 @@ const Form = ({
         buzzCategory: '',
         buzzText: ''
     })
+    const [fileKey, setFileKey] = useState(Date.now());
 
     let form = null
 
@@ -59,6 +60,15 @@ const Form = ({
             setNumFiles(e.target.files.length)
         },
         [setFiles, setNumFiles]
+    )
+
+    const resetFile = useCallback(
+        () => {
+            setFileKey(Date.now());
+            setNumFiles(0);
+            setFiles('');
+        },
+        []
     )
 
     const handleOnSubmit = useCallback(
@@ -157,10 +167,15 @@ const Form = ({
 
                         <div className="form-group flex-container">
                             <div className="image-attachment-overlay">
+                                {
+                                    numFiles > 0
+                                        ? <i onClick={resetFile} className="far fa-times-circle"></i>
+                                        : null
+                                }&nbsp;
                                 <label htmlFor="myfile">Attachments{`(${numFiles})`}&nbsp;&nbsp;</label>
                                 <i className="far fa-image"></i>
                             </div>
-                            <input type="file" id="ImageAttachment" onChange={handleOnFileUpload} name="image" multiple accept="image/*" />
+                            <input type="file" id="ImageAttachment" key={fileKey} onChange={handleOnFileUpload} name="image" multiple accept="image/*" />
                         </div>
 
                         <div className="form-group flex-container">
@@ -189,10 +204,15 @@ const Form = ({
                             </select>
 
                             <div className="image-attachment-overlay">
-                                <input type="file" onChange={handleOnFileUpload} id="BuzzImageAttachment" name="image" accept="image/*" />
+                                <input type="file" onChange={handleOnFileUpload} key={fileKey} id="BuzzImageAttachment" name="image" accept="image/*" />
                                 <i className="far fa-image"></i>
                             </div>
-                            &nbsp;{`${numFiles === 0 ? '' : '(Uploaded)'}`}
+                            &nbsp;{`${numFiles === 0 ? '' : '(Uploaded)'}`}&nbsp;
+                            {
+                                numFiles > 0
+                                    ? <i className="far fa-times-circle" onClick={resetFile}></i>
+                                    : null
+                            }
 
                             <div className="SubmitBuzz flex-container">
                                 <button type="submit"></button>

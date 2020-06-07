@@ -1,0 +1,17 @@
+.LikeDislike {
+    margin-top: 10px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.HoverCursor:hover {
+    cursor: pointer;
+}
+
+.Active {
+    color: #f4b585;
+}
+
+.Inactive {
+    color: grey;
+}

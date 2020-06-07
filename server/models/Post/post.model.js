@@ -34,13 +34,23 @@ const postSchema = new Schema(
             type: String,
             required: true
         },
-        likeCount: Number,
-        dislikeCount: Number,
+        likeCount: {
+            type: Number,
+            default: 0
+        },
+        dislikeCount: {
+            type: Number,
+            default: 0
+        },
+        likedBy: {
+            type: [String],
+        },
+        dislikedBy: {
+            type: [String]
+        }
     }
 );
 
 const PostModel = mongoose.model('post', postSchema);
 
-module.exports = {
-    PostModel
-};
+module.exports = PostModel;

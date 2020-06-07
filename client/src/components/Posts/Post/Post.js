@@ -1,14 +1,29 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
 import Images from '../../UI/Images/Images'
+import LikeDislike from '../../LikeDislike/LikeDislike'
 
 import './Post.css'
 
-const Post = ({ data }) => {
+const Post = React.memo(({ 
+    data, 
+    likeStatus, 
+    dislikeStatus, 
+    likeCount, 
+    dislikeCount, 
+    onChange 
+}) => {
 
     const date = new Date(data.createdAt)
     const day = date.getDate()
     const month = date.getMonth() + 1
+
+    const onChangeHandler = useCallback(
+        (params) => {
+            onChange({...params, buzzId: data.buzzId})
+        },
+        [onChange, data.buzzId]
+    )
 
     return (
         <div className="Post flex-container">
@@ -20,9 +35,16 @@ const Post = ({ data }) => {
                 <p id="PostUserEmail" >{data.user.email}</p>
                 <p id="PostText" >{data.text}</p>
                 <Images imageUrl={data.imageUrl} type='buzz' buzzId={data.buzzId} />
+                <LikeDislike
+                    onChange={onChangeHandler}
+                    likeStatus={likeStatus}
+                    dislikeStatus={dislikeStatus}
+                    likeCount={likeCount}
+                    dislikeCount={dislikeCount}
+                />
             </div>
         </div>
     )
-}
+})
 
 export default Post

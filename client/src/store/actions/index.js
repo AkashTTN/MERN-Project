@@ -4,7 +4,8 @@ export {
 } from './auth'
 
 export {
-    getPosts
+    getPosts,
+    changeLikeDislike
 } from './buzz'
 
 export {
