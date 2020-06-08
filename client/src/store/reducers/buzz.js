@@ -1,8 +1,10 @@
 import * as actionTypes from '../actions/actionTypes'
 
 const initialState = {
-    posts: null,
+    posts: [],
     error: false,
+    loading: false,
+    totalPosts: 0,
     changeLikeDislikeError: false
 }
 
@@ -40,31 +42,30 @@ const reducer = (state = initialState, action) => {
         case actionTypes.GET_POSTS:
             return {
                 ...state,
-                error: false
+                error: false,
+                loading: true
             }
 
         case actionTypes.GET_POSTS_SUCCESS:
             return {
                 ...state,
+                loading: false,
+                totalPosts: action.payload.totalPosts,
                 posts: action.payload.posts
-            }
-
-        case actionTypes.GET_POSTS_FAILED:
-            return {
-                ...state,
-                error: true
             }
 
         case actionTypes.GET_NEXT_POSTS_SUCCESS:
             return {
                 ...state,
-                posts: state.posts.concat(action.payload.posts),
-                error: false
+                loading: false,
+                totalPosts: action.payload.totalPosts,
+                posts: [...state.posts, ...action.payload.posts]
             }
 
-        case actionTypes.GET_NEXT_POSTS_FAILED:
+        case actionTypes.GET_POSTS_FAILED:
             return {
                 ...state,
+                loading: false,
                 error: true
             }
 

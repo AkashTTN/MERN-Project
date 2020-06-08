@@ -1,7 +1,7 @@
 import * as actionTypes from '../actions/actionTypes'
 
 const initialState = {
-    complaints: null,
+    complaints: [],
     error: false,
     loading: false,
     totalComplaints: 0

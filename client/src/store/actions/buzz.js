@@ -4,7 +4,7 @@ import { removeAuthData } from './'
 
 export const getPosts = ({ limit = 5, skip = 0 } = {}) => {
     return (dispatch, getState) => {
-
+        dispatch({ type: actionTypes.GET_POSTS })
         const { token } = getState().authData
         fetch(constants.SERVER_URL + `/user/posts?limit=${limit}&skip=${skip}`, {
             headers: {
@@ -19,16 +19,21 @@ export const getPosts = ({ limit = 5, skip = 0 } = {}) => {
                 } else {
                     if (response.code === 200) {
                         if (skip === 0) {
-                            dispatch({
+                            return dispatch({
                                 type: actionTypes.GET_POSTS_SUCCESS,
-                                payload: { posts: response.data }
-                            })
-                        } else {
-                            dispatch({ 
-                                type: actionTypes.GET_NEXT_POSTS_SUCCESS, 
-                                payload: { posts: response.data } 
+                                payload: {
+                                    posts: response.data.posts,
+                                    totalPosts: response.data.totalPosts
+                                }
                             })
                         }
+                        dispatch({
+                            type: actionTypes.GET_NEXT_POSTS_SUCCESS,
+                            payload: {
+                                posts: response.data.posts,
+                                totalPosts: response.data.totalPosts
+                            }
+                        })
                     } else {
                         throw new Error(response.message)
                     }

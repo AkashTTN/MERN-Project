@@ -26,12 +26,36 @@ module.exports.create = async ({
 };
 
 module.exports.getPosts = async ({ limit, skip }) => {
-    const posts = await PostModel.find({}, { _id: 0 }).sort({ createdAt: -1 }).skip(skip).limit(limit)
-    return posts
+    // const posts = await PostModel.find(
+    //     {},
+    //     { _id: 0 }
+    // ).sort({ createdAt: -1 }).skip(skip).limit(limit)
+
+    const posts = await PostModel.aggregate([
+        {
+            "$facet": {
+                "allPosts": [
+                    { $project: { _id: 0 } },
+                    { $sort: { createdAt: -1 } },
+                    { $skip: skip },
+                    { $limit: limit }
+                ],
+                "count": [
+                    {
+                        $count: "totalPosts"
+                    }
+                ]
+            }
+        }
+    ])
+
+    return posts[0]
 }
 
 module.exports.changeLike = async ({ buzzId, status, googleId }) => {
+
     let response
+
     if (status) {
         response = await PostModel.findOneAndUpdate(
             { buzzId },
@@ -55,7 +79,9 @@ module.exports.changeLike = async ({ buzzId, status, googleId }) => {
 };
 
 module.exports.changeDislike = async ({ buzzId, status, googleId }) => {
+
     let response
+
     if (status) {
         response = await PostModel.findOneAndUpdate(
             { buzzId },
@@ -78,6 +104,8 @@ module.exports.changeDislike = async ({ buzzId, status, googleId }) => {
 };
 
 module.exports.getPostById = async (id) => {
+
     const post = await UserModel.find({ buzzId: id });
+
     return post;
 };

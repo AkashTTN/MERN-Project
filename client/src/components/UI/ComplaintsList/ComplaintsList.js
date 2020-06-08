@@ -36,10 +36,10 @@ const ComplaintsList = ({
 
     useEffect(
         () => {
-            if(currentPage > 1) {
+            if (currentPage > 1) {
                 getComplaints({
                     limit: complaintsPerPage,
-                    skip: currentPage*complaintsPerPage - complaintsPerPage
+                    skip: currentPage * complaintsPerPage - complaintsPerPage
                 })
             } else {
                 getComplaints({})
@@ -57,49 +57,42 @@ const ComplaintsList = ({
 
     if (errorComplaints) {
         content = <p>Something went wrong.</p>
-    }
-
-    if (loading) {
+    } else if (loading) {
         content = <p>Loading...</p>
-    }
-
-    if (complaints && !errorComplaints) {
-        if (complaints.length === 0) {
-            content = <p>No complaints made yet.</p>
-        } else {
-            complaintsArray = complaints.map((item, index) => {
-                return (
-                    <ComplaintsListItem
-                        isAdmin={isAdmin}
-                        mode={mode}
-                        complaint={item}
-                        key={index}
-                    />
-                )
-            })
-            content = (
-                <>
-                    <div className="ComplaintsListHeadings flex-container">
-                        <div>Department</div>
-                        <div>Issue Id</div>
-                        {
-                            isAdmin && (mode === 'resolved')
-                                ? <div>Locked By</div> : null
-                        }
-                        <div>Assigned To</div>
-                        <div>Status</div>
-                    </div>
-                    {complaintsArray}
-                    <Pagination
-                        documentsPerPage={complaintsPerPage}
-                        totalDocuments={totalComplaints}
-                        paginate={paginate}
-                    />
-                </>
+    } else if (complaints.length === 0) {
+        content = <p>No complaints made yet.</p>
+    } else {
+        complaintsArray = complaints.map((item, index) => {
+            return (
+                <ComplaintsListItem
+                    isAdmin={isAdmin}
+                    mode={mode}
+                    complaint={item}
+                    key={index}
+                />
             )
-        }
+        })
+        content = (
+            <>
+                <div className="ComplaintsListHeadings flex-container">
+                    <div>Department</div>
+                    <div>Issue Id</div>
+                    {
+                        isAdmin && (mode === 'resolved')
+                            ? <div>Locked By</div> : null
+                    }
+                    <div>Assigned To</div>
+                    <div>Status</div>
+                </div>
+                {complaintsArray}
+                <Pagination
+                    documentsPerPage={complaintsPerPage}
+                    totalDocuments={totalComplaints}
+                    paginate={paginate}
+                />
+            </>
+        )
     }
-
 
     return (
         <div className="Complaints">

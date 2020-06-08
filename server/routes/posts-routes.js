@@ -11,11 +11,13 @@ const generateUniqueId = require('../middlewares/generateUniqueId')
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         // Create directory if not present
-        fs.mkdir(`./uploads/posts/${req.user.authData.userID}/${req.uniqueId}`, { recursive: true }, (err) => {
-            if (err) throw err;
-            // directory where the file will be stored
-            cb(null, `./uploads/posts/${req.user.authData.userID}/${req.uniqueId}`)
-        });
+        fs.mkdir(`./uploads/posts/${req.user.authData.userID}/${req.uniqueId}`,
+            { recursive: true },
+            (err) => {
+                if (err) throw err;
+                // directory where the file will be stored
+                cb(null, `./uploads/posts/${req.user.authData.userID}/${req.uniqueId}`)
+            });
     },
     filename: function (req, file, cb) {
         // name of the file
@@ -26,7 +28,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 router
-    .get('/', async (req, res) => {
+    .get('/', async (req, res, next) => {
 
         let { limit, skip } = req.query
 
@@ -39,8 +41,16 @@ router
         skip = +skip
 
         try {
-            const postsToBeSent = await posts.getPosts({ limit, skip })
-            return res.status(200).json(response(true, 200, "Retrieved posts", postsToBeSent))
+
+            const {
+                allPosts,
+                count: [{ totalPosts }]
+            } = await posts.getPosts({ limit, skip })
+
+            return res.status(200).json(
+                response(true, 200, "Retrieved posts", { posts: allPosts, totalPosts })
+            )
+
         } catch (error) {
             next(error)
         }
@@ -56,7 +66,9 @@ router
             const { buzzText, buzzCategory } = JSON.parse(req.body.data)
 
             if (!buzzText || buzzText.trim().length === 0) {
-                return res.status(200).json(response(false, 406, "Cannot create a buzz with empty text"))
+                return res.status(200).json(
+                    response(false, 406, "Cannot create a buzz with empty text")
+                )
             }
 
             let imageUrlArray = []
@@ -79,7 +91,10 @@ router
             }
 
             const post = await posts.create(data)
-            return res.status(200).json(response(true, 200, "Post created successfully", post))
+
+            return res.status(200).json(
+                response(true, 200, "Post created successfully", post)
+            )
 
         } catch (error) {
             next(error)
@@ -88,22 +103,30 @@ router
     })
 
     .patch('/:id', async (req, res, next) => {
-        
+
         try {
             let { type, status } = req.query
             const buzzId = req.params.id
             const googleId = req.user.authData.userID
-    
+            let updatedPost
+
             status = status === 'false' ? false : true
 
-            let updatedPost
             if (type === 'like') {
-                updatedPost = await posts.changeLike({ type, status, buzzId, googleId })
+                updatedPost = await posts.changeLike({
+                    type,
+                    status,
+                    buzzId,
+                    googleId
+                })
             } else if (type === 'dislike') {
                 updatedPost = await posts.changeDislike({ type, status, buzzId, googleId })
             }
 
-            res.status(200).json(response(true, 200, 'Changed like/dislike status', { updatedPost }))
+            res.status(200).json(
+                response(true, 200, 'Changed like/dislike status', { updatedPost })
+            )
+
         } catch (error) {
             next(error)
         }
