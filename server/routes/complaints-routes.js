@@ -46,7 +46,7 @@ router
 
             const {
                 userComplaints = [],
-                count: [{ totalComplaints = 0 }={}] = []
+                count: [{ totalComplaints = 0 } = {}] = []
             } = await complaints.getAllComplaintsByUserId(
                 { id: req.user.authData.userID, limit, skip }
             )
@@ -122,7 +122,7 @@ router
         const status = req.query.status
 
         if (complaintId.trim().length === 0) {
-            return res.status(200).json(response(false, 406, 'Complaint ID required.'))
+            return res.status(200).json(response(false, 406, 'Complaint ID required'))
         }
 
         if (!status) {

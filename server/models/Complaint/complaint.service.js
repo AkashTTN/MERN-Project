@@ -39,8 +39,25 @@ module.exports.changeStatusById = async ({ complaintId, status }) => {
 }
 
 module.exports.getAllComplaints = async ({ limit, skip }) => {
-    const complaints = await ComplaintModel.find({}, { _id: 0 }).skip(skip).limit(limit)
-    return complaints
+    const response = await ComplaintModel.aggregate([
+        {
+            "$facet": {
+                "userComplaints": [
+                    { $match: {} },
+                    { $project: { _id: 0 } },
+                    { $skip: skip },
+                    { $limit: limit }
+                ],
+                "count": [
+                    {
+                        $count: "totalComplaints"
+                    }
+                ]
+            }
+        }
+    ])
+
+    return response[0]
 }
 
 module.exports.getAllComplaintsByUserId = async ({ id, limit, skip }) => {

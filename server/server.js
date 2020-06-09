@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 
 // importing middlerwares
 const isAuthenticated = require('./middlewares/isAuthenticated')
+const isAdmin = require('./middlewares/isAdmin')
 const logErrors = require('./middlewares/logErrors')
 const clientErrorHandler = require('./middlewares/clientErrorHandler')
 const errorHandler = require('./middlewares/errorHandler')
@@ -14,6 +15,7 @@ const errorHandler = require('./middlewares/errorHandler')
 // importing routes
 const authRoutes = require('./routes/auth-routes')
 const userRoutes = require('./routes/user-routes')
+const adminRoutes = require('./routes/admin-routes')
 
 // importing seeds
 const initializeUIConfig = require('./seeds/uiConfig')
@@ -43,7 +45,7 @@ mongoose.connection.on("open", (err, res) => {
     try {
         initializeUIConfig()
         setAdmin()
-    } catch(error) {
+    } catch (error) {
         throw new Error(error)
     }
 });
@@ -72,6 +74,7 @@ app.use(passport.initialize())
 // setup routes
 app.use('/auth', authRoutes)
 app.use('/user', isAuthenticated, userRoutes)
+app.use('/admin', isAuthenticated, isAdmin, adminRoutes)
 
 // setting up error handling middlewares
 app.use(logErrors)

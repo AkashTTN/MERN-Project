@@ -10,6 +10,7 @@ export {
 
 export {
     getComplaints,
+    getAllComplaints,
     changeComplaintStatus,
 } from './complaint'
 

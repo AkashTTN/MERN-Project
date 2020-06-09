@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { connect } from 'react-redux'
 
-import { getComplaints } from '../../../store/actions'
+import { getComplaints, getAllComplaints } from '../../../store/actions'
 
 import ComplaintsListItem from './ComplaintsListItem/ComplaintsListItem'
 import Pagination from '../../UI/Pagination/Pagination'
@@ -34,7 +34,7 @@ const ComplaintsList = ({
                 })
             }
         },
-        [getComplaints, complaintSubmitted]
+        [getComplaints, complaintSubmitted, complaintsPerPage]
     )
 
     useEffect(
@@ -111,7 +111,8 @@ const ComplaintsList = ({
                 {content}
             </div>
             {
-                (complaintsPerPage < totalComplaints) && <Pagination
+                ((complaintsPerPage < totalComplaints) && !errorComplaints) &&
+                <Pagination
                     documentsPerPage={complaintsPerPage}
                     totalDocuments={totalComplaints}
                     paginate={paginate}
@@ -132,8 +133,13 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return { getComplaints: (data) => dispatch(getComplaints(data)) }
+const mapDispatchToProps = (dispatch, { mode }) => {
+    return {
+        getComplaints: (data) => {
+            if (mode === 'resolved') return dispatch(getAllComplaints(data))
+            dispatch(getComplaints(data))
+        }
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ComplaintsList)
