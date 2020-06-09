@@ -1,4 +1,5 @@
 import * as actionTypes from '../actions/actionTypes'
+import reset from '../utils/reset'
 
 const initialState = {
     buzz: {},
@@ -9,6 +10,9 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        
+        case actionTypes.SIGN_OUT_SUCCESS: return reset(initialState)
+
         case actionTypes.GET_BUZZ_IMAGES:
             return {
                 ...state,

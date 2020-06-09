@@ -26,11 +26,13 @@ const Posts = ({
 
     useEffect(
         () => {
-            getPosts({
-                limit: postsPerPage,
-                skip: 0
-            })
-            setCurrentPage(2)
+            if (currentPage === 1 || postSubmitted) {
+                getPosts({
+                    limit: postsPerPage,
+                    skip: 0
+                })
+                setCurrentPage(2)
+            }
         },
         [getPosts, postsPerPage, setCurrentPage, postSubmitted]
     )

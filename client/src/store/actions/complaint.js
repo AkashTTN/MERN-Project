@@ -4,8 +4,11 @@ import { removeAuthData } from './'
 
 export const getComplaints = ({ limit = 10, skip = 0 } = {}) => {
     return (dispatch, getState) => {
+
         dispatch({ type: actionTypes.GET_COMPLAINTS })
+
         const { token } = getState().authData
+        
         fetch(constants.SERVER_URL + `/user/complaints?limit=${limit}&skip=${skip}`, {
             headers: {
                 'Authorization': 'bearer ' + token
@@ -38,9 +41,13 @@ export const getComplaints = ({ limit = 10, skip = 0 } = {}) => {
 
 export const changeComplaintStatus = ({ complaintId, status }) => {
     return (dispatch, getState) => {
+
         dispatch({ type: actionTypes.CHANGE_COMPLAINT_STATUS })
+
         const { token } = getState().authData
-        fetch(constants.SERVER_URL + `/user/complaints/${complaintId}?status=${status}`, {
+        const endpoint = `/user/complaints/${complaintId}?status=${status}`
+
+        fetch(constants.SERVER_URL + endpoint, {
             method: 'PATCH',
             headers: {
                 'Authorization': 'bearer ' + token

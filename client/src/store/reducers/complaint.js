@@ -1,4 +1,5 @@
 import * as actionTypes from '../actions/actionTypes'
+import reset from '../utils/reset'
 
 const initialState = {
     complaints: [],
@@ -7,12 +8,10 @@ const initialState = {
     totalComplaints: 0
 }
 
-const reset = () => ({ ...initialState })
-
 const reducer = (state = initialState, action) => {
     switch (action.type) {
 
-        case actionTypes.SIGN_OUT_SUCCESS: reset()
+        case actionTypes.SIGN_OUT_SUCCESS: return reset(initialState)
 
         case actionTypes.CHANGE_COMPLAINT_STATUS:
             return state

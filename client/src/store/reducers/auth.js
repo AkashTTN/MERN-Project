@@ -1,4 +1,5 @@
 import * as actionTypes from '../actions/actionTypes'
+import reset from '../utils/reset'
 
 const initialState = {
     token: null,
@@ -22,12 +23,7 @@ const reducer = (state=initialState, action) => {
                 user: null
             }
 
-        case actionTypes.SIGN_OUT_SUCCESS:
-            return {
-                error: false,
-                token: null,
-                user: null
-            }
+        case actionTypes.SIGN_OUT_SUCCESS: return reset(initialState)
 
         case actionTypes.SET_AUTH_DATA:
             return {

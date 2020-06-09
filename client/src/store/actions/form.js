@@ -5,8 +5,10 @@ import { removeAuthData } from './'
 
 export const submitForm = ({ data, type } = {}) => {
     return (dispatch, getState) => {
+
         const { token } = getState().authData
         let endpoint = ''
+
         if (type === 'Complaint') {
             endpoint = '/user/complaints'
             dispatch({ type: actionTypes.SUBMIT_COMPLAINT })
@@ -14,6 +16,7 @@ export const submitForm = ({ data, type } = {}) => {
             endpoint = '/user/posts'
             dispatch({ type: actionTypes.SUBMIT_POST })
         }
+
         fetch(constants.SERVER_URL + endpoint, {
             method: "POST",
             body: data,
@@ -29,9 +32,15 @@ export const submitForm = ({ data, type } = {}) => {
                 } else {
                     if (response.code === 200) {
                         if (type === 'Complaint') {
-                            dispatch({ type: actionTypes.SUBMIT_COMPLAINT_SUCCESS, payload: { submittedComplaint: data } })
+                            dispatch({
+                                type: actionTypes.SUBMIT_COMPLAINT_SUCCESS,
+                                payload: { submittedComplaint: data }
+                            })
                         } else {
-                            dispatch({ type: actionTypes.SUBMIT_POST_SUCCESS, payload: { submittedPost: data } })
+                            dispatch({
+                                type: actionTypes.SUBMIT_POST_SUCCESS,
+                                payload: { submittedPost: data }
+                            })
                         }
                     } else {
                         throw new Error(response.message)
@@ -51,8 +60,11 @@ export const submitForm = ({ data, type } = {}) => {
 
 export const getFormConfig = () => {
     return (dispatch, getState) => {
+
         dispatch({ type: actionTypes.GET_FORM_CONFIG })
+
         const { token } = getState().authData
+
         fetch(constants.SERVER_URL + '/user/form-config', {
             headers: {
                 'Authorization': 'bearer ' + token
@@ -61,7 +73,10 @@ export const getFormConfig = () => {
             .then(res => res.json())
             .then(response => {
                 if (response.code === 200) {
-                    return dispatch({ type: actionTypes.GET_FORM_CONFIG_SUCCESS, payload: { formConfig: response.data.formConfig } })
+                    return dispatch({
+                        type: actionTypes.GET_FORM_CONFIG_SUCCESS,
+                        payload: { formConfig: response.data.formConfig }
+                    })
                 }
                 throw new Error(response.message)
             })

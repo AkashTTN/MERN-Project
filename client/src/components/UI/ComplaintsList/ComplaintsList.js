@@ -73,8 +73,8 @@ const ComplaintsList = ({
             )
         })
         content = (
-            <>
-                <div className="ComplaintsListHeadings flex-container">
+            <table className="ComplaintsList">
+                {/* <div className="ComplaintsListHeadings flex-container">
                     <div>Department</div>
                     <div>Issue Id</div>
                     {
@@ -83,14 +83,23 @@ const ComplaintsList = ({
                     }
                     <div>Assigned To</div>
                     <div>Status</div>
-                </div>
-                {complaintsArray}
-                <Pagination
-                    documentsPerPage={complaintsPerPage}
-                    totalDocuments={totalComplaints}
-                    paginate={paginate}
-                />
-            </>
+                </div> */}
+                <thead className="ComplaintsListHeadings">
+                    <tr className="ComplaintsListRow">
+                        <th>Department</th>
+                        <th>Issue Id</th>
+                        {
+                            isAdmin && (mode === 'resolved')
+                                ? <th>Locked By</th> : null
+                        }
+                        <th>Assigned To</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {complaintsArray}
+                </tbody>
+            </table>
         )
     }
 
@@ -100,6 +109,13 @@ const ComplaintsList = ({
                 <h3>Your Complaints</h3>
             </div>
             {content}
+            {
+                (complaints.length < totalComplaints) && <Pagination
+                    documentsPerPage={complaintsPerPage}
+                    totalDocuments={totalComplaints}
+                    paginate={paginate}
+                />
+            }
         </div>
     )
 }

@@ -21,13 +21,17 @@
 .ComplaintStatus {
 	border: none;
 	text-align-last: center;
-	font-size: 18px;
-	background-color: transparent;
 }
 
 .ComplaintId {
 	text-decoration: underline;
 	color: #8ab4f8;
+}
+
+.ComplaintStatusToggle {
+	padding: 0;
+	background-color: transparent;
+	font-size: inherit;
 }
 
 .Open {

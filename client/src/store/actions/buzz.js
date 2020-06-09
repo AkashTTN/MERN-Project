@@ -4,8 +4,11 @@ import { removeAuthData } from './'
 
 export const getPosts = ({ limit = 5, skip = 0 } = {}) => {
     return (dispatch, getState) => {
+
         dispatch({ type: actionTypes.GET_POSTS })
+
         const { token } = getState().authData
+        
         fetch(constants.SERVER_URL + `/user/posts?limit=${limit}&skip=${skip}`, {
             headers: {
                 'Authorization': 'bearer ' + token
@@ -49,11 +52,12 @@ export const getPosts = ({ limit = 5, skip = 0 } = {}) => {
 
 export const changeLikeDislike = ({ type, changedStatus, buzzId }) => {
     return (dispatch, getState) => {
+
         dispatch({ type: actionTypes.CHANGE_LIKE_DISLIKE })
 
         const { token } = getState().authData
-
-        fetch(constants.SERVER_URL + `/user/posts/${buzzId}?type=${type}&status=${changedStatus}`, {
+        const endpoint = `/user/posts/${buzzId}?type=${type}&status=${changedStatus}`
+        fetch(constants.SERVER_URL + endpoint, {
             method: 'PATCH',
             headers: {
                 'Authorization': 'bearer ' + token

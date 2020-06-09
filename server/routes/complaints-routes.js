@@ -85,7 +85,10 @@ router
 
         try {
 
-            const { userComplaints, count: [{ totalComplaints }] } = await complaints.getAllComplaintsByUserId(
+            const {
+                userComplaints = [],
+                count: [{ totalComplaints = 0 }={}] = []
+            } = await complaints.getAllComplaintsByUserId(
                 { id: req.user.authData.userID, limit, skip }
             )
 

@@ -61,7 +61,7 @@ const Feed = React.memo(({
     // with redux
     useEffect(
         () => {
-            if (authError || !isAuthenticated) {
+            if (!isAuthenticated) {
                 if (window.localStorage.getItem('token')) {
                     setAuthData()
                     getFormConfig()
@@ -70,7 +70,7 @@ const Feed = React.memo(({
                 }
             }
         },
-        [setRedirect, authError, isAuthenticated, setAuthData, getFormConfig]
+        [setRedirect, isAuthenticated, setAuthData, getFormConfig]
     )
 
     const logoutHandler = useCallback(

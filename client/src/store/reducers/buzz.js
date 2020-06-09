@@ -1,4 +1,5 @@
 import * as actionTypes from '../actions/actionTypes'
+import reset from '../utils/reset'
 
 const initialState = {
     posts: [],
@@ -7,8 +8,6 @@ const initialState = {
     totalPosts: 0,
     changeLikeDislikeError: false
 }
-
-const reset = () => ({ ...initialState })
 
 const changeLikeDislike = (state, action) => {
 
@@ -37,7 +36,7 @@ const changeLikeDislike = (state, action) => {
 const reducer = (state = initialState, action) => {
     switch (action.type) {
 
-        case actionTypes.SIGN_OUT_SUCCESS: reset()
+        case actionTypes.SIGN_OUT_SUCCESS: return reset(initialState)
 
         case actionTypes.GET_POSTS:
             return {
@@ -81,26 +80,7 @@ const reducer = (state = initialState, action) => {
                 changeLikeDislikeError: false
             }
 
-        case actionTypes.CHANGE_LIKE_DISLIKE_SUCCESS:
-            const updatedPosts = state.posts.map(post => {
-                if (post.buzzId === action.payload.updatedPost.buzzId) {
-                    return {
-                        ...post,
-                        likedBy: action.payload.updatedPost.likedBy,
-                        dislikedBy: action.payload.updatedPost.dislikedBy,
-                        dislikeCount: action.payload.updatedPost.dislikeCount,
-                        likeCount: action.payload.updatedPost.likeCount
-                    }
-                } else {
-                    return post
-                }
-
-            })
-
-            return {
-                ...state,
-                posts: updatedPosts
-            }
+        case actionTypes.CHANGE_LIKE_DISLIKE_SUCCESS: return changeLikeDislike(state, action)
 
         case actionTypes.CHANGE_LIKE_DISLIKE_FAILED:
             return {

@@ -14,7 +14,7 @@ const complaintStatusMap = {
 
 const ComplaintsListItem = ({ isAdmin, mode, complaint, changeComplaintStatus }) => {
 
-    let classes = ['ComplaintField', inputClasses.ComplaintStatus]
+    let classes = [inputClasses.ComplaintStatusToggle, inputClasses.ComplaintStatus]
 
     let statusDropDown = null
 
@@ -32,46 +32,59 @@ const ComplaintsListItem = ({ isAdmin, mode, complaint, changeComplaintStatus })
 
     if (isAdmin && (mode === 'resolved')) {
         statusDropDown = (
-            <div className={classes.ComplaintStatusToggleDiv}>
+            <td>
                 <select
                     value={complaint.status}
                     onChange={handleOnChange}
                     className={classes.join(' ')}
                     name="complaintStatus"
-                    id="complaintStatus"
                     required
                 >
                     <option className={inputClasses.Black} value="Open">Open</option>
                     <option className={inputClasses.Black} value="Resolved">Resolved</option>
                     <option className={inputClasses.Black} value="In Progress">In Progress</option>
                 </select>
-            </div>
+            </td>
         )
     }
 
     const statusComponent = (
         isAdmin && (mode === 'resolved')
             ? statusDropDown
-            : <div className={inputClasses[complaintStatusMap[complaint.status]]}>
+            : <td className={inputClasses[complaintStatusMap[complaint.status]]}>
                 {complaint.status}
-            </div>
+            </td>
     )
 
     return (
-        <div className={[inputClasses.ComplaintsListItem, 'flex-container'].join(' ')}>
-            <div>{complaint.department}</div>
-            <div>
+        // <div className={[inputClasses.ComplaintsListItem, 'flex-container'].join(' ')}>
+        //     <div>{complaint.department}</div>
+        //     <div>
+        //         <Link to={`/complaints/${complaint.complaintId}`}>
+        //             <div className={inputClasses.ComplaintId}>{complaint.complaintId}</div>
+        //         </Link>
+        //     </div>
+        //     {
+        //         isAdmin && (mode === 'resolved')
+        //             ? <div>{complaint.createdBy.name}</div> : null
+        //     }
+        //     <div>{complaint.assignedTo.name}</div>
+        //     {statusComponent}
+        // </div>
+        <tr className="ComplaintsListRow">
+            <td>{complaint.department}</td>
+            <td>
                 <Link to={`/complaints/${complaint.complaintId}`}>
                     <div className={inputClasses.ComplaintId}>{complaint.complaintId}</div>
                 </Link>
-            </div>
+            </td>
             {
                 isAdmin && (mode === 'resolved')
-                    ? <div>{complaint.createdBy.name}</div> : null
+                    ? <td>{complaint.createdBy.name}</td> : null
             }
-            <div>{complaint.assignedTo.name}</div>
+            <td>{complaint.assignedTo.name}</td>
             {statusComponent}
-        </div>
+        </tr>
     )
 }
 

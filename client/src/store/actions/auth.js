@@ -54,10 +54,13 @@ export const setAuthData = () => {
         })
             .then(res => res.json())
             .then(res => {
-                if(res.code === 403) {
+                if (res.code === 403) {
                     return dispatch(removeAuthData())
                 }
-                dispatch({ type: actionTypes.SET_AUTH_DATA_SUCCESS, payload: { user: res.data.user } })
+                dispatch({
+                    type: actionTypes.SET_AUTH_DATA_SUCCESS,
+                    payload: { user: res.data.user }
+                })
             })
             .catch(err => {
                 dispatch({ type: actionTypes.SET_AUTH_DATA_FAILED })

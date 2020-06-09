@@ -43,8 +43,8 @@ router
         try {
 
             const {
-                allPosts,
-                count: [{ totalPosts }]
+                allPosts = [],
+                count: [{ totalPosts = 0 } = {}] = []
             } = await posts.getPosts({ limit, skip })
 
             return res.status(200).json(

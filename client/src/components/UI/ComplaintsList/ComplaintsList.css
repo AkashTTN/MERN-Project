@@ -38,3 +38,26 @@
 .ComplaintsListHeadings > div:last-child {
 	border: none;
 }
+
+.ComplaintsList {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.ComplaintsList .ComplaintsListRow {
+	border-bottom: 1px solid #ccc;
+}
+
+tbody > .ComplaintsListRow:last-child {
+	border-bottom: none;
+}
+
+td, th {
+	text-align: center;
+	padding: 20px;
+	border-right: 1px solid #ccc;
+}
+
+td:last-child, th:last-child {
+	border-right: none;
+}
