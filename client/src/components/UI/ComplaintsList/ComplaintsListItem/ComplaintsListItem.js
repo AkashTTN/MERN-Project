@@ -12,7 +12,14 @@ const complaintStatusMap = {
     'In Progress': 'InProgress'
 }
 
-const ComplaintsListItem = ({ isAdmin, mode, complaint, changeComplaintStatus }) => {
+const ComplaintsListItem = ({
+    isAdmin,
+    mode,
+    complaint,
+    changeComplaintStatus,
+    formConfig,
+    formConfigError
+}) => {
 
     let classes = [inputClasses.ComplaintStatusToggle, inputClasses.ComplaintStatus]
 
@@ -40,9 +47,21 @@ const ComplaintsListItem = ({ isAdmin, mode, complaint, changeComplaintStatus })
                     name="complaintStatus"
                     required
                 >
-                    <option className={inputClasses.Black} value="Open">Open</option>
+                    {
+                        formConfig ? formConfig.complaint.statusTypes.map((type, index) => {
+                            return (
+                                <option
+                                    className={inputClasses.Black}
+                                    key={index}
+                                    value={type}>
+                                    {type}
+                                </option>
+                            )
+                        }) : null
+                    }
+                    {/* <option className={inputClasses.Black} value="Open">Open</option>
                     <option className={inputClasses.Black} value="Resolved">Resolved</option>
-                    <option className={inputClasses.Black} value="In Progress">In Progress</option>
+                    <option className={inputClasses.Black} value="In Progress">In Progress</option> */}
                 </select>
             </td>
         )
@@ -88,10 +107,17 @@ const ComplaintsListItem = ({ isAdmin, mode, complaint, changeComplaintStatus })
     )
 }
 
+const mapStateToProps = state => {
+    return {
+        formConfig: state.form.formConfig,
+        formConfigError: state.form.formConfigError
+    }
+}
+
 const mapDispatchToProps = dispatch => {
     return {
         changeComplaintStatus: (data) => dispatch(changeComplaintStatus(data))
     }
 }
 
-export default connect(null, mapDispatchToProps)(ComplaintsListItem)
+export default connect(mapStateToProps, mapDispatchToProps)(ComplaintsListItem)

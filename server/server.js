@@ -15,6 +15,10 @@ const errorHandler = require('./middlewares/errorHandler')
 const authRoutes = require('./routes/auth-routes')
 const userRoutes = require('./routes/user-routes')
 
+// importing seeds
+const initializeUIConfig = require('./seeds/uiConfig')
+const setAdmin = require('./seeds/setAdmin')
+
 const constants = require('./config/constants')
 
 // connecting to our database
@@ -30,6 +34,18 @@ mongoose.connection.on("error", err => {
 
 mongoose.connection.on("connected", (err, res) => {
     console.log("mongoose is connected to the database")
+});
+
+mongoose.connection.on("open", (err, res) => {
+    if (err) throw new Error(err)
+
+    // Run seeds on db startup
+    try {
+        initializeUIConfig()
+        setAdmin()
+    } catch(error) {
+        throw new Error(error)
+    }
 });
 
 /**

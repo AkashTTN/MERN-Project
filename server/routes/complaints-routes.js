@@ -29,47 +29,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 router
-    .get('/count', isAdmin, async (req, res) => {
-
-        try {
-
-            const totalNoOfComplaints = await complaints.getComplaintsCount()
-
-            return res.status(200).json(
-                response(
-                    true,
-                    200,
-                    'Complaints count retrieved',
-                    { totalComplaints: totalNoOfComplaints }
-                )
-            )
-
-        } catch (error) {
-            next(error)
-        }
-
-    })
-
-    .get('/countById', async (req, res) => {
-
-        try {
-
-            const totalNoOfComplaints = await complaints.getComplaintsCountById(req.user.authData.userID)
-
-            return res.status(200).json(
-                response(
-                    true,
-                    200,
-                    'Complaints count by user retrieved',
-                    { totalComplaints: totalNoOfComplaints }
-                )
-            )
-
-        } catch (error) {
-            next(error)
-        }
-
-    })
 
     .get('/', async (req, res, next) => {
 

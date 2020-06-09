@@ -5,18 +5,6 @@ const constants = {
         },
         db: {
             url: 'mongodb://localhost:27017/ttnd-buzz'
-        },
-        UIConfig: {
-            formConfig: {
-                buzz: {
-                    category: ['Activity', 'Lost & Found']
-                },
-                complaint: {
-                    statusTypes: ['Open', 'Resolved', 'In Progress'],
-                    departments: ['Admin', 'HR', 'IT', 'Management'],
-                    types: ['Hardware', 'Infrastructure', 'Others']
-                }
-            }
         }
     },
     stage: {
@@ -25,18 +13,6 @@ const constants = {
         },
         db: {
             url: 'mongodb://localhost:27017/testdb'
-        },
-        UIConfig: {
-            formConfig: {
-                buzz: {
-                    category: ['Activity', 'Lost & Found']
-                },
-                complaint: {
-                    statusTypes: ['Open', 'Resolved', 'In Progress'],
-                    departments: ['Admin', 'HR', 'IT', 'Management'],
-                    types: ['Hardware', 'Infrastructure', 'Others']
-                }
-            }
         }
     },
     prod: {
@@ -45,18 +21,6 @@ const constants = {
         },
         db: {
             url: 'mongodb://localhost:27017/ttnd-buzz'
-        },
-        UIConfig: {
-            formConfig: {
-                buzz: {
-                    category: ['Activity', 'Lost & Found']
-                },
-                complaint: {
-                    statusTypes: ['Open', 'Resolved', 'In Progress'],
-                    departments: ['Admin', 'HR', 'IT', 'Management'],
-                    types: ['Hardware', 'Infrastructure', 'Others']
-                }
-            }
         }
     }
 }

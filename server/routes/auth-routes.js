@@ -31,7 +31,7 @@ router.get('/google/redirect',
         session: false
     }),
     async (req, res) => {
-
+        
         let user = await users.getUserById(req.user.id)
         let userID
         

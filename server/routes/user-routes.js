@@ -1,10 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const users = require('../models/User/user.controller')
 const response = require('v-response').ApiResponse
 
-const UIConfig = require('../config/constants').UIConfig
-
+const users = require('../models/User/user.controller')
+const UIConfig = require('../models/UIConfig/UIConfig.controller')
 const postsRoutes = require('./posts-routes')
 const complaintsRoutes = require('./complaints-routes')
 
@@ -31,10 +30,18 @@ router
 
     })
 
-    .get('/form-config', (req, res) => {
-        res.status(200).json(
-            response(true, 200, 'Form Config Data', { formConfig: UIConfig.formConfig })
-        )
+    .get('/form-config', async (req, res, next) => {
+
+        try {
+
+            const [{ formConfig = {} } = {}] = await UIConfig.getUIConfig()
+            res.status(200).json(
+                response(true, 200, 'Form Config Data', { formConfig })
+            )
+        } catch (error) {
+            next(error)
+        }
+
     })
 
 module.exports = router

@@ -12,6 +12,7 @@
 
 .PaginationContainer {
     justify-content: center;
+    border-top: 1px solid #ccc;
 }
 
 .PageName:active,

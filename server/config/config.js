@@ -1,5 +1,10 @@
 const config = {
     dev: {
+        admin: {
+            email: 'admin@tothenew.com',
+            googleId: '1234',
+            name: 'admin'
+        },
         google: {
             clientID: '546037694521-nh1ugs3igucc46oggj1t1hpu5o2fvbjv.apps.googleusercontent.com',
             clientSecret: 'TUXti15jl3_BdwewagLEcH7i',

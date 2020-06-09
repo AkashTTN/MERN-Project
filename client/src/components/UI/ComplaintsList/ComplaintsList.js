@@ -23,12 +23,15 @@ const ComplaintsList = ({
     let content = null
 
     const [currentPage, setCurrentPage] = useState(1)
-        , [complaintsPerPage] = useState(10)
+        , [complaintsPerPage] = useState(5)
 
     useEffect(
         () => {
             if (complaintSubmitted) {
-                getComplaints()
+                getComplaints({
+                    limit: complaintsPerPage,
+                    skip: currentPage * complaintsPerPage - complaintsPerPage
+                })
             }
         },
         [getComplaints, complaintSubmitted]
@@ -36,14 +39,10 @@ const ComplaintsList = ({
 
     useEffect(
         () => {
-            if (currentPage > 1) {
-                getComplaints({
-                    limit: complaintsPerPage,
-                    skip: currentPage * complaintsPerPage - complaintsPerPage
-                })
-            } else {
-                getComplaints({})
-            }
+            getComplaints({
+                limit: complaintsPerPage,
+                skip: currentPage * complaintsPerPage - complaintsPerPage
+            })
         },
         [getComplaints, currentPage, complaintsPerPage]
     )
@@ -108,9 +107,11 @@ const ComplaintsList = ({
             <div className="ComplaintsHeader">
                 <h3>Your Complaints</h3>
             </div>
-            {content}
+            <div className="complaints-list-content-wrapper">
+                {content}
+            </div>
             {
-                (complaints.length < totalComplaints) && <Pagination
+                (complaintsPerPage < totalComplaints) && <Pagination
                     documentsPerPage={complaintsPerPage}
                     totalDocuments={totalComplaints}
                     paginate={paginate}

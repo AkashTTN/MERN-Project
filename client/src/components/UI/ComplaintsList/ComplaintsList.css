@@ -48,6 +48,10 @@
 	border-bottom: 1px solid #ccc;
 }
 
+.complaints-list-content-wrapper {
+	overflow: auto;
+}
+
 tbody > .ComplaintsListRow:last-child {
 	border-bottom: none;
 }
