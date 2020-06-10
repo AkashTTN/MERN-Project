@@ -2,14 +2,18 @@ import * as actionTypes from './actionTypes'
 import constants from '../../components/config/constants'
 import { removeAuthData } from './'
 
-export const getComplaints = ({ limit = 10, skip = 0 } = {}) => {
+export const getComplaints = ({ limit = 10, skip = 0, mode } = {}) => {
     return (dispatch, getState) => {
 
         dispatch({ type: actionTypes.GET_COMPLAINTS })
 
         const { token } = getState().authData
 
-        fetch(constants.SERVER_URL + `/user/complaints?limit=${limit}&skip=${skip}`, {
+        const endpoint = mode === 'resolved' 
+                                ? `/admin/complaints/all?limit=${limit}&skip=${skip}`
+                                : `/user/complaints?limit=${limit}&skip=${skip}`
+
+        fetch(constants.SERVER_URL + endpoint, {
             headers: {
                 'Authorization': 'bearer ' + token
             }

@@ -39,12 +39,12 @@ const Posts = ({
 
     const handleNext = useCallback(
         () => {
-            setCurrentPage((prevPage => prevPage + 1), getPosts({
+            setCurrentPage(prevPage => prevPage + 1, getPosts({
                 limit: postsPerPage,
                 skip: postsPerPage * currentPage - postsPerPage
             }))
         },
-        [setCurrentPage, getPosts, postsPerPage, currentPage]
+        [getPosts, postsPerPage, currentPage, setCurrentPage]
     )
 
     if (error) {

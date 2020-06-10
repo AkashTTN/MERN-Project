@@ -3,9 +3,7 @@ import reset from '../utils/reset'
 
 const initialState = {
     formConfigError: false,
-    submittedComplaint: null,
     complaintSubmitted: false,
-    submittedPost: null,
     postSubmitted: false,
     formConfig: null
 }
@@ -24,7 +22,6 @@ const reducer = (state = initialState, action) => {
         case actionTypes.SUBMIT_COMPLAINT_SUCCESS:
             return {
                 ...state,
-                submittedComplaint: action.payload,
                 complaintSubmitted: true
             }
 
@@ -43,7 +40,6 @@ const reducer = (state = initialState, action) => {
         case actionTypes.SUBMIT_POST_SUCCESS:
             return {
                 ...state,
-                submittedPost: action.payload.submittedPost,
                 postSubmitted: true
             }
 

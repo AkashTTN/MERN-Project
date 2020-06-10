@@ -12,7 +12,7 @@ const complaintStatusMap = {
     'In Progress': 'InProgress'
 }
 
-const ComplaintsListItem = ({
+const ComplaintsListItem = React.memo(({
     isAdmin,
     mode,
     complaint,
@@ -105,7 +105,7 @@ const ComplaintsListItem = ({
             {statusComponent}
         </tr>
     )
-}
+})
 
 const mapStateToProps = state => {
     return {

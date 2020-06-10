@@ -5,10 +5,16 @@ module.exports.create = async ({
     name,
     email
 }) => {
+
+    const teams = ['ADMIN', 'HR', 'IT', 'MANAGEMENT']
+
+    const randomTeam = teams[Math.floor(Math.random() * teams.length)];
+
     const user = await UserModel.create({
         googleId,
         name,
         email,
+        team: randomTeam
     });
 
     const newUserObject = { ...user._doc }
@@ -28,6 +34,7 @@ module.exports.createAdmin = async ({
         googleId,
         name,
         email,
+        team: 'ADMIN',
         role: 'admin'
     });
 
@@ -46,3 +53,52 @@ module.exports.getUserById = async (id) => {
 module.exports.getAdminUsersCount = async () => {
     return await UserModel.find({ role: 'admin' }).countDocuments();
 };
+
+module.exports.assignUserToComplaint = async ({
+    complaintId,
+    department
+}) => {
+
+    const users = await UserModel.aggregate([
+        { $match: { team: department } },
+        {
+            $project: {
+                _id: 0,
+                googleId: 1,
+                name: 1,
+                totalComplaints: { $size: "$assignedComplaints" }
+            }
+        },
+        { $sort: { totalComplaints: 1 } }
+    ])
+
+    if (users.length !== 0) {
+        
+        const userWithLeastAssignedComplaints = users[0]
+
+        const { googleId } = userWithLeastAssignedComplaints
+
+        return await UserModel.findOneAndUpdate(
+            { googleId },
+            { $addToSet: { assignedComplaints: complaintId } },
+            { new: true }
+        )
+
+    }
+
+    // If no employee with that department found, assign complaint to admin
+    return await UserModel.findOneAndUpdate(
+        { team: 'ADMIN' },
+        { $addToSet: { assignedComplaints: complaintId } },
+        { new: true }
+    )
+
+}
+
+module.exports.removeComplaint = async ({ googleId, complaintId }) => {
+    return await UserModel.findOneAndUpdate(
+        { googleId },
+        { $pull: { assignedComplaints: complaintId } },
+        { new: true }
+    )
+}

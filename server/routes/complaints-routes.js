@@ -66,7 +66,7 @@ router
 
     })
 
-    .post('/', generateUniqueId, upload.array('images'), async (req, res) => {
+    .post('/', generateUniqueId, upload.array('images'), async (req, res, next) => {
 
         // console.log('complaint request', req)
 

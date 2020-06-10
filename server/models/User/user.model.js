@@ -18,6 +18,11 @@ const userSchema = new Schema(
         role: {
             type: String,
             default: 'emplyoee'
+        },
+        team: String,
+        assignedComplaints: {
+            type: Array,
+            default: []
         }
     }
 );

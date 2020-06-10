@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes'
 import constants from '../../components/config/constants'
-import { removeAuthData } from './'
+import { removeAuthData, getComplaints, getPosts } from './'
 
 
 export const submitForm = ({ data, type } = {}) => {
@@ -32,15 +32,23 @@ export const submitForm = ({ data, type } = {}) => {
                 } else {
                     if (response.code === 200) {
                         if (type === 'Complaint') {
+
                             dispatch({
                                 type: actionTypes.SUBMIT_COMPLAINT_SUCCESS,
                                 payload: { submittedComplaint: data }
                             })
+
+                            dispatch(getComplaints({ mode: 'complaints' }))
+
                         } else {
+
                             dispatch({
                                 type: actionTypes.SUBMIT_POST_SUCCESS,
                                 payload: { submittedPost: data }
                             })
+
+                            // dispatch(getPosts())
+
                         }
                     } else {
                         throw new Error(response.message)

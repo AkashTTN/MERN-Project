@@ -29,8 +29,7 @@ const Form = ({
 
     let form = null
 
-    // reset formData on on changing form or when the component rerenders and if the form is submitted
-    useEffect(
+    const resetForm = useCallback(
         () => {
             setFormData({
                 department: '',
@@ -42,7 +41,27 @@ const Form = ({
             setNumFiles(0)
             setFiles('')
         },
-        [formType, postSubmitted, complaintSubmitted]
+        [setFormData, setNumFiles, setFiles]
+    )
+
+    // reset form on changing form type
+    useEffect(
+        () => {
+            resetForm()
+        },
+        [resetForm, formType]
+    )
+
+    // reset formData if formData is stored successfully
+    useEffect(
+        () => {
+
+            if (formType === 'Complaint' ? complaintSubmitted : postSubmitted) {
+                return resetForm()
+            }
+
+        },
+        [formType, postSubmitted, complaintSubmitted, resetForm]
     )
 
     const handleOnChange = useCallback(
@@ -120,10 +139,6 @@ const Form = ({
                                             )
                                         })) : null
                                     }
-                                    {/* <option value="ADMIN">Admin</option>
-                                    <option value="MANAGEMENT">Management</option>
-                                    <option value="HR">HR</option>
-                                    <option value="IT">IT</option> */}
                                 </select>
 
                             </div>
@@ -142,9 +157,6 @@ const Form = ({
                                             )
                                         })) : null
                                     }
-                                    {/* <option value="hardware">Hardware</option>
-                                    <option value="infrastructure">Infrastructure</option>
-                                    <option value="others">Others</option> */}
                                 </select>
                             </div>
                         </div>

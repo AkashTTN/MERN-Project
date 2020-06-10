@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { connect } from 'react-redux'
 
-import { getComplaints, getAllComplaints } from '../../../store/actions'
+import { getComplaints } from '../../../store/actions'
 
 import ComplaintsListItem from './ComplaintsListItem/ComplaintsListItem'
 import Pagination from '../../UI/Pagination/Pagination'
@@ -13,7 +13,7 @@ const ComplaintsList = ({
     complaints,
     totalComplaints,
     getComplaints,
-    complaintSubmitted,
+    // complaintSubmitted,
     errorComplaints,
     loading,
     mode
@@ -24,27 +24,41 @@ const ComplaintsList = ({
 
     const [currentPage, setCurrentPage] = useState(1)
         , [complaintsPerPage] = useState(5)
+        // , [complaintSubmitStatus, setComplaintSubmitStatus] = useState(complaintSubmitted)
 
-    useEffect(
-        () => {
-            if (complaintSubmitted) {
-                getComplaints({
-                    limit: complaintsPerPage,
-                    skip: currentPage * complaintsPerPage - complaintsPerPage
-                })
-            }
-        },
-        [getComplaints, complaintSubmitted, complaintsPerPage]
-    )
+    // useEffect(
+    //     () => {
+    //         // setComplaintSubmitStatus(complaintSubmitted, () => {
+    //             if (complaintSubmitted) {
+    //                 getComplaints({
+    //                     limit: complaintsPerPage,
+    //                     skip: currentPage * complaintsPerPage - complaintsPerPage,
+    //                     mode
+    //                 })
+    //             }
+    //             // setComplaintSubmitStatus(false)
+    //         // })
+    //     },
+    //     [
+    //         getComplaints,
+    //         mode,
+    //         // complaintSubmitStatus,
+    //         errorComplaints,
+    //         complaintSubmitted,
+    //         // setComplaintSubmitStatus,
+    //         complaintsPerPage
+    //     ]
+    // )
 
     useEffect(
         () => {
             getComplaints({
                 limit: complaintsPerPage,
-                skip: currentPage * complaintsPerPage - complaintsPerPage
+                skip: currentPage * complaintsPerPage - complaintsPerPage,
+                mode
             })
         },
-        [getComplaints, currentPage, complaintsPerPage]
+        [getComplaints, mode, currentPage, complaintsPerPage]
     )
 
     const paginate = useCallback(
@@ -133,12 +147,9 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = (dispatch, { mode }) => {
+const mapDispatchToProps = (dispatch) => {
     return {
-        getComplaints: (data) => {
-            if (mode === 'resolved') return dispatch(getAllComplaints(data))
-            dispatch(getComplaints(data))
-        }
+        getComplaints: (data) => dispatch(getComplaints(data))
     }
 }
 

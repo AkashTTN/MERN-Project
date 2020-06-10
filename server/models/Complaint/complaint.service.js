@@ -1,4 +1,5 @@
 const ComplaintModel = require('./complaint.model')
+const users = require('../User/user.controller')
 
 module.exports.create = async ({
     complaintId,
@@ -11,7 +12,7 @@ module.exports.create = async ({
     text
 }) => {
 
-    const complaint = await ComplaintModel.create({
+    await ComplaintModel.create({
         complaintId,
         status: 'Open',
         createdBy: { name, email, googleId },
@@ -21,8 +22,20 @@ module.exports.create = async ({
         text
     });
 
+    const assignedUser = await users.assignUserToComplaint({
+        complaintId,
+        department
+    })
+
+    const complaint = await this.assignComplaintToUser({
+        complaintId,
+        name: assignedUser.name,
+        googleId: assignedUser.googleId
+    })
+
     const newComplaintObject = { ...complaint._doc }
     delete newComplaintObject['_id']
+
     return {
         complaint: newComplaintObject
     };
@@ -30,12 +43,22 @@ module.exports.create = async ({
 }
 
 module.exports.changeStatusById = async ({ complaintId, status }) => {
+
     const response = await ComplaintModel.findOneAndUpdate(
         { complaintId },
         { $set: { status } },
         { new: true }
     )
     return response
+
+}
+
+module.exports.assignComplaintToUser = async ({ complaintId, name, googleId }) => {
+    return await ComplaintModel.findOneAndUpdate(
+        { complaintId },
+        { $set: { assignedTo: { name, googleId } } },
+        { new: true }
+    )
 }
 
 module.exports.getAllComplaints = async ({ limit, skip }) => {
@@ -84,9 +107,8 @@ module.exports.getAllComplaintsByUserId = async ({ id, limit, skip }) => {
                     { $limit: limit }
                 ],
                 "count": [
-                    {
-                        $count: "totalComplaints"
-                    }
+                    { $match: { "createdBy.googleId": id } },
+                    { $count: "totalComplaints" }
                 ]
             }
         }

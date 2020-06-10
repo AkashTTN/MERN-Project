@@ -17,3 +17,10 @@ module.exports.getAdminUsersCount = async () => {
     return await users.getAdminUsersCount();
 };
 
+module.exports.assignUserToComplaint = async (data) => {
+    return await users.assignUserToComplaint(data)
+}
+
+module.exports.removeComplaint = async (data) => {
+    return await users.removeComplaint(data)
+}

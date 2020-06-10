@@ -15,6 +15,10 @@ module.exports.getAllComplaints = async (data) => {
     return response
 }
 
+module.exports.assignComplaintToUser = async (data) => {
+    return await complaints.assignComplaint(data)
+}
+
 module.exports.getAllComplaintsByUserId = async (data) => {
     const response = await complaints.getAllComplaintsByUserId(data)
     return response
