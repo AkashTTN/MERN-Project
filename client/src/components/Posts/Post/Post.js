@@ -33,7 +33,7 @@ const Post = React.memo(({
                 <p id="PostCreatedMonth" >{month}</p>
             </div>
             <div className="PostContainerTwo">
-                <p id="PostUserEmail" >
+                <p id="PostUserData" >
                     {data.user.email}&nbsp;&middot;&nbsp;
                     {moment(data.createdAt).fromNow()}
                 </p>

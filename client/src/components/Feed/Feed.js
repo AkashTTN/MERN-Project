@@ -18,7 +18,6 @@ const Feed = React.memo(({
     getFormConfig,
     mode,
     user,
-    authError,
     isAuthenticated
 }) => {
 
@@ -128,7 +127,6 @@ const Feed = React.memo(({
 const mapStateToProps = state => {
     return {
         isAuthenticated: !!state.authData.token,
-        authError: state.authData.error,
         user: state.authData.user
     }
 }
