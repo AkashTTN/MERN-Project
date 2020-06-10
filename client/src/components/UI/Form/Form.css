@@ -140,7 +140,7 @@
 }
 
 .SubmitBuzz > button {
-	background-color: transparent;
+	background-color: #f7f7f7;
 	outline: none;
 	border: 1px solid #ccc;
 	padding: 5px 10px;
@@ -182,13 +182,14 @@
 	.BuzzFormFooter .image-attachment-overlay {
 		margin-left: 10px;
 	}
-
+	
 	.form-group {
 		flex-direction: column;
 	}
-
+	
 	.form-group > div:first-child {
 		margin-right: 0;
+		margin-bottom: 10px;
 	}
 	
 }

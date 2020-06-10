@@ -2,7 +2,7 @@ import * as actionTypes from './actionTypes'
 import constants from '../../components/config/constants'
 import { removeAuthData } from './'
 
-export const getComplaints = ({ limit = 10, skip = 0, mode } = {}) => {
+export const getComplaints = ({ limit = 5, skip = 0, mode } = {}) => {
     return (dispatch, getState) => {
 
         dispatch({ type: actionTypes.GET_COMPLAINTS })
