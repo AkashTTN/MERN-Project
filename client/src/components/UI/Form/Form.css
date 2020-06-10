@@ -26,10 +26,6 @@
 	margin: 10px;
 }
 
-.form-group:nth-last-child(2) {
-	justify-content: flex-end;
-}
-
 .form-group > div {
 	overflow: hidden;
 }
@@ -42,6 +38,10 @@
 
 .form-group > div:first-child {
 	margin-right: 10px;
+}
+
+.Form form > div:nth-last-child(2) {
+	flex-direction: row-reverse;
 }
 
 .Form form div:nth-child(4) {
@@ -84,10 +84,15 @@
 #ImageAttachment {
 	opacity: 0%;
 	width: 140px;
+	position: absolute;
+	margin-left: 16px;
+}
+
+.remove-file {
+	margin-right: 10px;
 }
 
 .form-group .image-attachment-overlay {
-	position: absolute;
 	flex-direction: row;
 	align-items: center;
 }
@@ -135,18 +140,22 @@
 }
 
 .SubmitBuzz > button {
-	position: absolute;
-	opacity: 0%;
-	width: 30px;
-	height: 20px;
-}
-
-.SubmitBuzz > i {
+	background-color: transparent;
+	outline: none;
+	border: 1px solid #ccc;
+	padding: 5px 10px;
 	color: #f4b585;
+	border-radius: 2px;
+	display: flex;
+	align-items: center;
 }
 
 .SubmitBuzz > button:hover {
 	cursor: pointer;
+}
+
+.SubmitBuzz > button > i {
+	margin-left: 10px;
 }
 
 .BuzzCategory {
@@ -157,4 +166,29 @@
 	border: none;
 	margin-right: 20px;
 	color: grey;
+}
+
+@media screen and (max-width: 420px) {
+	.BuzzFormFooter {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.SubmitBuzz {
+		margin-left: 10px;
+		padding: 10px 0;
+	}
+
+	.BuzzFormFooter .image-attachment-overlay {
+		margin-left: 10px;
+	}
+
+	.form-group {
+		flex-direction: column;
+	}
+
+	.form-group > div:first-child {
+		margin-right: 0;
+	}
+	
 }

@@ -1,5 +1,11 @@
 .Post {
 	padding: 10px;
+	border-bottom: 1px solid #ccc;
+	overflow: auto;
+}
+
+.Post:last-child {
+	border-bottom: none;
 }
 
 .PostContainerOne {
@@ -17,11 +23,11 @@
 }
 
 #PostCreatedMonth,
-#PostUserEmail {
+#PostUserData {
 	color: lightgrey;
 }
 
-#PostUserEmail {
+#PostUserData {
 	margin-bottom: 10px;
 }
 

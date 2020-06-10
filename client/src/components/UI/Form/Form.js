@@ -169,13 +169,13 @@ const Form = ({
                             <div className="image-attachment-overlay">
                                 {
                                     numFiles > 0
-                                        ? <i onClick={resetFile} className="far fa-times-circle"></i>
+                                        ? <i onClick={resetFile} className="remove-file far fa-times-circle"></i>
                                         : null
-                                }&nbsp;
+                                }
                                 <label htmlFor="myfile">Attachments{`(${numFiles})`}&nbsp;&nbsp;</label>
                                 <i className="far fa-image"></i>
+                                <input type="file" id="ImageAttachment" key={fileKey} onChange={handleOnFileUpload} name="image" multiple accept="image/*" />
                             </div>
-                            <input type="file" id="ImageAttachment" key={fileKey} onChange={handleOnFileUpload} name="image" multiple accept="image/*" />
                         </div>
 
                         <div className="form-group flex-container">
@@ -206,17 +206,18 @@ const Form = ({
                             <div className="image-attachment-overlay">
                                 <input type="file" onChange={handleOnFileUpload} key={fileKey} id="BuzzImageAttachment" name="image" accept="image/*" />
                                 <i className="far fa-image"></i>
+                                &nbsp;{`${numFiles === 0 ? '' : '(Uploaded)'}`}&nbsp;
+                                {
+                                    numFiles > 0
+                                        ? <i className="far fa-times-circle" onClick={resetFile}></i>
+                                        : null
+                                }
                             </div>
-                            &nbsp;{`${numFiles === 0 ? '' : '(Uploaded)'}`}&nbsp;
-                            {
-                                numFiles > 0
-                                    ? <i className="far fa-times-circle" onClick={resetFile}></i>
-                                    : null
-                            }
-
                             <div className="SubmitBuzz flex-container">
-                                <button type="submit"></button>
-                                <i className="fas fa-caret-right"></i>
+                                <button type="submit">
+                                    Post
+                                    <i className="fas fa-caret-right"></i>
+                                </button>
                             </div>
 
                         </div>

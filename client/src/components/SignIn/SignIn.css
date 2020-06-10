@@ -1,37 +1,43 @@
 .flex-container {
-    display: flex;
+	display: flex;
 }
 
 .SignIn {
-    height: 100vh;
-    background: url('../../assets/images/signin-page-image.jpg') no-repeat center center/cover;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+	height: 100vh;
+	background: url('../../assets/images/signin-page-image.jpg') no-repeat center center/cover;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .SignInContent {
-    padding: 20px 100px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 2px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+	padding: 20px 100px;
+	background: rgba(255, 255, 255, 0.9);
+	border-radius: 2px;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .SignInContent p {
-    margin: 20px;
-    font-size: large;
-    color: #9c9c9c;
+	margin: 20px;
+	font-size: large;
+	color: #9c9c9c;
 }
 
 .SignInGoogle button {
-    color: white;
-    background-color: #e04b3a;
-    padding: 10px 40px;
-    border: none;
-    border-radius: 2px;
-    font-weight: bold;
-    font-size: large;
-    cursor: pointer;
+	color: white;
+	background-color: #e04b3a;
+	padding: 10px 40px;
+	border: none;
+	border-radius: 2px;
+	font-weight: bold;
+	font-size: large;
+	cursor: pointer;
+}
+
+@media screen and (max-width: 500px) {
+	.SignInContent {
+		padding: 20px;
+	}
 }

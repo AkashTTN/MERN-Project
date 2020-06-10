@@ -14,11 +14,3 @@
 	padding: 10px;
 	background-color: #f2f2f2;
 }
-
-.Posts > div {
-	border-bottom: 1px solid #ccc;
-}
-
-.Posts > div:last-child {
-	border-bottom: none;
-}
