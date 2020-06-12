@@ -1,13 +1,29 @@
 .Complaint {
     padding: 20px 40px;
 }
-
-.Complaint > button {
+.Complaint > button,
+.ComplaintDetailsEditButtons > button {
     padding: 10px 30px;
     outline: none;
-    background-color: transparent;
+    background-color: white;
     font-size: 16px;
     cursor: pointer;
+    margin-bottom: 20px;
+    color: orange;
+    border-radius: 2px;
+    border: 1px solid #ccc;
+}
+
+.Complaint > button:hover,
+.ComplaintDetailsEditButtons > button:hover {
+    background-color: #f3eded;
+}
+
+.ComplaintDetails {
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding: 10px;
+    background-color: white;
     margin-bottom: 20px;
 }
 
@@ -15,6 +31,19 @@
     margin-bottom: 10px;
 }
 
-.ComplaintDetails > p {
+.ComplaintDetails > h3 > i {
+    color: grey;
+}
+
+.ComplaintDetails > h3 > i:hover {
+    color: orange;
+}
+
+.ComplaintDetails > p,
+.ComplaintImages > p {
     margin-bottom: 10px;
+}
+
+.ComplaintDetails > p:last-child {
+    margin-bottom: 0;
 }

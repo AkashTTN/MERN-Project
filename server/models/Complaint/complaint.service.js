@@ -1,5 +1,5 @@
 const ComplaintModel = require('./complaint.model')
-const users = require('../User/user.controller')
+const users = require('../User/user.controller');
 
 module.exports.create = async ({
     complaintId,
@@ -118,6 +118,11 @@ module.exports.getAllComplaintsByUserId = async ({ id, limit, skip }) => {
 
 }
 
+module.exports.getComplaintById = async ({ complaintId }) => {
+    const response = await ComplaintModel.find({ complaintId }, { _id: 0 })
+    return response[0]
+}
+
 module.exports.getComplaintsCount = async () => {
     const numberOfComplaints = await ComplaintModel.countDocuments().exec()
     return numberOfComplaints
@@ -128,4 +133,13 @@ module.exports.getComplaintsCountById = async (id) => {
         { "createdBy.googleId": id }
     ).exec()
     return numberOfComplaints
+}
+
+module.exports.updateComplaint = async ({ complaintId, concernText }) => {
+    console.log(complaintId, concernText)
+    return await ComplaintModel.findOneAndUpdate(
+        { complaintId },
+        { $set: { text: concernText } },
+        { new: true }
+    )
 }

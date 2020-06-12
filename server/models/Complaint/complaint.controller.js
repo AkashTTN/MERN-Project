@@ -33,3 +33,11 @@ module.exports.getComplaintsCountById = async (id) => {
     const response = await complaints.getComplaintsCountById(id)
     return response
 }
+
+module.exports.getComplaintById = async (data) => {
+    return await complaints.getComplaintById(data)
+}
+
+module.exports.updateComplaint = async (data) => {
+    return await complaints.updateComplaint(data)
+}

@@ -1,13 +1,15 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 
 import { removeAuthData, setAuthData, getFormConfig } from '../../store/actions'
+import fetchImage from '../utils/fetchImage'
 
 import NavList from '../NavList/NavList';
 import Form from "../UI/Form/Form";
 import Posts from "../Posts/Posts";
 import ComplaintsList from '../UI/ComplaintsList/ComplaintsList'
+import Profile from '../Profile/Profile';
 
 import './Feed.css'
 import logo from '../../assets/images/ttn-logo.png'
@@ -22,6 +24,7 @@ const Feed = React.memo(({
 }) => {
 
     const [redirect, setRedirect] = useState(false)
+    const [profilePicUrl, setProfilePicUrl] = useState('')
 
     let feed = null
     let feedBodyContent = null
@@ -44,7 +47,7 @@ const Feed = React.memo(({
                 </>
             )
             break
-        
+
         case 'resolved':
             feedBodyContent = (
                 <>
@@ -53,9 +56,26 @@ const Feed = React.memo(({
             )
             break
 
+        case 'profile':
+            feedBodyContent = (
+                <>
+                    <Profile user={user} profilePicUrl={profilePicUrl} />
+                </>
+            )
+            break
+
         default: feedBodyContent = <p>Incorrect feed mode.</p>
 
     }
+
+    useEffect(() => {
+        if (user) {
+            (async function () {
+                const image = await fetchImage(user.profilePicture)
+                setProfilePicUrl(image)
+            })()
+        }
+    }, [setProfilePicUrl, user])
 
     // with redux
     useEffect(
@@ -90,25 +110,46 @@ const Feed = React.memo(({
             <>
                 <div className="FeedHeader">
                     <div className="Logout flex-container">
+                        <Link
+                            to="/profile"
+                        >
+                            <img className="ProfileImage" src={profilePicUrl} alt="profile" />
+                        </Link>
+                        <span className="FeedHeaderGreeting">{`Hi ${user.name.split(' ')[0]}!`}</span>
                         <button className="LogoutButton" onClick={logoutHandler}>
                             Logout <i className="fas fa-sign-out-alt"></i>
                         </button>
                     </div>
-                    <div className="FeedHeaderImage flex-container darken">
-                        {
-                            mode === 'buzz'
-                                ? <p>POSTING YOUR THOUGHTS</p>
-                                : <p>CREATING BUZZ AROUND YOU</p>
-                        }
-                        <p>NEVER BEEN SO EASY..</p>
-                    </div>
-                    <img className="FeedHeaderLogo" src={logo} alt="TTN-Logo" />
+                    {
+                        mode !== 'profile'
+                        &&
+                        <div className="FeedHeaderImage flex-container darken">
+                            {
+                                mode === 'buzz'
+                                    ? <p>POSTING YOUR THOUGHTS</p>
+                                    : <p>CREATING BUZZ AROUND YOU</p>
+                            }
+                            <p>NEVER BEEN SO EASY..</p>
+                        </div>
+                    }
+                    <a href="/buzz">
+                        <img className="FeedHeaderLogo" src={logo} alt="TTN-Logo" />
+                    </a>
                 </div>
                 <div className="FeedBody flex-container">
-                    <div className="FeedBodyNav" >
-                        <NavList isAdmin={user.role === 'admin'} />
-                    </div>
-                    <div className="FeedBodyContent">
+                    {
+                        mode !== 'profile'
+                        &&
+                        <div className="FeedBodyNav" >
+                            <NavList isAdmin={user.role === 'admin'} />
+                            <p>
+                                &copy; 2020 To The New Digital
+                                <a href="/help">Help</a>
+                                <a href="/about-us">About</a>
+                            </p>
+                        </div>
+                    }
+                    <div className={mode === 'profile' ? 'flex-100' : 'flex-80'}>
                         {feedBodyContent}
                     </div>
                 </div>

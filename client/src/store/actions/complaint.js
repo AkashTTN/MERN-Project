@@ -9,9 +9,9 @@ export const getComplaints = ({ limit = 5, skip = 0, mode } = {}) => {
 
         const { token } = getState().authData
 
-        const endpoint = mode === 'resolved' 
-                                ? `/admin/complaints/all?limit=${limit}&skip=${skip}`
-                                : `/user/complaints?limit=${limit}&skip=${skip}`
+        const endpoint = mode === 'resolved'
+            ? `/admin/complaints/all?limit=${limit}&skip=${skip}`
+            : `/user/complaints?limit=${limit}&skip=${skip}`
 
         fetch(constants.SERVER_URL + endpoint, {
             headers: {
@@ -111,6 +111,41 @@ export const changeComplaintStatus = ({ complaintId, status }) => {
                 console.log(err)
                 dispatch({ type: actionTypes.CHANGE_COMPLAINT_STATUS_FAILED })
             })
+    }
+}
+
+export const updateComplaint = ({ complaintId, concernText }) => {
+    return (dispatch, getState) => {
+
+        dispatch({ type: actionTypes.UPDATE_COMPLAINT })
+
+        const { token } = getState().authData
+        const endpoint = `/user/complaints/${complaintId}`
+        fetch(constants.SERVER_URL + endpoint, {
+            method: 'PATCH',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': 'bearer ' + token
+            },
+            body: JSON.stringify({ concernText })
+        })
+            .then(res => res.json())
+            .then(response => {
+                if (response.code === 200) {
+                    return dispatch({
+                        type: actionTypes.UPDATE_COMPLAINT_SUCCESS,
+                        payload: {
+                            complaint: response.data.updatedComplaint
+                        }
+                    })
+                }
+                throw new Error(response.message)
+            })
+            .catch(err => {
+                console.log(err)
+                dispatch({ type: actionTypes.UPDATE_COMPLAINT_FAILED })
+            })
+
     }
 }
 

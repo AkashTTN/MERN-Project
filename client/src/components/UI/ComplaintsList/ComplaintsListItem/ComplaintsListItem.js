@@ -59,9 +59,6 @@ const ComplaintsListItem = React.memo(({
                             )
                         }) : null
                     }
-                    {/* <option className={inputClasses.Black} value="Open">Open</option>
-                    <option className={inputClasses.Black} value="Resolved">Resolved</option>
-                    <option className={inputClasses.Black} value="In Progress">In Progress</option> */}
                 </select>
             </td>
         )

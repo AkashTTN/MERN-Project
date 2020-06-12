@@ -9,6 +9,6 @@
     border-bottom: 1px solid #e2e3e5;
 }
 
-.NavList > a:last-child {
+.NavList > li:last-child {
     border-bottom: none;
 }

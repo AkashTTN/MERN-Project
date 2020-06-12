@@ -6,7 +6,6 @@ const fs = require('fs')
 
 const complaints = require('../models/Complaint/complaint.controller')
 const generateUniqueId = require('../middlewares/generateUniqueId')
-const isAdmin = require('../middlewares/isAdmin')
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -68,41 +67,40 @@ router
 
     .post('/', generateUniqueId, upload.array('images'), async (req, res, next) => {
 
-        // console.log('complaint request', req)
-
-        const {
-            concernText,
-            issueTitle,
-            department,
-            email,
-            name } = JSON.parse(req.body.data)
-
-        if (!concernText || concernText.trim().length === 0) {
-            return res.status(200).json(
-                response(false, 406, "Cannot create a complaint with empty text")
-            )
-        }
-
-        let imageUrlArray = []
-
-        if (req.files) {
-            req.files.forEach((file) => {
-                imageUrlArray.push(`http://localhost:4000/user/${file.path}`)
-            })
-        }
-
-        const data = {
-            complaintId: req.uniqueId,
-            imageUrl: imageUrlArray,
-            text: concernText,
-            googleId: req.user.authData.userID,
-            email,
-            issueTitle,
-            department,
-            name
-        }
-
         try {
+            
+            const {
+                concernText,
+                issueTitle,
+                department,
+                email,
+                name } = JSON.parse(req.body.data)
+
+            if (!concernText || concernText.trim().length === 0) {
+                return res.status(200).json(
+                    response(false, 406, "Cannot create a complaint with empty text")
+                )
+            }
+
+            let imageUrlArray = []
+
+            if (req.files) {
+                req.files.forEach((file) => {
+                    imageUrlArray.push(`http://localhost:4000/user/${file.path}`)
+                })
+            }
+
+            const data = {
+                complaintId: req.uniqueId,
+                imageUrl: imageUrlArray,
+                text: concernText,
+                googleId: req.user.authData.userID,
+                email,
+                issueTitle,
+                department,
+                name
+            }
+
 
             const complaint = await complaints.create(data)
 
@@ -116,37 +114,54 @@ router
 
     })
 
-    .patch('/:complaintId', isAdmin, async (req, res) => {
-
-        const complaintId = req.params.complaintId
-        const status = req.query.status
-
-        if (complaintId.trim().length === 0) {
-            return res.status(200).json(response(false, 406, 'Complaint ID required'))
-        }
-
-        if (!status) {
-            return res.status(200).json(
-                response(false, 406, 'Updated Complaint status required')
-            )
-        }
+    .patch('/:complaintId', async (req, res, next) => {
 
         try {
 
-            const complaint = await complaints.changeStatusById({ complaintId, status })
+            const { complaintId } = req.params
+            const { concernText } = req.body
 
-            if (complaint.status === status) {
-                res.status(200).json(
+            if (!concernText || concernText.trim().length === 0) {
+                return res.status(200).json(
+                    response(false, 406, "Complaint with empty text not allowed")
+                )
+            }
+
+            const complaint = await complaints.getComplaintById({ complaintId })
+
+            console.log(complaint)
+            if (complaint.status === 'Resolved') {
+                return res.status(200).json(
+                    response(
+                        false,
+                        406,
+                        'Cannot edit a resolved complaint.'
+                    )
+                )
+            }
+
+            const updatedComplaint = await complaints.updateComplaint({
+                complaintId, concernText
+            })
+            console.log('updated', updatedComplaint)
+            if (updatedComplaint.text === concernText) {
+                return res.status(200).json(
                     response(
                         true,
                         200,
-                        'Complaint status changed',
-                        { complaint: { updatedStatus: status } }
+                        'Complaint updated successfully',
+                        { updatedComplaint }
                     )
                 )
-            } else {
-                res.status(200).json(response(false, 406, 'Complaint status unchanged'))
             }
+
+            return res.status(200).json(
+                response(
+                    false,
+                    406,
+                    'Complaint update unsuccessful',
+                )
+            )
 
         } catch (error) {
             next(error)

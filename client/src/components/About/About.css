@@ -1,0 +1,29 @@
+.mb-15 {
+    margin-bottom: 15px;
+}
+
+.About {
+    padding: 20px 40px;
+}
+
+.BannerImage {
+    text-align: center;
+    padding-top: 15px;
+}
+
+.ContentContainer {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    background-color: white;
+}
+
+.content {
+    text-align: justify;
+    line-height: 1.5rem;
+}
+
+.heading {
+    text-align: center;
+    margin-bottom: 15px;
+}

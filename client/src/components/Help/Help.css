@@ -1,0 +1,88 @@
+.text-center {
+    text-align: center;
+}
+
+.fs-30 {
+    font-size: 30px;
+}
+
+.Help {
+    padding: 20px 40px;
+}
+
+.Offices > h3 {
+    font-weight: unset;
+}
+
+.Email {
+    text-align: center;
+    background-color: #f9f7f1;
+}
+
+.EmailText {
+    margin-bottom: 20px;
+}
+
+.Email > i {
+    color: #f4b585;
+}
+
+.Email > div > a {
+    cursor: pointer;
+    text-decoration: none;
+    background: #f7f7f7;
+    color: #f4b585;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.Email > div > a:hover {
+    background-color: #f3eded;
+}
+
+
+.Help > .ContentContainer > .ContentSection {
+    padding: 20px 15px;
+}
+.Help > .ContentContainer {
+    padding: 0;
+}
+
+.Help > .ContentContainer > section {
+    border-bottom: 1px solid #ccc;
+}
+
+.Help > .ContentContainer > section:last-child {
+    border-bottom: none;
+}
+
+.SocialMediaList {
+    display: flex;
+    list-style: none;
+    justify-content: center;
+}
+
+.SocialMediaListItem {
+    margin-right: 20px;
+}
+
+.SocialMediaListItem:last-child {
+    margin-right: 0;
+}
+
+.SocialMediaListItem > a {
+    color: #f4b585;
+    cursor: pointer;
+}
+
+
+.SocialMediaListItem > a:hover {
+    color: black;
+}
+
+.SocialMediaListItem:hover {
+    transform: translateY(-10px);
+    transition: all .3s;
+}

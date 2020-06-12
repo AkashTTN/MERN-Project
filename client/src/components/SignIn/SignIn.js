@@ -6,9 +6,13 @@ import constants from '../config/constants'
 import { setAuthData, getFormConfig } from '../../store/actions'
 
 import './SignIn.css'
-import logo from '../../assets/images/ttn-logo.png'
+import logo from '../../assets/images/ttn-logo-transparent.png'
 
-const SignIn = ({ history, isAuthenticated, setAuthData, getFormConfig }) => {
+const SignIn = ({
+    history,
+    isAuthenticated,
+    setAuthData,
+    getFormConfig }) => {
 
     useEffect(
         () => {
@@ -45,9 +49,10 @@ const SignIn = ({ history, isAuthenticated, setAuthData, getFormConfig }) => {
         isAuthenticated
             ? <Redirect to="/buzz" />
             : <div className="SignIn flex-container">
+                <div className="backdrop"></div>
                 <div className="SignInContent flex-container">
                     <img src={logo} alt="TTN-Logo" />
-                    <p>Creat Your Own Buzz</p>
+                    <p>Create Your Own Buzz</p>
                     <form className="SignInGoogle" action={constants.SERVER_URL + '/auth/google'} method="GET">
                         <button type="submit">
                             <i className="fab fa-google"></i>

@@ -1,0 +1,64 @@
+.Profile,
+.ProfileDetails {
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.Profile {
+	margin-top: 40px;
+}
+
+.ProfileDetails {
+    border: 1px solid orange;
+    border-radius: 2px;
+	background-color: white;
+	padding: 30px;
+}
+
+.Profile > button {
+	padding: 10px 30px;
+    outline: none;
+    background-color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    color: orange;
+    border-radius: 2px;
+    border: 1px solid #ccc;
+}
+
+.Profile > button:hover {
+    background-color: #f3eded;
+}
+
+.Profile > img {
+	position: relative;
+	top: 20px;
+	height: 60px;
+	border-radius: 50%;
+	box-shadow: 0 0 10px grey;
+}
+
+.ProfileDetails,
+.ProfileDetails > p {
+	padding-bottom: 15px;
+}
+
+.ProfileDetails > p:nth-child(odd) {
+	font-weight: bold;
+}
+
+.ProfileDetails > p:first-child {
+	padding-top: 40px;
+}
+
+@media only screen and (max-width: 420px) {
+	.Profile {
+		margin-top: 0;
+	}
+} 
+
+.filler {
+	height: 100px;
+}

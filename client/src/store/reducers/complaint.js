@@ -5,7 +5,8 @@ const initialState = {
     complaints: [],
     error: false,
     loading: false,
-    totalComplaints: 0
+    totalComplaints: 0,
+    complaintUpdated: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -13,12 +14,11 @@ const reducer = (state = initialState, action) => {
 
         case actionTypes.SIGN_OUT_SUCCESS: return reset(initialState)
 
-        case actionTypes.CHANGE_COMPLAINT_STATUS:
-            return state
+        case actionTypes.CHANGE_COMPLAINT_STATUS: return state
 
         case actionTypes.CHANGE_COMPLAINT_STATUS_SUCCESS:
 
-            const updatedComplaints = state.complaints.map((complaint) => {
+            let updatedComplaints = state.complaints.map((complaint) => {
                 if (complaint.complaintId === action.payload.complaintId) {
                     return {
                         ...complaint,
@@ -54,6 +54,29 @@ const reducer = (state = initialState, action) => {
                 error: true,
                 loading: false
             }
+
+        case actionTypes.UPDATE_COMPLAINT: return { ...state, complaintUpdated: false }
+
+        case actionTypes.UPDATE_COMPLAINT_SUCCESS:
+
+            const updatedComplaintsObject = state.complaints.map((complaint) => {
+
+                if (
+                    complaint.complaintId === action.payload.complaint.complaintId
+                ) {
+                    return action.payload.complaint
+                }
+
+                return complaint
+            })
+
+            return {
+                ...state,
+                complaintUpdated: true,
+                complaints: updatedComplaintsObject
+            }
+
+        case actionTypes.UPDATE_COMPLAINT_FAILED: return state
 
         default: return state
     }

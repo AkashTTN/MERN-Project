@@ -42,7 +42,8 @@ router.get('/google/redirect',
             user = await users.create({
                 googleId: req.user.id,
                 name: req.user.displayName,
-                email: req.user.emails[0].value
+                email: req.user.emails[0].value,
+                profilePicture: req.user._json.picture
             })
             userID = user.googleId
         }

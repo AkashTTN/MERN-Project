@@ -4,10 +4,17 @@
 
 .SignIn {
 	height: 100vh;
-	background: url('../../assets/images/signin-page-image.jpg') no-repeat center center/cover;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+}
+
+.backdrop {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: url('../../assets/images/signin-page-image.jpg') no-repeat center center/cover;
+	filter: blur(3px);
 }
 
 .SignInContent {
@@ -17,6 +24,7 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	backdrop-filter: blur(6px);
 }
 
 .SignInContent p {

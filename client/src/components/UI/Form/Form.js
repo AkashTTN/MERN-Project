@@ -66,11 +66,16 @@ const Form = ({
 
     const handleOnChange = useCallback(
         (e) => {
-            // console.log('changed', e.target.name, 'value', e.target.value)
-            const newFormData = { ...formData, [e.target.name]: e.target.value }
-            setFormData(newFormData)
+
+            const newFormData = { [e.target.name]: e.target.value }
+
+            setFormData((prevFormData => ({
+                ...prevFormData,
+                ...newFormData
+            })))
+            
         },
-        [formData, setFormData]
+        [setFormData]
     )
 
     const handleOnFileUpload = useCallback(

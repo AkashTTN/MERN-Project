@@ -3,7 +3,8 @@ const UserModel = require('./user.model');
 module.exports.create = async ({
     googleId,
     name,
-    email
+    email,
+    profilePicture
 }) => {
 
     const teams = ['ADMIN', 'HR', 'IT', 'MANAGEMENT']
@@ -14,6 +15,7 @@ module.exports.create = async ({
         googleId,
         name,
         email,
+        profilePicture,
         team: randomTeam
     });
 

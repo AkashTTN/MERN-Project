@@ -6,6 +6,11 @@ import LikeDislike from '../../LikeDislike/LikeDislike'
 
 import './Post.css'
 
+function format(number) {
+    if(number <= 9) return '0'+number
+    return number
+}
+
 const Post = React.memo(({ 
     data, 
     likeStatus, 
@@ -16,8 +21,8 @@ const Post = React.memo(({
 }) => {
 
     const date = new Date(data.createdAt)
-    const day = date.getDate()
-    const month = date.getMonth() + 1
+    const day = format(date.getDate()) 
+    const month = format(date.getMonth() + 1)
 
     const onChangeHandler = useCallback(
         (params) => {

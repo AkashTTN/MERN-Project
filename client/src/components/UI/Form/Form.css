@@ -59,6 +59,7 @@
 
 #SubmitComplaint:hover {
 	cursor: pointer;
+	background-color: #f3eded;
 }
 
 .ComplaintField {
@@ -152,6 +153,7 @@
 
 .SubmitBuzz > button:hover {
 	cursor: pointer;
+	background-color: #f3eded;
 }
 
 .SubmitBuzz > button > i {
@@ -182,14 +184,13 @@
 	.BuzzFormFooter .image-attachment-overlay {
 		margin-left: 10px;
 	}
-	
+
 	.form-group {
 		flex-direction: column;
 	}
-	
+
 	.form-group > div:first-child {
 		margin-right: 0;
 		margin-bottom: 10px;
 	}
-	
 }

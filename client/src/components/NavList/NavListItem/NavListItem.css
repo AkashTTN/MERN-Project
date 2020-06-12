@@ -1,13 +1,23 @@
 .NavListItem {
-    color: #ccc;
-    padding: 15px 20px;
-    flex-direction: row;
-    justify-content: space-between;
-    text-decoration: none;
+	color: #ccc;
+	padding: 15px 20px;
+	flex-direction: row;
+	justify-content: space-between;
+	text-decoration: none;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e2e3e5;
+}
+
+.active {
+    color: #f4b585;
 }
 
 .NavListItem:hover,
 .NavListItem i:hover {
-    color: #f4b585;
-    cursor: pointer;
+	color: #f4b585;
+	cursor: pointer;
+	transform: translateX(10px);
+	transition: all .3s;
 }

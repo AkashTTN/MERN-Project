@@ -17,8 +17,9 @@ const userSchema = new Schema(
         },
         role: {
             type: String,
-            default: 'emplyoee'
+            default: 'employee'
         },
+        profilePicture: String,
         team: String,
         assignedComplaints: {
             type: Array,

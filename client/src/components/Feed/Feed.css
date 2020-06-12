@@ -1,10 +1,10 @@
+.flex-100 {
+	flex: 1;
+}
+
 .darken {
 	background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)),
 		url(/static/media/feed-header-image.99848743.jpg);
-}
-
-.Feed {
-	background-color: #f4f8fb;
 }
 
 .Feed > p {
@@ -17,6 +17,10 @@
 	padding-top: 10px;
 	margin-bottom: 20px;
 	position: relative;
+}
+
+.FeedHeaderGreeting {
+	margin-right: 15px;
 }
 
 .FeedHeaderImage {
@@ -51,7 +55,27 @@
 	margin-right: 20px;
 }
 
-.FeedBodyContent {
+.FeedBodyNav > p {
+	color: #ccc;
+	margin-top: 10px;
+	font-size: 12px;
+}
+
+.FeedBodyNav > p > a {
+	float: right;
+	text-decoration: none;
+}
+
+.FeedBodyNav > p > a:hover,
+.FeedBodyNav > p > a:active {
+	color: orange;
+}
+
+.FeedBodyNav > p > a:last-child {
+	margin-right: 10px;
+}
+
+.flex-80 {
 	flex: .8;
 }
 
@@ -74,6 +98,23 @@
 	color: #f4b585;
 	background-color: transparent;
 	cursor: pointer;
+}
+
+.ProfileImage {
+	height: 30px;
+	border-radius: 50%;
+	margin-right: 15px;
+}
+
+@media only screen and (max-width: 420px) {
+	.Logout {
+		flex-direction: column;
+		align-items: flex-end;
+	}
+
+	.Logout > * {
+		margin-bottom: 5px;
+	}
 }
 
 @media only screen and (max-width: 950px) {

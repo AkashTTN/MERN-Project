@@ -1,0 +1,26 @@
+.CardImage {
+    margin-right: 15px;
+}
+
+.CardTitle {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.Card {
+    align-items: center;
+    flex: 1 1 25%;
+    margin-right: 15px;
+}
+
+@media only screen and (max-width: 780px) {
+    .Card {
+        flex-basis: 40%;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .Card {
+        flex-basis: 50%;
+    }
+}
