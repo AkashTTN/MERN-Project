@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { connect, useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 
 import Images from '../UI/Images/Images'

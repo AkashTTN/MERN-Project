@@ -4,6 +4,7 @@ const passport = require('passport')
 const cors = require('cors')
 const flash = require('connect-flash')
 const mongoose = require('mongoose')
+const cloudinary = require('cloudinary').v2;
 
 // importing middlerwares
 const isAuthenticated = require('./middlewares/isAuthenticated')
@@ -22,6 +23,7 @@ const initializeUIConfig = require('./seeds/uiConfig')
 const setAdmin = require('./seeds/setAdmin')
 
 const constants = require('./config/constants')
+const config = require('./config/config')
 
 // connecting to our database
 mongoose.connect(constants.db.url, {
@@ -48,6 +50,12 @@ mongoose.connection.on("open", (err, res) => {
     } catch (error) {
         throw new Error(error)
     }
+});
+
+cloudinary.config({
+    cloud_name: config.cloudinary.cloudName,
+    api_key: config.cloudinary.apiKey,
+    api_secret: config.cloudinary.secret
 });
 
 /**

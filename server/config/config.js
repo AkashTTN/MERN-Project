@@ -11,6 +11,11 @@ const config = {
             // allow google users with only this domain
             GOOGLE_USER_HOST_DOMAIN: 'tothenew.com',
         },
+        cloudinary: {
+            cloudName: 'ttnd-buzz',
+            apiKey: '996147277686277',
+            secret: 'BYSpdv-ByP6NIvf5N1ZPElNiCN0'
+        },
         jwt: {
             secret: 'sh'
         }

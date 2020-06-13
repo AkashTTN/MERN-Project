@@ -7,7 +7,7 @@ const Card = ({ content, title, image }) => {
         <div className="Card flex-container mb-15">
             {
                 image &&
-                <img className="CardImage" src={image}></img>
+                <img className="CardImage" src={image} alt={title}></img>
             }
             <div>
                 <p className="CardTitle">{title}</p>

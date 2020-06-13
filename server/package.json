@@ -12,6 +12,7 @@
   "author": "Akash",
   "license": "ISC",
   "dependencies": {
+    "cloudinary": "^1.22.0",
     "connect-flash": "^0.1.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",

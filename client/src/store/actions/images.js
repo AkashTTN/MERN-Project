@@ -1,7 +1,7 @@
 import * as actionTypes from './actionTypes'
 
 export const getImages = ({ imageUrl, type, buzzId = null }) => {
-    return (dispatch, getState) => {
+    return (dispatch) => {
 
         if (type === 'complaint') {
             dispatch({ type: actionTypes.GET_COMPLAINT_IMAGES })
@@ -12,15 +12,9 @@ export const getImages = ({ imageUrl, type, buzzId = null }) => {
             }
         }
 
-        const { token } = getState().authData
-
         let localImageUrlArray = imageUrl.map(async (item) => {
 
-            let localUrl = await fetch(item, {
-                headers: {
-                    'Authorization': 'bearer ' + token
-                }
-            })
+            let localUrl = await fetch(item)
                 .then(res => res.blob())
                 .then(image => {
                     return URL.createObjectURL(image)

@@ -3,6 +3,7 @@ const router = express.Router()
 const response = require('v-response').ApiResponse
 const multer = require('multer')
 const fs = require('fs')
+const cloudinary = require('cloudinary').v2;
 
 const complaints = require('../models/Complaint/complaint.controller')
 const generateUniqueId = require('../middlewares/generateUniqueId')
@@ -68,7 +69,7 @@ router
     .post('/', generateUniqueId, upload.array('images'), async (req, res, next) => {
 
         try {
-            
+
             const {
                 concernText,
                 issueTitle,
@@ -85,28 +86,65 @@ router
             let imageUrlArray = []
 
             if (req.files) {
-                req.files.forEach((file) => {
-                    imageUrlArray.push(`http://localhost:4000/user/${file.path}`)
+                req.files.forEach(async (file) => {
+                    cloudinary.uploader.upload(file.path,
+                        {
+                            public_id: file.path,
+                            overwrite: false
+                        },
+                        async function (error, result) {
+
+                            if (error) {
+                                next(error)
+                            }
+
+                            fs.rmdir(file.path,
+                                { recursive: true },
+                                (err) => {
+                                    if (err) console.log('Uploaded file needs to be removed from server.', err);
+                                });
+
+                            imageUrlArray.push(result.url)
+                            // imageUrlArray.push(`http://localhost:4000/user/${file.path}`)
+
+                            const data = {
+                                complaintId: req.uniqueId,
+                                imageUrl: imageUrlArray,
+                                text: concernText,
+                                googleId: req.user.authData.userID,
+                                email,
+                                issueTitle,
+                                department,
+                                name
+                            }
+
+
+                            const complaint = await complaints.create(data)
+
+                            return res.status(200).json(
+                                response(true, 200, "Complaint created successfully", complaint)
+                            )
+                        });
                 })
+            } else {
+                const data = {
+                    complaintId: req.uniqueId,
+                    imageUrl: imageUrlArray,
+                    text: concernText,
+                    googleId: req.user.authData.userID,
+                    email,
+                    issueTitle,
+                    department,
+                    name
+                }
+
+                const complaint = await complaints.create(data)
+
+                return res.status(200).json(
+                    response(true, 200, "Complaint created successfully", complaint)
+                )
             }
 
-            const data = {
-                complaintId: req.uniqueId,
-                imageUrl: imageUrlArray,
-                text: concernText,
-                googleId: req.user.authData.userID,
-                email,
-                issueTitle,
-                department,
-                name
-            }
-
-
-            const complaint = await complaints.create(data)
-
-            return res.status(200).json(
-                response(true, 200, "Complaint created successfully", complaint)
-            )
 
         } catch (error) {
             next(error)
