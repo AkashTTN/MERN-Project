@@ -32,7 +32,7 @@ module.exports.create = async ({
         name: assignedUser.name,
         googleId: assignedUser.googleId
     })
-
+    
     const newComplaintObject = { ...complaint._doc }
     delete newComplaintObject['_id']
 

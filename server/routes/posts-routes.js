@@ -74,7 +74,8 @@ router
 
             let imageUrlArray = []
 
-            if (req.files) {
+            if (req.files.length !== 0) {
+
                 req.files.forEach((file) => {
                     // imageUrlArray.push(`http://localhost:4000/user/${file.path}`)
                     cloudinary.uploader.upload(file.path,
@@ -113,6 +114,7 @@ router
                         });
                 })
             } else {
+                
                 const { email } = await users.getUserById(req.user.authData.userID)
 
                 const data = {
