@@ -52,6 +52,7 @@ const Feed = React.memo(({
             feedBodyContent = (
                 <>
                     <ComplaintsList mode={mode} />
+                    <div className="filler"></div>
                 </>
             )
             break
