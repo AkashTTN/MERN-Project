@@ -7,9 +7,10 @@ import fetchImage from '../utils/fetchImage'
 
 import NavList from '../NavList/NavList';
 import Form from "../UI/Form/Form";
-import Posts from "../Posts/Posts";
+// import Posts from "../Posts/Posts";
 import ComplaintsList from '../UI/ComplaintsList/ComplaintsList'
 import Profile from '../Profile/Profile';
+import InfinitePosts from '../InfiniteScroll/InfiniteScroll'
 
 import './Feed.css'
 import logo from '../../assets/images/ttn-logo.png'
@@ -34,7 +35,8 @@ const Feed = React.memo(({
             feedBodyContent = (
                 <>
                     <Form formType="Buzz" />
-                    <Posts />
+                    {/* <Posts /> */}
+                    <InfinitePosts />
                 </>
             )
             break
