@@ -98,11 +98,11 @@ router
                                 next(error)
                             }
 
-                            fs.rmdir(file.path,
-                                { recursive: true },
-                                (err) => {
-                                    if (err) console.log('Uploaded file needs to be removed from server.', err);
-                                });
+                            // fs.rmdir(file.path,
+                            //     { recursive: true },
+                            //     (err) => {
+                            //         if (err) console.log('Uploaded file needs to be removed from server.', err);
+                            //     });
 
                             imageUrlArray.push(result.url)
                             // imageUrlArray.push(`http://localhost:4000/user/${file.path}`)

@@ -5,7 +5,13 @@ import { getImages } from '../../../store/actions'
 
 import classes from './Images.module.css'
 
-const Images = ({ imageUrl, buzzId = null, type, error, buzzImages, complaintImages, getImages }) => {
+const Images = ({ 
+    imageUrl, 
+    buzzId = null, 
+    type, 
+    error, 
+    buzzImages, 
+    complaintImages, getImages }) => {
 
     let images = null
     let imageUrlArray = (type === 'complaint' ? complaintImages : buzzImages)

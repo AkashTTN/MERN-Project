@@ -9,7 +9,7 @@ import './Complaint.css'
 
 const Complaint = ({
     complaints,
-    role,
+    userId,
     isAuthenticated,
     updateComplaint, complaintUpdated }) => {
 
@@ -80,7 +80,7 @@ const Complaint = ({
                     <h3>
                         Complaint Details
                         {
-                            role === 'employee' && complaint.status !== 'Resolved'
+                             complaint.status !== 'Resolved' && userId === complaint.createdBy.googleId
                                 ? <i style={{ marginLeft: "10px", cursor: "pointer" }} onClick={handleOnClick} className="fas fa-edit"></i>
                                 : null
                         }
@@ -138,7 +138,7 @@ const mapStateToProps = state => {
     return {
         complaints: state.complaint.complaints,
         isAuthenticated: !!state.authData.token,
-        role: state.authData.user.role,
+        userId: state.authData.user.googleId,
         complaintUpdated: state.complaint.complaintUpdated
     }
 }

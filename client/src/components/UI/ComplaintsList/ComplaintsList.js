@@ -143,7 +143,7 @@ const ComplaintsList = ({
             <div className="ComplaintsHeader flex-container">
                 <h3>Your Complaints</h3>
                 {
-                    !errorComplaints &&
+                    !errorComplaints && complaints.length !== 0 &&
                     <span className="ComplaintsFilter">
                         <i className="fas fa-filter"></i>
                         <select
