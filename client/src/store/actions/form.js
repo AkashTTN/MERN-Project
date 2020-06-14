@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes'
 import constants from '../../components/config/constants'
-import { removeAuthData, getComplaints, getPosts } from './'
+import { removeAuthData, getComplaints } from './'
 
 
 export const submitForm = ({ data, type } = {}) => {

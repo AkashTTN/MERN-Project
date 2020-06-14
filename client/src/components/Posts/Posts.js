@@ -59,20 +59,6 @@ const Posts = ({
             const likeStatus = post.likedBy.includes(userId)
             const dislikeStatus = post.dislikedBy.includes(userId)
 
-            // if (posts.length === index + 1) {
-            //     return (
-            //         <Post
-            //             key={index}
-            //             ref={lastPostElementRef}
-            //             data={post}
-            //             likeStatus={likeStatus}
-            //             dislikeStatus={dislikeStatus}
-            //             onChange={changeLikeDislike}
-            //             likeCount={post.likedBy.length}
-            //             dislikeCount={post.dislikedBy.length}
-            //         />
-            //     )
-            // }
             return (
                 <Post
                     key={index}

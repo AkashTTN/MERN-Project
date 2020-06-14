@@ -13,7 +13,6 @@ const ComplaintsList = ({
     complaints,
     totalComplaints,
     getComplaints,
-    // complaintSubmitted,
     errorComplaints,
     loading,
     formConfig,
@@ -34,32 +33,6 @@ const ComplaintsList = ({
         },
         [complaints, setCurrentComplaints]
     )
-
-    // , [complaintSubmitStatus, setComplaintSubmitStatus] = useState(complaintSubmitted)
-
-    // useEffect(
-    //     () => {
-    //         // setComplaintSubmitStatus(complaintSubmitted, () => {
-    //             if (complaintSubmitted) {
-    //                 getComplaints({
-    //                     limit: complaintsPerPage,
-    //                     skip: currentPage * complaintsPerPage - complaintsPerPage,
-    //                     mode
-    //                 })
-    //             }
-    //             // setComplaintSubmitStatus(false)
-    //         // })
-    //     },
-    //     [
-    //         getComplaints,
-    //         mode,
-    //         // complaintSubmitStatus,
-    //         errorComplaints,
-    //         complaintSubmitted,
-    //         // setComplaintSubmitStatus,
-    //         complaintsPerPage
-    //     ]
-    // )
 
     useEffect(
         () => {
@@ -109,16 +82,6 @@ const ComplaintsList = ({
         })
         content = (
             <table className="ComplaintsList">
-                {/* <div className="ComplaintsListHeadings flex-container">
-                    <div>Department</div>
-                    <div>Issue Id</div>
-                    {
-                        isAdmin && (mode === 'resolved')
-                            ? <div>Locked By</div> : null
-                    }
-                    <div>Assigned To</div>
-                    <div>Status</div>
-                </div> */}
                 <thead className="ComplaintsListHeadings">
                     <tr className="ComplaintsListRow">
                         <th>Department</th>

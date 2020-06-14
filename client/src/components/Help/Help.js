@@ -47,22 +47,27 @@ const Help = () => {
                     <p className="EmailText fs-30 text-center">Connect with Us</p>
                     <ul className="SocialMediaList">
                         <li className="SocialMediaListItem">
-                            <a href="https://www.facebook.com/TOTHENEWDigital/" target="_blank" rel="noopener noreferrer">
+                            <a
+                                href="https://www.facebook.com/TOTHENEWDigital/"
+                                target="_blank" rel="noopener noreferrer">
                                 <i class="fab fa-facebook-f fa-2x"></i>
                             </a>
                         </li>
                         <li className="SocialMediaListItem">
-                            <a href="https://twitter.com/tothenew" target="_blank" rel="noopener noreferrer">
+                            <a href="https://twitter.com/tothenew"
+                                target="_blank" rel="noopener noreferrer">
                                 <i class="fab fa-twitter fa-2x"></i>
                             </a>
                         </li>
                         <li className="SocialMediaListItem">
-                            <a href="https://www.linkedin.com/company/tothenew" target="_blank" rel="noopener noreferrer">
+                            <a href="https://www.linkedin.com/company/tothenew"
+                                target="_blank" rel="noopener noreferrer">
                                 <i class="fab fa-linkedin-in fa-2x"></i>
                             </a>
                         </li>
                         <li className="SocialMediaListItem">
-                            <a href="https://www.youtube.com/c/tothenew" target="_blank" rel="noopener noreferrer">
+                            <a href="https://www.youtube.com/c/tothenew"
+                                target="_blank" rel="noopener noreferrer">
                                 <i class="fab fa-youtube fa-2x"></i>
                             </a>
                         </li>

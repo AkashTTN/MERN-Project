@@ -26,7 +26,6 @@ const Profile = ({ profilePicUrl, user }) => {
                 <p>Team</p>
                 <p>{user.team}</p>
             </div>
-            {/* <div className="filler"></div> */}
         </div>
     )
 }

@@ -80,8 +80,12 @@ const Complaint = ({
                     <h3>
                         Complaint Details
                         {
-                             complaint.status !== 'Resolved' && userId === complaint.createdBy.googleId
-                                ? <i style={{ marginLeft: "10px", cursor: "pointer" }} onClick={handleOnClick} className="fas fa-edit"></i>
+                            complaint.status !== 'Resolved'
+                                && (userId === complaint.createdBy.googleId)
+                                ? <i
+                                    style={{ marginLeft: "10px", cursor: "pointer" }}
+                                    onClick={handleOnClick}
+                                    className="fas fa-edit"></i>
                                 : null
                         }
                     </h3>

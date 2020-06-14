@@ -18,7 +18,6 @@ const ComplaintsListItem = React.memo(({
     complaint,
     changeComplaintStatus,
     formConfig,
-    formConfigError
 }) => {
 
     let classes = [inputClasses.ComplaintStatusToggle, inputClasses.ComplaintStatus]
@@ -73,20 +72,6 @@ const ComplaintsListItem = React.memo(({
     )
 
     return (
-        // <div className={[inputClasses.ComplaintsListItem, 'flex-container'].join(' ')}>
-        //     <div>{complaint.department}</div>
-        //     <div>
-        //         <Link to={`/complaints/${complaint.complaintId}`}>
-        //             <div className={inputClasses.ComplaintId}>{complaint.complaintId}</div>
-        //         </Link>
-        //     </div>
-        //     {
-        //         isAdmin && (mode === 'resolved')
-        //             ? <div>{complaint.createdBy.name}</div> : null
-        //     }
-        //     <div>{complaint.assignedTo.name}</div>
-        //     {statusComponent}
-        // </div>
         <tr className="ComplaintsListRow">
             <td>{complaint.department}</td>
             <td>
