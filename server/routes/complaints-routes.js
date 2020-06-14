@@ -85,15 +85,16 @@ router
 
             let imageUrlArray = []
 
-            if (req.files) {
-                req.files.forEach(async (file) => {
+            if (req.files.length !== 0) {
+
+                req.files.forEach((file) => {
                     cloudinary.uploader.upload(file.path,
                         {
                             public_id: file.path,
                             overwrite: false
                         },
                         async function (error, result) {
-
+                            
                             if (error) {
                                 next(error)
                             }
@@ -118,7 +119,6 @@ router
                                 name
                             }
 
-
                             const complaint = await complaints.create(data)
 
                             return res.status(200).json(
@@ -127,6 +127,7 @@ router
                         });
                 })
             } else {
+
                 const data = {
                     complaintId: req.uniqueId,
                     imageUrl: imageUrlArray,
@@ -167,7 +168,6 @@ router
 
             const complaint = await complaints.getComplaintById({ complaintId })
 
-            console.log(complaint)
             if (complaint.status === 'Resolved') {
                 return res.status(200).json(
                     response(
@@ -181,7 +181,7 @@ router
             const updatedComplaint = await complaints.updateComplaint({
                 complaintId, concernText
             })
-            console.log('updated', updatedComplaint)
+            
             if (updatedComplaint.text === concernText) {
                 return res.status(200).json(
                     response(

@@ -144,13 +144,15 @@ const Feed = React.memo(({
                         &&
                         <div className="FeedBodyNav" >
                             <NavList isAdmin={user.role === 'admin'} />
-                            <p className="flex-container">
-                                &copy; 2020 To The New Digital
-                                <div className="links-container">
+                            <div className="flex-container links-container">
+                                <p>
+                                    &copy; 2020 To The New Digital
+                                </p>
+                                <div>
                                     <a href="/help">Help</a>
                                     <a href="/about-us">About</a>
                                 </div>
-                            </p>
+                            </div>
                         </div>
                     }
                     <div className={mode === 'profile' ? 'flex-100' : 'flex-80'}>

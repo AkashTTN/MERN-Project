@@ -2,6 +2,13 @@
 	flex: 1;
 }
 
+.links-container {
+	justify-content: space-between;
+	margin-top: 5px;
+	font-size: 12px;
+	color: #ccc;
+}
+
 .darken {
 	background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)),
 		url(/static/media/feed-header-image.99848743.jpg);
@@ -63,17 +70,17 @@
 	flex-wrap: wrap;
 }
 
-.links-container > a {
+.links-container > div > a {
 	text-decoration: none;
 	margin-right: 5px;
 }
 
-.links-container > a:hover,
-.links-container > a:active {
+.links-container > div > a:hover,
+.links-container > div > a:active {
 	color: orange;
 }
 
-.links-container > a:last-child {
+.links-container > div > a:last-child {
 	margin-right: 0;
 }
 

@@ -5,7 +5,7 @@ const formConfig = {
         category: ['Activity', 'Lost & Found'],
     },
     complaint: {
-        statusTypes: ['Open', 'Resolved', 'In Progress', 'Golum'],
+        statusTypes: ['Open', 'Resolved', 'In Progress'],
         departments: ['Admin', 'HR', 'IT', 'Management'],
         types: ['Hardware', 'Infrastructure', 'Others']
     }

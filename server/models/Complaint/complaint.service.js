@@ -32,7 +32,7 @@ module.exports.create = async ({
         name: assignedUser.name,
         googleId: assignedUser.googleId
     })
-
+    
     const newComplaintObject = { ...complaint._doc }
     delete newComplaintObject['_id']
 
@@ -136,7 +136,6 @@ module.exports.getComplaintsCountById = async (id) => {
 }
 
 module.exports.updateComplaint = async ({ complaintId, concernText }) => {
-    console.log(complaintId, concernText)
     return await ComplaintModel.findOneAndUpdate(
         { complaintId },
         { $set: { text: concernText } },
