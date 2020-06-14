@@ -167,7 +167,6 @@ router
 
             const complaint = await complaints.getComplaintById({ complaintId })
 
-            console.log(complaint)
             if (complaint.status === 'Resolved') {
                 return res.status(200).json(
                     response(
@@ -181,7 +180,7 @@ router
             const updatedComplaint = await complaints.updateComplaint({
                 complaintId, concernText
             })
-            console.log('updated', updatedComplaint)
+            
             if (updatedComplaint.text === concernText) {
                 return res.status(200).json(
                     response(

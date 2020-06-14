@@ -136,7 +136,6 @@ module.exports.getComplaintsCountById = async (id) => {
 }
 
 module.exports.updateComplaint = async ({ complaintId, concernText }) => {
-    console.log(complaintId, concernText)
     return await ComplaintModel.findOneAndUpdate(
         { complaintId },
         { $set: { text: concernText } },
