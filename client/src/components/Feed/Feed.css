@@ -59,20 +59,22 @@
 	color: #ccc;
 	margin-top: 10px;
 	font-size: 12px;
+	justify-content: space-between;
+	flex-wrap: wrap;
 }
 
-.FeedBodyNav > p > a {
-	float: right;
+.links-container > a {
 	text-decoration: none;
+	margin-right: 5px;
 }
 
-.FeedBodyNav > p > a:hover,
-.FeedBodyNav > p > a:active {
+.links-container > a:hover,
+.links-container > a:active {
 	color: orange;
 }
 
-.FeedBodyNav > p > a:last-child {
-	margin-right: 10px;
+.links-container > a:last-child {
+	margin-right: 0;
 }
 
 .flex-80 {

@@ -52,7 +52,6 @@ const Feed = React.memo(({
             feedBodyContent = (
                 <>
                     <ComplaintsList mode={mode} />
-                    <div className="filler"></div>
                 </>
             )
             break
@@ -143,10 +142,12 @@ const Feed = React.memo(({
                         &&
                         <div className="FeedBodyNav" >
                             <NavList isAdmin={user.role === 'admin'} />
-                            <p>
+                            <p className="flex-container">
                                 &copy; 2020 To The New Digital
-                                <a href="/help">Help</a>
-                                <a href="/about-us">About</a>
+                                <div className="links-container">
+                                    <a href="/help">Help</a>
+                                    <a href="/about-us">About</a>
+                                </div>
                             </p>
                         </div>
                     }
