@@ -31,10 +31,10 @@ router.get('/google/redirect',
         session: false
     }),
     async (req, res) => {
-        
+
         let user = await users.getUserById(req.user.id)
         let userID
-        
+
         if (user) {
             userID = user.googleId
         } else {
@@ -48,9 +48,14 @@ router.get('/google/redirect',
             userID = user.googleId
         }
         // send userID (googleID) in jwt
-        jwt.sign({ userID, role: user.role }, config.jwt.secret, { expiresIn: '1day' }, (err, token) => {
-            return res.redirect(constants.client.url + `?token=${token}`)
-        });
+        jwt.sign(
+            { userID, role: user.role },
+            config.jwt.secret,
+            { expiresIn: '1day' }, 
+            (err, token) => {
+                return res.redirect(constants.client.url + `?token=${token}`)
+            }
+        );
 
     })
 

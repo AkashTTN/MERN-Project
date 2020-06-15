@@ -94,7 +94,7 @@ router
                             overwrite: false
                         },
                         async function (error, result) {
-                            
+
                             if (error) {
                                 next(error)
                             }
@@ -122,7 +122,12 @@ router
                             const complaint = await complaints.create(data)
 
                             return res.status(200).json(
-                                response(true, 200, "Complaint created successfully", complaint)
+                                response(
+                                    true,
+                                    200,
+                                    "Complaint created successfully",
+                                    complaint
+                                )
                             )
                         });
                 })
@@ -181,7 +186,7 @@ router
             const updatedComplaint = await complaints.updateComplaint({
                 complaintId, concernText
             })
-            
+
             if (updatedComplaint.text === concernText) {
                 return res.status(200).json(
                     response(
