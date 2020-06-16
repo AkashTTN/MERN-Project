@@ -129,6 +129,7 @@
 @media only screen and (max-width: 950px) {
 	.FeedBody {
 		flex-direction: column;
+		padding: 20px 10px;
 	}
 	.FeedBodyNav {
 		margin-right: 0;

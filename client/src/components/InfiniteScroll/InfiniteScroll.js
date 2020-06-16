@@ -39,7 +39,7 @@ const InfinitePosts = ({
         // Checks that the page has scrolled to the bottom
         if (
             window.innerHeight + document.documentElement.scrollTop
-            === document.documentElement.offsetHeight
+            >= document.documentElement.offsetHeight -20
         ) {
             getPosts({
                 limit: postsPerPage,
@@ -96,11 +96,11 @@ const InfinitePosts = ({
             }
             {
                 isLoading &&
-                <div>Loading...</div>
+                <p>Loading...</p>
             }
             {
                 !hasMore &&
-                <div>You did it! You reached the end!</div>
+                <p>You did it! You reached the end!</p>
             }
         </div>
     )
