@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 
 import { connect } from 'react-redux'
 
 import { getPosts, changeLikeDislike } from '../../store/actions'
 
 import Post from '../Posts/Post/Post'
+import Spinner from '../UI/Spinner/Spinner'
 
 import '../Posts/Posts.css'
 
@@ -14,22 +15,73 @@ const InfinitePosts = ({
     posts,
     getPosts,
     changeLikeDislike,
-    userId,
-    postSubmitted, totalPosts }) => {
+    userId, totalPosts, postSubmitted }) => {
 
     // const [error, setError] = useState(false)
-    // const [hasMore, setHasMore] = useState(true)
+    const [hasMore, setHasMore] = useState(false)
     // const [isLoading, setIsLoading] = useState(false)
     // const [users, setUsers] = useState([])
 
     const [currentPage, setCurrentPage] = useState(1)
     const [postsPerPage] = useState(5)
 
+    // const [time, setTime] = useState(null);
 
-    const hasMore = posts.length < totalPosts
+    useEffect(
+
+        () => {
+            if (postSubmitted) {
+                setCurrentPage(1)
+            }
+        },
+        [postSubmitted, setCurrentPage]
+
+    )
+
+    useEffect(() => {
+        setHasMore(totalPosts > posts.length)
+    }, [setHasMore, totalPosts, posts])
+
+    // useEffect(
+    //     () => {
+    //         if(postSubmitted) {
+    //             setCurrentPage(1)
+    //         }
+    //     }, [postSubmitted]
+    // )
+
+    // const handleOnScroll = () => {
+
+    //     // Bails early if:
+    //     // * there's an error
+    //     // * it's already loading
+    //     // * there's nothing left to load
+    //     if (error || isLoading || !hasMore) return;
+
+    //     // Checks that the page has scrolled to the bottom
+    //     if (
+    //         document.documentElement.clientHeight + document.documentElement.scrollTop
+    //         >= document.documentElement.scrollHeight - 20
+    //     ) {
+    //         getPosts({
+    //             limit: postsPerPage,
+    //             skip: postsPerPage * currentPage - postsPerPage
+    //         })
+    //         setCurrentPage(prevPage => prevPage + 1)
+    //     }
+    // }
+
+
+    // const debounce = useCallback(function (func, params) {
+    //     clearTimeout(time);
+
+    //     setTime(setTimeout(func(params), 1000));
+    // }, [setTime]);
+
+
     // Binds our scroll event handler
     window.onscroll = () => {
-
+        console.log(error, isLoading, hasMore)
         // Bails early if:
         // * there's an error
         // * it's already loading
@@ -38,22 +90,22 @@ const InfinitePosts = ({
 
         // Checks that the page has scrolled to the bottom
         if (
-            window.innerHeight + document.documentElement.scrollTop
-            >= document.documentElement.offsetHeight -20
+            // (document.documentElement.scrollHeight - document.documentElement.scrollTop) 
+            // === document.documentElement.clientHeight - 20
+            document.documentElement.clientHeight + document.documentElement.scrollTop
+            >= document.documentElement.scrollHeight - 20
         ) {
+            setCurrentPage((prevPageNumber => prevPageNumber + 1))
+        }
+    }
+
+    useEffect(
+        () => {
             getPosts({
                 limit: postsPerPage,
                 skip: postsPerPage * currentPage - postsPerPage
             })
-            setCurrentPage(prevPage => prevPage + 1)
-        }
-    }
-
-
-    useEffect(
-        () => {
-            getPosts()
-        }, [getPosts, postSubmitted]
+        }, [getPosts, setCurrentPage, currentPage, postsPerPage]
     )
 
     let postsArray
