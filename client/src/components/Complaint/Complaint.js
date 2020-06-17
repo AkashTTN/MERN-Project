@@ -55,7 +55,7 @@ const Complaint = ({
         setIsEditing(false)
         updateComplaint({
             complaintId: complaint.complaintId,
-            concernText: data.concernText
+            concernText: data.concernText 
         })
     }
 
