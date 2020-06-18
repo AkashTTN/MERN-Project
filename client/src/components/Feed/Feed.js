@@ -14,6 +14,7 @@ import InfinitePosts from '../InfiniteScroll/InfiniteScroll'
 
 import './Feed.css'
 import logo from '../../assets/images/ttn-logo.png'
+import defaultProfileImage from '../../assets/images/default-profile-image.png'
 
 const Feed = React.memo(({
     removeAuthData,
@@ -115,7 +116,7 @@ const Feed = React.memo(({
                         <Link
                             to="/profile"
                         >
-                            <img className="ProfileImage" src={profilePicUrl} alt="profile" />
+                            <img className="ProfileImage" src={profilePicUrl || defaultProfileImage} alt="profile" />
                         </Link>
                         <span className="FeedHeaderGreeting">{`Hi ${user.name.split(' ')[0]}!`}</span>
                         <button className="LogoutButton" onClick={logoutHandler}>

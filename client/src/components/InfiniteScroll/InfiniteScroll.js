@@ -142,13 +142,11 @@ const InfinitePosts = ({
             }
             {
                 error &&
-                <div style={{ color: '#900' }}>
-                    {error}
-                </div>
+                <p>Something went wrong.</p>
             }
             {
                 isLoading &&
-                <p>Loading...</p>
+                <Spinner />
             }
             {
                 !hasMore &&

@@ -2,6 +2,7 @@ import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import './Profile.css'
+import defaultProfileImage from '../../assets/images/default-profile-image.png'
 
 const Profile = ({ profilePicUrl, user }) => {
 
@@ -17,7 +18,7 @@ const Profile = ({ profilePicUrl, user }) => {
     return (
         <div className="Profile flex-container">
             <button onClick={onClick}>Go back</button>
-            <img src={profilePicUrl} alt="profile" />
+            <img src={profilePicUrl || defaultProfileImage} alt="profile" />
             <div className="ProfileDetails flex-container">
                 <p>Name</p>
                 <p>{user.name}</p>
