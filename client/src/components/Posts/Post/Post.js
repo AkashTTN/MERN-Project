@@ -40,7 +40,11 @@ const Post = React.memo(({
             <div className="PostContainerTwo">
                 <p id="PostUserData" >
                     {data.user.email}&nbsp;&middot;&nbsp;
-                    {moment(data.createdAt).fromNow()}
+                    {moment(data.createdAt).fromNow()}&nbsp;&middot;&nbsp;
+                    {
+                        data.category === 'lostAndFound' 
+                        ? 'Posted under Lost & Found' : null
+                    }
                 </p>
                 <p id="PostText" >{data.text}</p>
                 <Images imageUrl={data.imageUrl} type='buzz' buzzId={data.buzzId} />

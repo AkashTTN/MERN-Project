@@ -5,7 +5,8 @@
 	margin-bottom: 40px;
 }
 
-.infinite-scroll-component > p {
+.infinite-scroll-component > p,
+.Posts > p {
 	padding: 10px;
 }
 

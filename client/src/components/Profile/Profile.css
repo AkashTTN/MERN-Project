@@ -34,10 +34,11 @@
 
 .Profile > img {
 	position: relative;
-	top: 20px;
-	height: 60px;
-	border-radius: 50%;
-	box-shadow: 0 0 10px grey;
+    background-color: #f4f8fb;
+    top: 20px;
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px grey;
 }
 
 .ProfileDetails,

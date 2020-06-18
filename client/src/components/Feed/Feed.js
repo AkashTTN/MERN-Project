@@ -7,12 +7,14 @@ import fetchImage from '../utils/fetchImage'
 
 import NavList from '../NavList/NavList';
 import Form from "../UI/Form/Form";
-import Posts from "../Posts/Posts";
+// import Posts from "../Posts/Posts";
 import ComplaintsList from '../UI/ComplaintsList/ComplaintsList'
 import Profile from '../Profile/Profile';
+import InfinitePosts from '../InfiniteScroll/InfiniteScroll'
 
 import './Feed.css'
 import logo from '../../assets/images/ttn-logo.png'
+import defaultProfileImage from '../../assets/images/default-profile-image.png'
 
 const Feed = React.memo(({
     removeAuthData,
@@ -34,7 +36,8 @@ const Feed = React.memo(({
             feedBodyContent = (
                 <>
                     <Form formType="Buzz" />
-                    <Posts />
+                    {/* <Posts /> */}
+                    <InfinitePosts />
                 </>
             )
             break
@@ -113,7 +116,7 @@ const Feed = React.memo(({
                         <Link
                             to="/profile"
                         >
-                            <img className="ProfileImage" src={profilePicUrl} alt="profile" />
+                            <img className="ProfileImage" src={profilePicUrl || defaultProfileImage} alt="profile" />
                         </Link>
                         <span className="FeedHeaderGreeting">{`Hi ${user.name.split(' ')[0]}!`}</span>
                         <button className="LogoutButton" onClick={logoutHandler}>
