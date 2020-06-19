@@ -32,7 +32,7 @@ module.exports.create = async ({
         name: assignedUser.name,
         googleId: assignedUser.googleId
     })
-    
+
     const newComplaintObject = { ...complaint._doc }
     delete newComplaintObject['_id']
 
@@ -68,6 +68,7 @@ module.exports.getAllComplaints = async ({ limit, skip }) => {
                 "userComplaints": [
                     { $match: {} },
                     { $project: { _id: 0 } },
+                    { $sort: { createdAt: -1 } },
                     { $skip: skip },
                     { $limit: limit }
                 ],
@@ -81,6 +82,30 @@ module.exports.getAllComplaints = async ({ limit, skip }) => {
     ])
 
     return response[0]
+}
+
+module.exports.getAllComplaintsByStatusTypes = async ({ status, limit, skip }) => {
+
+    const response = await ComplaintModel.aggregate([
+        {
+            "$facet": {
+                "userComplaints": [
+                    { $match: { status } },
+                    { $project: { _id: 0 } },
+                    { $sort: { createdAt: -1 } },
+                    { $skip: skip },
+                    { $limit: limit }
+                ],
+                "count": [
+                    { $match: { status } },
+                    { $count: "totalComplaints" }
+                ]
+            }
+        }
+    ])
+
+    return response[0]
+
 }
 
 module.exports.getAllComplaintsByUserId = async ({ id, limit, skip }) => {
@@ -103,6 +128,7 @@ module.exports.getAllComplaintsByUserId = async ({ id, limit, skip }) => {
                 "userComplaints": [
                     { $match: { "createdBy.googleId": id } },
                     { $project: { _id: 0 } },
+                    { $sort: { createdAt: -1 } },
                     { $skip: skip },
                     { $limit: limit }
                 ],

@@ -4,8 +4,10 @@ import { connect } from 'react-redux'
 import { submitForm } from '../../../store/actions'
 
 import './Form.css'
+import Spinner from '../Spinner/Spinner'
 
 const Form = ({
+    loading,
     userEmail,
     userName,
     formType,
@@ -73,7 +75,7 @@ const Form = ({
                 ...prevFormData,
                 ...newFormData
             })))
-            
+
         },
         [setFormData]
     )
@@ -196,7 +198,11 @@ const Form = ({
                         </div>
 
                         <div className="form-group flex-container">
-                            <button id="SubmitComplaint" type="submit">Submit</button>
+                            {
+                                loading
+                                    ? <div><Spinner isMarginRequired /></div>
+                                    : <button id="SubmitComplaint" type="submit">Submit</button>
+                            }
                         </div>
 
                     </form>
@@ -231,10 +237,14 @@ const Form = ({
                                 }
                             </div>
                             <div className="SubmitBuzz flex-container">
-                                <button type="submit">
-                                    Post
-                                    <i className="fas fa-caret-right"></i>
-                                </button>
+                                {
+                                    loading
+                                        ? <div><Spinner isMarginRequired={false} /></div>
+                                        : <button type="submit">
+                                            Post
+                                        <i className="fas fa-caret-right"></i>
+                                        </button>
+                                }
                             </div>
 
                         </div>
@@ -260,7 +270,8 @@ const mapStateToProps = state => {
         userEmail: state.authData.user.email,
         userName: state.authData.user.name,
         formConfig: state.form.formConfig,
-        formConfigError: state.form.formConfigError
+        formConfigError: state.form.formConfigError,
+        loading: state.form.loading
     }
 }
 

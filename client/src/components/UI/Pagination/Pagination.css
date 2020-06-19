@@ -16,9 +16,12 @@
     border-top: 1px solid #ccc;
 }
 
-.PageName:active,
-.PageName:hover {
+.active {
     color: coral;
+}
+
+.PageName:hover {
+    color: #f4b585;
     cursor: pointer;
     background-color: rgb(247, 244, 244);
 }

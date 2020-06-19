@@ -2,6 +2,7 @@ import * as actionTypes from '../actions/actionTypes'
 import reset from '../utils/reset'
 
 const initialState = {
+    loading: false,
     formConfigError: false,
     complaintSubmitted: false,
     postSubmitted: false,
@@ -16,36 +17,42 @@ const reducer = (state = initialState, action) => {
         case actionTypes.SUBMIT_COMPLAINT:
             return {
                 ...state,
+                loading: true,
                 complaintSubmitted: false
             }
 
         case actionTypes.SUBMIT_COMPLAINT_SUCCESS:
             return {
                 ...state,
+                loading: false,
                 complaintSubmitted: true
             }
 
         case actionTypes.SUBMIT_COMPLAINT_FAILED:
             return {
                 ...state,
+                loading: false,
                 complaintSubmitted: false
             }
 
         case actionTypes.SUBMIT_POST:
             return {
                 ...state,
+                loading: true,
                 postSubmitted: false
             }
 
         case actionTypes.SUBMIT_POST_SUCCESS:
             return {
                 ...state,
+                loading: false,
                 postSubmitted: true
             }
 
         case actionTypes.SUBMIT_POST_FAILED:
             return {
                 ...state,
+                loading: false,
                 postSubmitted: false
             }
 

@@ -7,7 +7,7 @@ module.exports.create = async ({
     profilePicture
 }) => {
 
-    const teams = ['ADMIN', 'HR', 'IT', 'MANAGEMENT']
+    const teams = ['HR', 'IT', 'MANAGEMENT']
 
     const randomTeam = teams[Math.floor(Math.random() * teams.length)];
 

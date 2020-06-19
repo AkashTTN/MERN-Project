@@ -32,36 +32,73 @@ router
 
     .get('/', async (req, res, next) => {
 
-        let { limit, skip } = req.query
+        let { limit, skip, userId, statusFilter } = req.query
 
         if (isNaN(limit) && isNaN(skip)) {
             return res.status(200).json(response(false, 406, "Invalid limit/skip"))
         }
 
-        // convert to number from string
-        limit = +limit
-        skip = +skip
+        if (req.user.authData.role === 'admin' && !userId) {
 
-        try {
+            // convert to number from string
+            limit = +limit
+            skip = +skip
 
-            const {
-                userComplaints = [],
-                count: [{ totalComplaints = 0 } = {}] = []
-            } = await complaints.getAllComplaintsByUserId(
-                { id: req.user.authData.userID, limit, skip }
-            )
+            try {
 
-            return res.status(200).json(
-                response(
-                    true,
-                    200,
-                    "All complaints made by current user",
-                    { complaints: userComplaints, totalComplaints }
+                const {
+                    userComplaints = [],
+                    count: [{ totalComplaints = 0 } = {}] = []
+                } = (statusFilter !== 'None' && statusFilter !== '')
+                    ? await complaints.getAllComplaintsByStatusTypes({ limit, skip, status: statusFilter })
+                    : await complaints.getAllComplaints({ limit, skip })
+                
+                return res.status(200).json(
+                    response(
+                        true,
+                        200,
+                        "All complaints made by all the users",
+                        { complaints: userComplaints, totalComplaints }
+                    )
                 )
-            )
 
-        } catch (error) {
-            next(error)
+            } catch (error) {
+                next(error)
+            }
+
+        } else {
+
+            // convert to number from string
+            limit = +limit
+            skip = +skip
+
+            try {
+
+                let {
+                    userComplaints = [],
+                    count: [{ totalComplaints = 0 } = {}] = []
+                } = await complaints.getAllComplaintsByUserId(
+                    { id: req.user.authData.userID, limit, skip }
+                )
+
+                if(statusFilter && statusFilter !== 'None' && statusFilter !== '') {
+                    userComplaints = userComplaints.filter(complaint => complaint.status === statusFilter)
+                    totalComplaints = userComplaints.length
+                }
+
+
+                return res.status(200).json(
+                    response(
+                        true,
+                        200,
+                        "All complaints made by current user",
+                        { complaints: userComplaints, totalComplaints }
+                    )
+                )
+
+            } catch (error) {
+                next(error)
+            }
         }
 
     })
@@ -87,50 +124,54 @@ router
 
             if (req.files.length !== 0) {
 
-                req.files.forEach((file) => {
-                    cloudinary.uploader.upload(file.path,
-                        {
-                            public_id: file.path,
-                            overwrite: false
-                        },
-                        async function (error, result) {
-
-                            if (error) {
-                                next(error)
+                imageUrlArray.push(
+                    req.files.map(async (file) => {
+                        return cloudinary.uploader.upload(file.path,
+                            {
+                                public_id: file.path,
+                                overwrite: false
                             }
 
-                            // fs.rmdir(file.path,
-                            //     { recursive: true },
-                            //     (err) => {
-                            //         if (err) console.log('Uploaded file needs to be removed from server.', err);
-                            //     });
+                            //     // fs.rmdir(file.path,
+                            //     //     { recursive: true },
+                            //     //     (err) => {
+                            //     //         if (err) console.log('Uploaded file needs to be removed from server.', err);
+                            //     //     });
 
-                            imageUrlArray.push(result.url)
-                            // imageUrlArray.push(`http://localhost:4000/user/${file.path}`)
+                        );
+                    })
+                )
 
-                            const data = {
-                                complaintId: req.uniqueId,
-                                imageUrl: imageUrlArray,
-                                text: concernText,
-                                googleId: req.user.authData.userID,
-                                email,
-                                issueTitle,
-                                department,
-                                name
-                            }
+                Promise.all(...imageUrlArray)
+                    .then(responseObjects => {
+                        return responseObjects.map(object => object.url)
+                    })
+                    .then(async (imageUrlArray) => {
 
-                            const complaint = await complaints.create(data)
+                        const data = {
+                            complaintId: req.uniqueId,
+                            imageUrl: imageUrlArray,
+                            text: concernText,
+                            googleId: req.user.authData.userID,
+                            email,
+                            issueTitle,
+                            department,
+                            name
+                        }
 
-                            return res.status(200).json(
-                                response(
-                                    true,
-                                    200,
-                                    "Complaint created successfully",
-                                    complaint
-                                )
+                        const complaint = await complaints.create(data)
+
+                        return res.status(200).json(
+                            response(
+                                true,
+                                200,
+                                "Complaint created successfully",
+                                complaint
                             )
-                        });
-                })
+                        )
+                    })
+                    .catch(err => next(err))
+
             } else {
 
                 const data = {
@@ -160,54 +201,90 @@ router
 
     .patch('/:complaintId', async (req, res, next) => {
 
-        try {
+        if (req.user.authData.role === 'admin') {
+            const complaintId = req.params.complaintId
+            const status = req.query.status
 
-            const { complaintId } = req.params
-            const { concernText } = req.body
+            if (!complaintId || complaintId.trim().length === 0) {
+                return res.status(200).json(response(false, 406, 'Complaint ID required'))
+            }
 
-            if (!concernText || concernText.trim().length === 0) {
+            if (!status) {
                 return res.status(200).json(
-                    response(false, 406, "Complaint with empty text not allowed")
+                    response(false, 406, 'Updated Complaint status required')
                 )
             }
 
-            const complaint = await complaints.getComplaintById({ complaintId })
+            try {
 
-            if (complaint.status === 'Resolved') {
+                const complaint = await complaints.changeStatusById({ complaintId, status })
+
+                if (complaint.status === status) {
+                    res.status(200).json(
+                        response(
+                            true,
+                            200,
+                            'Complaint status changed',
+                            { complaint: { updatedStatus: status } }
+                        )
+                    )
+                } else {
+                    res.status(200).json(response(false, 406, 'Complaint status unchanged'))
+                }
+
+            } catch (error) {
+                next(error)
+            }
+        } else if (req.user.authData.role === 'employee') {
+            try {
+
+                const { complaintId } = req.params
+                const { concernText } = req.body
+
+                if (!concernText || concernText.trim().length === 0) {
+                    return res.status(200).json(
+                        response(false, 406, "Complaint with empty text not allowed")
+                    )
+                }
+
+                const complaint = await complaints.getComplaintById({ complaintId })
+
+                if (complaint.status === 'Resolved') {
+                    return res.status(200).json(
+                        response(
+                            false,
+                            406,
+                            'Cannot edit a resolved complaint.'
+                        )
+                    )
+                }
+
+                const updatedComplaint = await complaints.updateComplaint({
+                    complaintId, concernText
+                })
+
+                if (updatedComplaint.text === concernText) {
+                    return res.status(200).json(
+                        response(
+                            true,
+                            200,
+                            'Complaint updated successfully',
+                            { updatedComplaint }
+                        )
+                    )
+                }
+
                 return res.status(200).json(
                     response(
                         false,
                         406,
-                        'Cannot edit a resolved complaint.'
+                        'Complaint update unsuccessful',
                     )
                 )
+
+            } catch (error) {
+                next(error)
             }
-
-            const updatedComplaint = await complaints.updateComplaint({
-                complaintId, concernText
-            })
-
-            if (updatedComplaint.text === concernText) {
-                return res.status(200).json(
-                    response(
-                        true,
-                        200,
-                        'Complaint updated successfully',
-                        { updatedComplaint }
-                    )
-                )
-            }
-
-            return res.status(200).json(
-                response(
-                    false,
-                    406,
-                    'Complaint update unsuccessful',
-                )
-            )
-
-        } catch (error) {
-            next(error)
         }
 
     })

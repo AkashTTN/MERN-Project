@@ -24,42 +24,34 @@ const ComplaintsList = ({
 
     const [currentPage, setCurrentPage] = useState(1)
         , [complaintsPerPage] = useState(5)
-        , [currentComplaints, setCurrentComplaints] = useState(complaints)
         , [complaintFilterType, setComplaintFilterType] = useState('')
-
-    useEffect(
-        () => {
-            setCurrentComplaints(complaints)
-        },
-        [complaints, setCurrentComplaints]
-    )
 
     useEffect(
         () => {
             getComplaints({
                 limit: complaintsPerPage,
+                statusFilter: complaintFilterType,
                 skip: currentPage * complaintsPerPage - complaintsPerPage,
                 mode
             })
         },
-        [getComplaints, mode, currentPage, complaintsPerPage]
+        [
+            getComplaints,
+            mode,
+            currentPage,
+            complaintFilterType, complaintsPerPage]
     )
 
     const paginate = useCallback(
         (pageNumber) => {
             setCurrentPage(pageNumber)
-            setComplaintFilterType('')
         },
-        [setCurrentPage, setComplaintFilterType]
+        [setCurrentPage]
     )
 
     const handleComplaintStatusFilter = (filterType) => {
 
         setComplaintFilterType(filterType)
-
-        currentComplaints.sort((a, b) => {
-            if (a.status === filterType) return -1
-        })
 
     }
 
@@ -68,9 +60,9 @@ const ComplaintsList = ({
     } else if (loading) {
         content = <p>Loading...</p>
     } else if (complaints.length === 0) {
-        content = <p>No complaints made yet.</p>
+        content = <p>No complaints made {['None', ''].includes(complaintFilterType) ? '' : 'under this category'} yet.</p>
     } else {
-        complaintsArray = currentComplaints.map((item, index) => {
+        complaintsArray = complaints.map((item, index) => {
             return (
                 <ComplaintsListItem
                     isAdmin={isAdmin}
@@ -106,8 +98,8 @@ const ComplaintsList = ({
             <div className="ComplaintsHeader flex-container">
                 <h3>Your Complaints</h3>
                 {
-                    !errorComplaints && complaints.length !== 0 &&
-                    <span className="ComplaintsFilter">
+                    !errorComplaints 
+                    && <span className="ComplaintsFilter">
                         <i className="fas fa-filter"></i>
                         <select
                             value={complaintFilterType}
@@ -116,6 +108,7 @@ const ComplaintsList = ({
                             className="ComplaintStatusFilter"
                         >
                             <option value='' disabled hidden >Filter</option>
+                            <option value='None' >None</option>
                             {
                                 formConfig
                                     ? formConfig.complaint.statusTypes.map((type, index) => {
