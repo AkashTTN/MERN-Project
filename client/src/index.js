@@ -11,6 +11,7 @@ import formReducer from '../src/store/reducers/form'
 import imagesReducer from '../src/store/reducers/images'
 
 import App from './components/App/App';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
 
 import './index.css'
 
@@ -29,9 +30,11 @@ const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <ErrorBoundary>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ErrorBoundary>
   </React.StrictMode>,
   document.getElementById('root')
 );

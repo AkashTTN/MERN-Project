@@ -51,7 +51,7 @@ const Post = React.memo(({
                 {
                     data.imageUrl.length > 0
                     &&
-                    <Carousel imageArray={data.imageUrl} id={data.buzzId} key={data.buzzId} />
+                    <Carousel imageArray={data.imageUrl} />
                 }
                 {/* <Images imageUrl={data.imageUrl} type='buzz' buzzId={data.buzzId} /> */}
                 <LikeDislike

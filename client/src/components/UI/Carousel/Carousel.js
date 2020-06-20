@@ -1,42 +1,45 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useRef } from 'react'
 
 import fetchImage from '../../utils/fetchImage'
 
 import './Carousel.css'
 
+import defaultBuzzImage from '../../../assets/images/default-buzz-image.png' 
 
-const Carousel = ({ imageArray, id }) => {
+
+const Carousel = ({ imageArray }) => {
 
     let i = 0
     let timerId
 
     const [images, setImages] = useState(imageArray)
+    const imageElemRef = useRef(null)
 
-    const changeImage = useCallback((imageArray, id) => {
+    const changeImage = useCallback((imageArray) => {
 
-        if (!imageArray) return
+        if (!imageArray || !imageElemRef.current) return
+
+        imageElemRef.current.src = imageArray[i] || defaultBuzzImage
 
         if (timerId) {
             clearTimeout(timerId)
         }
-
-        document.getElementById('CarouselImage' + id).src = imageArray[i]
-
+        
         if (i < imageArray.length - 1) {
             i++
         } else {
             i = 0
         }
 
-        timerId = setTimeout(() => changeImage(imageArray, id), 3000)
+        timerId = setTimeout(() => changeImage(imageArray), 3000)
 
     }, [])
 
     useEffect(() => {
         if (images) {
-            changeImage(images, id)
+            changeImage(images)
         }
-    }, [changeImage, images, id])
+    }, [changeImage, images])
 
     useEffect(() => {
 
@@ -49,7 +52,7 @@ const Carousel = ({ imageArray, id }) => {
 
     return (
         <div className="Carousel">
-            <img id={'CarouselImage' + id} alt="buzz-pic" />
+            <img ref={imageElemRef} className="CarouselImage" alt="buzz-pic" />
         </div>
     )
 }
