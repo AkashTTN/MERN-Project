@@ -168,7 +168,12 @@ const Feed = React.memo(({
     return (
         redirect
             ? <Redirect to='/' />
-            : <div className="Feed">{feed}</div>
+            : <div className="Feed">
+                {feed}
+                <a className="scroll-top-btn" href="#">
+                    <i className="fa-2x fas fa-arrow-up"></i>
+                </a>
+            </div>
     )
 })
 

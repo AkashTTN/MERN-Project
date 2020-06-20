@@ -115,6 +115,15 @@
 	margin-right: 15px;
 }
 
+.scroll-top-btn {
+	position: fixed;
+	text-decoration: none;
+	left: 20px;
+	bottom: 20px;
+	border-radius: 50%;
+	color: #f4b585;
+}
+
 @media only screen and (max-width: 420px) {
 	.Logout {
 		flex-direction: column;
