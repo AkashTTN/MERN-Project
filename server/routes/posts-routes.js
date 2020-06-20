@@ -58,7 +58,7 @@ router
 
     })
 
-    .post('/', generateUniqueId, upload.array('images', 1), async (req, res, next) => {
+    .post('/', generateUniqueId, upload.array('images'), async (req, res, next) => {
 
         // console.log('post request body', req.user)
 
@@ -76,45 +76,47 @@ router
 
             if (req.files.length !== 0) {
 
-                req.files.forEach((file) => {
-                    // imageUrlArray.push(`http://localhost:4000/user/${file.path}`)
-                    cloudinary.uploader.upload(file.path,
-                        {
-                            public_id: file.path,
-                            overwrite: false
-                        },
-                        async function (error, result) {
-
-                            // fs.rmdirSync(`uploads/posts/${req.user.authData.userID}`, { recursive: true })
-
-                            if (error) {
-                                next(error)
+                imageUrlArray.push(
+                    req.files.map(async (file) => {
+                        return cloudinary.uploader.upload(file.path,
+                            {
+                                public_id: file.path,
+                                overwrite: false
                             }
 
-                            imageUrlArray.push(result.url)
-                            // imageUrlArray.push(`http://localhost:4000/user/${file.path}`)
+                        );
+                    })
+                )
 
-                            const { email } = await users.getUserById(req.user.authData.userID)
+                Promise.all(...imageUrlArray)
+                    .then(responseObjects => {
+                        return responseObjects.map(object => object.url)
+                    })
+                    .then(async (imageUrlArray) => {
 
-                            const data = {
-                                buzzId: req.uniqueId,
-                                imageUrl: imageUrlArray,
-                                text: buzzText,
-                                category: buzzCategory,
-                                googleId: req.user.authData.userID,
-                                email
-                            }
+                        const { email } = await users.getUserById(req.user.authData.userID)
+
+                        const data = {
+                            buzzId: req.uniqueId,
+                            imageUrl: imageUrlArray,
+                            text: buzzText,
+                            category: buzzCategory,
+                            googleId: req.user.authData.userID,
+                            email
+                        }
 
 
-                            const post = await posts.create(data)
+                        const post = await posts.create(data)
 
-                            return res.status(200).json(
-                                response(true, 200, "Post created successfully", post)
-                            )
-                        });
-                })
+                        return res.status(200).json(
+                            response(true, 200, "Post created successfully", post)
+                        )
+
+                    })
+                    .catch(err => next(err))
+
             } else {
-                
+
                 const { email } = await users.getUserById(req.user.authData.userID)
 
                 const data = {

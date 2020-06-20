@@ -227,7 +227,7 @@ const Form = ({
                             </select>
 
                             <div className="image-attachment-overlay">
-                                <input type="file" onChange={handleOnFileUpload} key={fileKey} id="BuzzImageAttachment" name="image" accept="image/*" />
+                                <input type="file" onChange={handleOnFileUpload} key={fileKey} id="BuzzImageAttachment" name="image" accept="image/*" multiple />
                                 <i className="far fa-image"></i>
                                 &nbsp;{`${numFiles === 0 ? '' : '(Uploaded)'}`}&nbsp;
                                 {

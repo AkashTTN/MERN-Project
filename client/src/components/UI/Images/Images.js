@@ -5,12 +5,12 @@ import { getImages } from '../../../store/actions'
 
 import classes from './Images.module.css'
 
-const Images = ({ 
-    imageUrl, 
-    buzzId = null, 
-    type, 
-    error, 
-    buzzImages, 
+const Images = ({
+    imageUrl,
+    buzzId = null,
+    type,
+    error,
+    buzzImages,
     complaintImages, getImages }) => {
 
     let images = null
@@ -38,7 +38,7 @@ const Images = ({
             if (type === 'buzz') {
                 images = (
                     <div className={classes.BuzzImage} >
-                        <img src={imageUrlArray[buzzId]} alt="buzz-pic" />
+                        < img name="BuzzImage" src={imageUrlArray[buzzId]} alt="buzz-pic" />
                     </div>
                 )
 
