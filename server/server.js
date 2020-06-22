@@ -5,6 +5,7 @@ const cors = require('cors')
 const flash = require('connect-flash')
 const mongoose = require('mongoose')
 const cloudinary = require('cloudinary').v2;
+require('custom-env').env()
 
 // importing middlerwares
 const isAuthenticated = require('./middlewares/isAuthenticated')

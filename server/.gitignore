@@ -1,3 +1,6 @@
 node_modules
 uploads
 *.rest
+.env.dev
+.env.staging
+.env.production

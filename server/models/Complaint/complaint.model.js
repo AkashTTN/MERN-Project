@@ -20,6 +20,10 @@ const complaintSchema = new Schema(
             googleId: {
                 type: String,
                 required: true
+            },
+            email: {
+                type: String,
+                required: true
             }
         },
         assignedTo: {

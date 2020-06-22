@@ -4,6 +4,9 @@
 ## Quick Start
 
 ``` bash
+# start mongodb as a service
+sudo service mongod start
+
 # Install server dependencies
 cd server && npm i
 
