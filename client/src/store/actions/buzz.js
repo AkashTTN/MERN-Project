@@ -2,14 +2,15 @@ import * as actionTypes from './actionTypes'
 import constants from '../../components/config/constants'
 import { removeAuthData } from './'
 
-export const getPosts = ({ limit = 5, skip = 0 } = {}) => {
+export const getPosts = ({ limit = 5, skip = 0, category = '' } = {}) => {
     return (dispatch, getState) => {
 
         dispatch({ type: actionTypes.GET_POSTS })
 
         const { token } = getState().authData
-        
-        fetch(constants.SERVER_URL + `/user/posts?limit=${limit}&skip=${skip}`, {
+        const query = `/user/posts?category=${encodeURIComponent(category)}&limit=${limit}&skip=${skip}`
+
+        fetch(constants.SERVER_URL + query, {
             headers: {
                 'Authorization': 'bearer ' + token
             }

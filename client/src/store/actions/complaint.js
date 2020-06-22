@@ -2,14 +2,14 @@ import * as actionTypes from './actionTypes'
 import constants from '../../components/config/constants'
 import { removeAuthData } from './'
 
-export const getComplaints = ({ limit = 5, skip = 0, mode, statusFilter='' } = {}) => {
+export const getComplaints = ({ limit = 5, skip = 0, mode, statusFilter = '' } = {}) => {
     return (dispatch, getState) => {
 
         dispatch({ type: actionTypes.GET_COMPLAINTS })
 
         const { token, user: { googleId } } = getState().authData
 
-        const endpoint = mode === 'resolved'
+        const endpoint = (mode === 'resolved')
             ? `/user/complaints?statusFilter=${statusFilter}&limit=${limit}&skip=${skip}`
             : `/user/complaints?statusFilter=${statusFilter}&userId=${googleId}&limit=${limit}&skip=${skip}`
 

@@ -5,6 +5,7 @@ import { getComplaints } from '../../../store/actions'
 
 import ComplaintsListItem from './ComplaintsListItem/ComplaintsListItem'
 import Pagination from '../../UI/Pagination/Pagination'
+import Filter from '../../UI/Filter/Filter'
 
 import './ComplaintsList.css'
 
@@ -49,11 +50,11 @@ const ComplaintsList = ({
         [setCurrentPage]
     )
 
-    const handleComplaintStatusFilter = (filterType) => {
+    const handleComplaintStatusFilter = useCallback((filterType) => {
 
         setComplaintFilterType(filterType)
 
-    }
+    }, [setComplaintFilterType])
 
     if (errorComplaints) {
         content = <p>Something went wrong.</p>
@@ -98,32 +99,12 @@ const ComplaintsList = ({
             <div className="ComplaintsHeader flex-container">
                 <h3>Your Complaints</h3>
                 {
-                    !errorComplaints 
-                    && <span className="ComplaintsFilter">
-                        <i className="fas fa-filter"></i>
-                        <select
-                            value={complaintFilterType}
-                            onChange={(e) => handleComplaintStatusFilter(e.target.value)}
-                            name="complaintStatusFilter"
-                            className="ComplaintStatusFilter"
-                        >
-                            <option value='' disabled hidden >Filter</option>
-                            <option value='None' >None</option>
-                            {
-                                formConfig
-                                    ? formConfig.complaint.statusTypes.map((type, index) => {
-                                        return (
-                                            <option
-                                                key={index}
-                                                value={type}>
-                                                {type}
-                                            </option>
-                                        )
-                                    })
-                                    : null
-                            }
-                        </select>
-                    </span>
+                    !errorComplaints
+                    && <Filter
+                        filter={complaintFilterType}
+                        filterTypes={formConfig ? formConfig.complaint.statusTypes : null}
+                        onChangeHandler={handleComplaintStatusFilter}
+                    />
                 }
             </div>
             <div className="complaints-list-content-wrapper">

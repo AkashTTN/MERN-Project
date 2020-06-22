@@ -41,9 +41,30 @@ module.exports.getPosts = async ({ limit, skip }) => {
                     { $limit: limit }
                 ],
                 "count": [
-                    {
-                        $count: "totalPosts"
-                    }
+                    { $count: "totalPosts" }
+                ]
+            }
+        }
+    ])
+
+    return posts[0]
+}
+
+module.exports.getPostsByCategory = async ({ limit, skip, category }) => {
+
+    const posts = await PostModel.aggregate([
+        {
+            "$facet": {
+                "allPosts": [
+                    { $match: { category } },
+                    { $project: { _id: 0 } },
+                    { $sort: { createdAt: -1 } },
+                    { $skip: skip },
+                    { $limit: limit }
+                ],
+                "count": [
+                    { $match: { category } },
+                    { $count: "totalPosts" }
                 ]
             }
         }

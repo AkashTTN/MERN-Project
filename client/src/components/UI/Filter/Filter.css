@@ -1,0 +1,24 @@
+.Filter {
+	padding: 10px;
+	margin-left: auto;
+}
+
+.Filter > i {
+	margin-right: 5px;
+}
+
+.FilterTypes {
+	background-color: transparent;
+	border: none;
+	font-weight: bold;
+}
+
+.FilterTypes:focus {
+	outline: none;
+}
+
+@media only screen and (max-width: 420px) {
+	.Filter {
+		margin-left: 0;
+	}
+} 

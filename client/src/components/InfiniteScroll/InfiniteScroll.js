@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import { connect } from 'react-redux'
 
@@ -6,10 +6,12 @@ import { getPosts, changeLikeDislike } from '../../store/actions'
 
 import Post from '../Posts/Post/Post'
 import Spinner from '../UI/Spinner/Spinner'
+import Filter from '../UI/Filter/Filter'
 
 import '../Posts/Posts.css'
 
 const InfinitePosts = ({
+    formConfig,
     error,
     isLoading,
     posts,
@@ -20,6 +22,13 @@ const InfinitePosts = ({
     const [hasMore, setHasMore] = useState(false)
     const [currentPage, setCurrentPage] = useState(1)
     const [postsPerPage] = useState(5)
+    const [buzzFilterType, setBuzzFilterType] = useState('')
+
+    const handleBuzzFilter = useCallback((filterType) => {
+
+        setBuzzFilterType(filterType)
+
+    }, [setBuzzFilterType])
 
     useEffect(
 
@@ -71,50 +80,62 @@ const InfinitePosts = ({
         () => {
             getPosts({
                 limit: postsPerPage,
+                category: buzzFilterType,
                 skip: postsPerPage * currentPage - postsPerPage
             })
-        }, [getPosts, setCurrentPage, currentPage, postsPerPage]
+        }, [getPosts, setCurrentPage, currentPage, postsPerPage, buzzFilterType]
     )
 
     let postsArray
 
-    if (posts.length === 0) {
-        postsArray = <p>No posts yet.</p>
+    if (error) {
+        postsArray = <p>Something went wrong</p>
+    } else if (isLoading) {
+        postsArray = <p>Loading...</p>
     } else {
-        postsArray = posts.map((post, index) => {
+        if (posts.length === 0) {
+            postsArray = <p>No posts made {['None', ''].includes(buzzFilterType) ? '' : 'under this category'} yet.</p>
+        } else {
+            postsArray = posts.map((post, index) => {
 
-            const likeStatus = post.likedBy.includes(userId)
-            const dislikeStatus = post.dislikedBy.includes(userId)
+                const likeStatus = post.likedBy.includes(userId)
+                const dislikeStatus = post.dislikedBy.includes(userId)
 
-            return (
-                <Post
-                    key={index}
-                    data={post}
-                    likeStatus={likeStatus}
-                    dislikeStatus={dislikeStatus}
-                    onChange={changeLikeDislike}
-                    likeCount={post.likedBy.length}
-                    dislikeCount={post.dislikedBy.length}
-                />
-            )
-        })
+                return (
+                    <Post
+                        key={index}
+                        data={post}
+                        likeStatus={likeStatus}
+                        dislikeStatus={dislikeStatus}
+                        onChange={changeLikeDislike}
+                        likeCount={post.likedBy.length}
+                        dislikeCount={post.dislikedBy.length}
+                    />
+                )
+            })
+        }
     }
 
     return (
         <div className="Posts">
-            <h3 className="PostsHeader" >
-                <i className="fas fa-at"></i>&nbsp;&nbsp;Recent Buzz
+            <h3 className="PostsHeader flex-container" >
+                <span>
+                    <i className="fas fa-at"></i>&nbsp;&nbsp;Recent Buzz
+                </span>
+                {
+                    !error
+                    && <Filter
+                        onChangeHandler={handleBuzzFilter}
+                        filterTypes={formConfig ? formConfig.buzz.category : null}
+                        filter={buzzFilterType} />
+                }
             </h3>
             {
                 postsArray
             }
             {
-                error &&
-                <p>Something went wrong.</p>
-            }
-            {
                 isLoading &&
-                <Spinner />
+                <Spinner isMarginRequired />
             }
             {
                 !hasMore && (postsArray.length > 0) &&
@@ -131,7 +152,8 @@ const mapStateToProps = state => {
         userId: state.authData.user.googleId,
         isLoading: state.buzz.loading,
         error: state.buzz.error,
-        totalPosts: state.buzz.totalPosts
+        totalPosts: state.buzz.totalPosts,
+        formConfig: state.form.formConfig
     }
 }
 

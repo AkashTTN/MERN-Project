@@ -31,7 +31,7 @@ const upload = multer({ storage })
 router
     .get('/', async (req, res, next) => {
 
-        let { limit, skip } = req.query
+        let { limit, skip, category } = req.query
 
         if (isNaN(limit) && isNaN(skip)) {
             return res.status(200).json(response(false, 406, "Invalid limit/skip"))
@@ -42,14 +42,21 @@ router
         skip = +skip
 
         try {
-
+            
             const {
                 allPosts = [],
                 count: [{ totalPosts = 0 } = {}] = []
-            } = await posts.getPosts({ limit, skip })
+            } = (category !== 'None' && category !== '')
+                    ? await posts.getPostsByCategory({ limit, skip, category })
+                    : await posts.getPosts({ limit, skip })
 
             return res.status(200).json(
-                response(true, 200, "Retrieved posts", { posts: allPosts, totalPosts })
+                response(
+                    true,
+                    200,
+                    "Retrieved posts",
+                    { posts: allPosts, totalPosts }
+                )
             )
 
         } catch (error) {
@@ -59,8 +66,6 @@ router
     })
 
     .post('/', generateUniqueId, upload.array('images'), async (req, res, next) => {
-
-        // console.log('post request body', req.user)
 
         try {
 

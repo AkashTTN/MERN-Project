@@ -222,8 +222,8 @@ const Form = ({
                                 <option value="" disabled hidden>
                                     Category
                                 </option>
-                                <option value="lostAndFound">Lost & Found</option>
-                                <option value="activity">Activity</option>
+                                <option value="Lost & Found">Lost & Found</option>
+                                <option value="Activity">Activity</option>
                             </select>
 
                             <div className="image-attachment-overlay">

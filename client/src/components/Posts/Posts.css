@@ -14,4 +14,16 @@
 	text-align: left;
 	padding: 10px;
 	background-color: #f2f2f2;
+	align-items: center;
 }
+
+.PostsHeader > span {
+	padding: 10px;
+}
+
+@media only screen and (max-width: 420px) {
+	.PostsHeader {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+} 

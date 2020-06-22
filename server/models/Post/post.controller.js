@@ -19,6 +19,11 @@ module.exports.getPosts = async (data) => {
     return response
 }
 
+module.exports.getPostsByCategory = async (data) => {
+    const response = await posts.getPostsByCategory(data);
+    return response
+}
+
 module.exports.getPostById = async (id) => {
     const response = await posts.getPostById(id);
     return response[0];

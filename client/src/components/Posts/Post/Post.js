@@ -43,7 +43,7 @@ const Post = React.memo(({
                     {data.user.email}&nbsp;&middot;&nbsp;
                     {moment(data.createdAt).fromNow()}
                     {   
-                        data.category === 'lostAndFound'
+                        data.category === 'Lost & Found'
                             ? <span>&nbsp;&middot;&nbsp;Posted under Lost & Found</span> : null
                     }
                 </p>
