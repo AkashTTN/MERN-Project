@@ -67,6 +67,14 @@ const Feed = React.memo(({
             )
             break
 
+        case 'myBuzz':
+            feedBodyContent = (
+                <>
+                    <InfinitePosts mode={mode} />
+                </>
+            )
+            break
+
         default: feedBodyContent = <p>Incorrect feed mode.</p>
 
     }

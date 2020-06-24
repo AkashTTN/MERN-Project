@@ -24,7 +24,22 @@ module.exports.getPostsByCategory = async (data) => {
     return response
 }
 
+module.exports.getPostsByUserId = async (data) => {
+    const response = await posts.getPostsByUserId(data);
+    return response
+}
+
+module.exports.getPostsByUserIdAndCategory = async (data) => {
+    const response = await posts.getPostsByUserIdAndCategory(data);
+    return response
+}
+
 module.exports.getPostById = async (id) => {
     const response = await posts.getPostById(id);
     return response[0];
+};
+
+module.exports.deletePostById = async (id) => {
+    const response = await posts.deletePostById(id);
+    return response;
 };

@@ -32,6 +32,7 @@ router
     .get('/', async (req, res, next) => {
 
         let { limit, skip, category } = req.query
+        const userId = req.user.authData.userID
 
         if (isNaN(limit) && isNaN(skip)) {
             return res.status(200).json(response(false, 406, "Invalid limit/skip"))
@@ -42,13 +43,13 @@ router
         skip = +skip
 
         try {
-            
+
             const {
                 allPosts = [],
                 count: [{ totalPosts = 0 } = {}] = []
             } = (category !== 'None' && category !== '')
-                    ? await posts.getPostsByCategory({ limit, skip, category })
-                    : await posts.getPosts({ limit, skip })
+                    ? await posts.getPostsByUserIdAndCategory({ limit, skip, category, userId })
+                    : await posts.getPostsByUserId({ limit, skip, userId })
 
             return res.status(200).json(
                 response(
@@ -178,5 +179,46 @@ router
 
     })
 
+    .delete('/:id', async (req, res, next) => {
+
+        try {
+
+            const id = req.params.id
+
+            if (id.trim().length === 0) {
+                return res.status(200).json(
+                    response(
+                        false,
+                        406,
+                        "Post id required.",
+                    )
+                )
+            }
+
+            const result = await posts.deletePostById(id)
+            
+            if (result.deletedCount === 1) {
+                return res.status(200).json(
+                    response(
+                        true,
+                        200,
+                        "Post deleted successfully"
+                    )
+                )
+            }
+
+            return res.status(200).json(
+                response(
+                    false,
+                    406,
+                    'Post deletion unsuccessful'
+                )
+            )
+
+        } catch (error) {
+            next(error)
+        }
+
+    })
 
 module.exports = router

@@ -25,6 +25,52 @@ module.exports.create = async ({
 
 };
 
+module.exports.getPostsByUserId = async ({ limit, skip, userId }) => {
+
+    const posts = await PostModel.aggregate([
+        {
+            "$facet": {
+                "allPosts": [
+                    { $project: { _id: 0 } },
+                    { $match: { "user.googleId": userId } },
+                    { $sort: { createdAt: -1 } },
+                    { $skip: skip },
+                    { $limit: limit }
+                ],
+                "count": [
+                    { $match: { "user.googleId": userId } },
+                    { $count: "totalPosts" }
+                ]
+            }
+        }
+    ])
+
+    return posts[0]
+}
+
+module.exports.getPostsByUserIdAndCategory = async ({ limit, skip, category, userId }) => {
+
+    const posts = await PostModel.aggregate([
+        {
+            "$facet": {
+                "allPosts": [
+                    { $match: { category, "user.googleId": userId } },
+                    { $project: { _id: 0 } },
+                    { $sort: { createdAt: -1 } },
+                    { $skip: skip },
+                    { $limit: limit }
+                ],
+                "count": [
+                    { $match: { category, "user.googleId": userId } },
+                    { $count: "totalPosts" }
+                ]
+            }
+        }
+    ])
+
+    return posts[0]
+}
+
 module.exports.getPosts = async ({ limit, skip }) => {
     // const posts = await PostModel.find(
     //     {},
@@ -126,7 +172,14 @@ module.exports.changeDislike = async ({ buzzId, status, googleId }) => {
 
 module.exports.getPostById = async (id) => {
 
-    const post = await UserModel.find({ buzzId: id });
+    const post = await PostModel.find({ buzzId: id });
+
+    return post;
+};
+
+module.exports.deletePostById = async (id) => {
+
+    const post = await PostModel.deleteOne({ buzzId: id });
 
     return post;
 };

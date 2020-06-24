@@ -18,6 +18,7 @@ const errorHandler = require('./middlewares/errorHandler')
 const authRoutes = require('./routes/auth-routes')
 const userRoutes = require('./routes/user-routes')
 const adminRoutes = require('./routes/admin-routes')
+const rootRoutes = require('./routes/root-routes')
 
 // importing seeds
 const initializeUIConfig = require('./seeds/uiConfig')
@@ -81,6 +82,7 @@ initializeGoogleStrategy(passport)
 app.use(passport.initialize())
 
 // setup routes
+app.use('/', isAuthenticated, rootRoutes)
 app.use('/auth', authRoutes)
 app.use('/user', isAuthenticated, userRoutes)
 app.use('/admin', isAuthenticated, isAdmin, adminRoutes)

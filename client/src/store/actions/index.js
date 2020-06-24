@@ -5,7 +5,8 @@ export {
 
 export {
     getPosts,
-    changeLikeDislike
+    changeLikeDislike,
+    deletePost
 } from './buzz'
 
 export {

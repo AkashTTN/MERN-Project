@@ -6,7 +6,40 @@ const initialState = {
     error: false,
     loading: false,
     totalPosts: 0,
+    postDeleted: false,
     changeLikeDislikeError: false
+}
+
+const resetErrorLoading = (state) => {
+    return {
+        ...state,
+        error: false,
+        loading: true
+    }
+}
+
+const deletePost = (state) => {
+    const newState = resetErrorLoading(state)
+    return {
+        ...newState,
+        postDeleted: false
+    }
+}
+
+const deletePostSuccess = state => {
+    return {
+        ...state,
+        loading: false,
+        postDeleted: true
+    }
+}
+
+const deletePostFailed = state => {
+    return {
+        ...state,
+        error: true,
+        loading: false
+    }
 }
 
 const changeLikeDislike = (state, action) => {
@@ -88,8 +121,13 @@ const reducer = (state = initialState, action) => {
                 changeLikeDislikeError: true
             }
 
-        default:
-            return state
+        case actionTypes.DELETE_POST: return deletePost(state)
+
+        case actionTypes.DELETE_POST_SUCCESS: return deletePostSuccess(state)
+
+        case actionTypes.DELETE_POST_FAILED: return deletePostFailed(state)
+
+        default: return state
     }
 }
 

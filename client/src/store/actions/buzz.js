@@ -2,13 +2,15 @@ import * as actionTypes from './actionTypes'
 import constants from '../../components/config/constants'
 import { removeAuthData } from './'
 
-export const getPosts = ({ limit = 5, skip = 0, category = '' } = {}) => {
+export const getPosts = ({ limit = 5, skip = 0, category = '', mode } = {}) => {
     return (dispatch, getState) => {
 
         dispatch({ type: actionTypes.GET_POSTS })
 
         const { token } = getState().authData
-        const query = `/user/posts?category=${encodeURIComponent(category)}&limit=${limit}&skip=${skip}`
+        const query = (mode === 'myBuzz')
+            ? `/user/posts?category=${encodeURIComponent(category)}&limit=${limit}&skip=${skip}`
+            : `/posts?category=${encodeURIComponent(category)}&limit=${limit}&skip=${skip}`
 
         fetch(constants.SERVER_URL + query, {
             headers: {
@@ -86,4 +88,41 @@ export const changeLikeDislike = ({ type, changedStatus, buzzId }) => {
                 dispatch({ type: actionTypes.CHANGE_LIKE_DISLIKE_FAILED })
             })
     }
+}
+
+export const deletePost = ({ postId }) => {
+
+    
+    return (dispatch, getState) => {
+
+        if (!postId) {
+            console.log('Post id required')
+            return dispatch({ type: actionTypes.DELETE_POST_FAILED })
+        }
+
+        dispatch({ type: actionTypes.DELETE_POST })
+
+        const { token } = getState().authData
+
+        fetch(constants.SERVER_URL + `/user/posts/${postId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'bearer ' + token
+            }
+        })
+            .then(res => res.json())
+            .then(response => {
+                if (response.code === 200) {
+                    dispatch({ type: actionTypes.DELETE_POST_SUCCESS })
+                } else {
+                    throw new Error(response.message)
+                }
+            })
+            .catch(err => {
+                console.error(err.message || err)
+                dispatch({ type: actionTypes.DELETE_POST_FAILED })
+            })
+
+    }
+
 }

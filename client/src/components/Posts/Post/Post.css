@@ -43,3 +43,20 @@
 	max-height: 100px;
 	overflow: auto;
 }
+
+.PostModificationOptions > i {
+	cursor: pointer;
+	color: grey;
+}
+
+.deletePost:hover {
+	color: red;
+}
+
+.editPost {
+	float: right;
+}
+
+.editPost:hover {
+	color: black;
+}

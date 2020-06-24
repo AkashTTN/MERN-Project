@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 
 import { connect } from 'react-redux'
 
-import { getPosts, changeLikeDislike } from '../../store/actions'
+import { getPosts, changeLikeDislike, deletePost } from '../../store/actions'
 
 import Post from '../Posts/Post/Post'
 import Spinner from '../UI/Spinner/Spinner'
@@ -11,12 +11,15 @@ import Filter from '../UI/Filter/Filter'
 import '../Posts/Posts.css'
 
 const InfinitePosts = ({
+    deletePost,
+    mode = 'buzz',
     formConfig,
     error,
     isLoading,
     posts,
     getPosts,
     changeLikeDislike,
+    postDeleted,
     userId, totalPosts, postSubmitted }) => {
 
     const [hasMore, setHasMore] = useState(false)
@@ -30,6 +33,7 @@ const InfinitePosts = ({
 
     }, [setBuzzFilterType])
 
+    // get posts on post submission
     useEffect(
 
         () => {
@@ -45,6 +49,25 @@ const InfinitePosts = ({
             }
         },
         [postSubmitted, setCurrentPage, postsPerPage, setCurrentPage, getPosts]
+
+    )
+
+    // Get posts on post delete
+    useEffect(
+
+        () => {
+            if (postDeleted) {
+                if (currentPage > 1) {
+                    return setCurrentPage(1)
+                }
+
+                getPosts({
+                    limit: postsPerPage,
+                    skip: postsPerPage * currentPage - postsPerPage
+                })
+            }
+        },
+        [postDeleted, setCurrentPage, postsPerPage, setCurrentPage, getPosts]
 
     )
 
@@ -79,11 +102,12 @@ const InfinitePosts = ({
     useEffect(
         () => {
             getPosts({
+                mode,
                 limit: postsPerPage,
                 category: buzzFilterType,
                 skip: postsPerPage * currentPage - postsPerPage
             })
-        }, [getPosts, setCurrentPage, currentPage, postsPerPage, buzzFilterType]
+        }, [getPosts, mode, setCurrentPage, currentPage, postsPerPage, buzzFilterType]
     )
 
     let postsArray
@@ -110,6 +134,8 @@ const InfinitePosts = ({
                         onChange={changeLikeDislike}
                         likeCount={post.likedBy.length}
                         dislikeCount={post.dislikedBy.length}
+                        mode={mode}
+                        deletePost={deletePost}
                     />
                 )
             })
@@ -153,14 +179,16 @@ const mapStateToProps = state => {
         isLoading: state.buzz.loading,
         error: state.buzz.error,
         totalPosts: state.buzz.totalPosts,
-        formConfig: state.form.formConfig
+        formConfig: state.form.formConfig,
+        postDeleted: state.buzz.postDeleted
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         getPosts: (data) => dispatch(getPosts(data)),
-        changeLikeDislike: (data) => dispatch(changeLikeDislike(data))
+        changeLikeDislike: (data) => dispatch(changeLikeDislike(data)),
+        deletePost: (data) => dispatch(deletePost(data))
     }
 }
 

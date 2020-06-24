@@ -11,7 +11,7 @@ const NavListItem = (props) => {
             <NavLink
                 activeClassName="active"
                 className="NavListItem flex-container"
-                to={`/${props.name.toLowerCase()}`}
+                to={`/${props.name.replace(' ', '').toLowerCase()}`}
             >
                 <span>{props.name}</span>
                 <i className="fas fa-chevron-right"></i>

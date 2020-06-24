@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react'
 import moment from 'moment'
 
-import Images from '../../UI/Images/Images'
 import LikeDislike from '../../LikeDislike/LikeDislike'
 import Carousel from '../../UI/Carousel/Carousel'
 
@@ -14,11 +13,14 @@ function format(number) {
 
 const Post = React.memo(({
     data,
+    editPost,
+    deletePost,
     likeStatus,
     dislikeStatus,
     likeCount,
     dislikeCount,
-    onChange
+    onChange,
+    mode
 }) => {
 
     const date = new Date(data.createdAt)
@@ -37,12 +39,22 @@ const Post = React.memo(({
             <div className="PostContainerOne">
                 <p id="PostCreatedDay" >{day},</p>
                 <p id="PostCreatedMonth" >{month}</p>
+                {
+                    (mode === 'myBuzz')
+                        ? <span className="PostModificationOptions">
+                            <i
+                                onClick={() => deletePost({ postId: data.buzzId })}
+                                className="deletePost fas fa-trash"></i>
+                            <i onClick={editPost} className="editPost fas fa-edit"></i>
+                        </span>
+                        : null
+                }
             </div>
             <div className="PostContainerTwo">
                 <p id="PostUserData" >
                     {data.user.email}&nbsp;&middot;&nbsp;
                     {moment(data.createdAt).fromNow()}
-                    {   
+                    {
                         data.category === 'Lost & Found'
                             ? <span>&nbsp;&middot;&nbsp;Posted under Lost & Found</span> : null
                     }

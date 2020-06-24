@@ -26,6 +26,9 @@ function App() {
           <Route path="/buzz" >
             <Feed mode="buzz" />
           </Route>
+          <Route path="/mybuzz" >
+            <Feed mode="myBuzz" />
+          </Route>
           <Route path="/profile" >
             <Feed mode="profile" />
           </Route>
