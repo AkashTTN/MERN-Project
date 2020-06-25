@@ -1,9 +1,6 @@
 .LikeDislike {
-    margin-top: 10px;
     justify-content: flex-end;
     align-items: center;
-    border-top: 1px solid #ccc;
-    border-left: 1px solid #ccc;
     padding: 5px;
 }
 

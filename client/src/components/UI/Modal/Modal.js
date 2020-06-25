@@ -6,7 +6,7 @@ const Modal = (props) => {
     return (
         <div id="my-modal" className="modal">
             <div className="modal-content">
-                <div className="modal-header mb-15">
+                <div className="modal-header mb-15 flex-container">
                     <span onClick={props.closeModal} className="close">&times;</span>
                     <h2>{props.heading}</h2>
                 </div>

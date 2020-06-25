@@ -141,7 +141,7 @@ const Form = ({
 
             submitForm({ data: formDataToBeSent, type: formType, editMode, id: editData.id })
         },
-        [files, formData, submitForm, formType, userEmail, userName]
+        [files, formData, submitForm, formType, userEmail, userName, editMode, editData.id]
     )
 
     if (formConfigError) {

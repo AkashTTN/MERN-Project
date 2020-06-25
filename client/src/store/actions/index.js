@@ -23,3 +23,8 @@ export {
 export {
     getImages
 } from './images'
+
+export {
+    addComment,
+    getComments
+} from './comment.js'

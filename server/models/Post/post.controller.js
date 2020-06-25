@@ -45,7 +45,11 @@ module.exports.deletePostById = async (id) => {
 };
 
 module.exports.updatePost = async (data) => {
-    console.log(data)
     const response = await posts.updatePost(data);
+    return response;
+};
+
+module.exports.addCommentToPost = async (data) => {
+    const response = await posts.addCommentToPost(data);
     return response;
 };

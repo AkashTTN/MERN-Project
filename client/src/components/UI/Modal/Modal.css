@@ -11,7 +11,7 @@
 	top: 0;
 	height: 100%;
 	width: 100%;
-	overflow: auto;
+	/* overflow: auto; */
 	background-color: rgba(0, 0, 0, 0.5);
 	backdrop-filter: blur(3px);
 }
@@ -19,6 +19,7 @@
 .modal-content {
 	margin: 10% auto;
 	width: 80%;
+	height: 100%;
 	animation-name: modalopen;
 	animation-duration: var(--modal-duration);
 }
@@ -26,8 +27,10 @@
 .modal-header {
 	background: var(--modal-color);
 	padding: 15px;
-	color: #fff;
 	border-radius: 2px;
+	flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .modal-header > h2 {

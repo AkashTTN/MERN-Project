@@ -1,10 +1,13 @@
 const express = require('express')
 const router = express.Router()
 const response = require('v-response').ApiResponse
+
 const posts = require('../models/Post/post.controller')
 const isAuthenticated = require('../middlewares/isAuthenticated')
+const postsRoutes = require('./posts-routes')
 
 router
+
     .get('/posts', isAuthenticated, async (req, res, next) => {
 
         let { limit, skip, category } = req.query
@@ -40,5 +43,7 @@ router
         }
 
     })
+
+    .use('/posts', isAuthenticated, postsRoutes)
 
 module.exports = router

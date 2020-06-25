@@ -60,3 +60,21 @@
 .editPost:hover {
 	color: orange;
 }
+
+.PostFooter {
+	flex-wrap: wrap;
+	align-items: center;
+	padding: 5px;
+	justify-content: space-between;
+	border-top: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+}
+
+.PostFooter > span {
+	color: grey;
+}
+
+.PostFooter > span:hover {
+	cursor: pointer;
+	color: black;
+}

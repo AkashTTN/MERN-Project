@@ -9,6 +9,7 @@ import buzzReducer from '../src/store/reducers/buzz'
 import complaintReducer from '../src/store/reducers/complaint'
 import formReducer from '../src/store/reducers/form'
 import imagesReducer from '../src/store/reducers/images'
+import commentReducer from '../src/store/reducers/comment'
 
 import App from './components/App/App';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
@@ -22,7 +23,8 @@ const rootReducer = combineReducers({
   buzz: buzzReducer,
   complaint: complaintReducer,
   form: formReducer,
-  images: imagesReducer
+  images: imagesReducer,
+  comment: commentReducer
 })
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))

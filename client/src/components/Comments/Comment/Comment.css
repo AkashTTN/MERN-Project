@@ -1,0 +1,17 @@
+.Comment {
+    border: 1px solid ;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+}
+
+.CommentUserData {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.CommentData {
+    font-size: 14px;
+}

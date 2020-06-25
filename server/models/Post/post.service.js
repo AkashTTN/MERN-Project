@@ -184,6 +184,15 @@ module.exports.deletePostById = async (id) => {
     return post;
 };
 
+module.exports.addCommentToPost = async ({ buzzId, commentId }) => {
+
+    const post = await PostModel.findOneAndUpdate({ buzzId }, {
+        $addToSet: { comments: commentId }
+    });
+
+    return post;
+};
+
 module.exports.updatePost = async ({
     buzzId,
     text,
@@ -201,9 +210,10 @@ module.exports.updatePost = async ({
             category
         }
     }, { new: true });
-    console.log(post)
+
     const newPostObject = { ...post._doc }
     delete newPostObject['_id']
+    
     return {
         buzz: newPostObject
     };

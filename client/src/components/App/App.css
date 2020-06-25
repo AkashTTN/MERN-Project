@@ -16,7 +16,7 @@ html {
 	background-color: white;
 	outline: none;
 	border: 1px solid #ccc;
-	padding: 1em 2em;
+	padding: .8em 2em;
 	color: #f4b585;
 	border-radius: 2px;
 }
@@ -25,6 +25,7 @@ html {
 	cursor: pointer;
 	background-color: #f4b585;
 	color: white;
+	border-color: #f4b585;
 }
 
 .m-none {

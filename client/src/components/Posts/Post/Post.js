@@ -5,6 +5,7 @@ import LikeDislike from '../../LikeDislike/LikeDislike'
 import Carousel from '../../UI/Carousel/Carousel'
 import Modal from "../../UI/Modal/Modal";
 import Form from '../../UI/Form/Form'
+import Comments from '../../Comments/Comments'
 
 import './Post.css'
 
@@ -28,7 +29,8 @@ const Post = React.memo(({
     const date = new Date(data.createdAt)
     const day = format(date.getDate())
     const month = format(date.getMonth() + 1)
-    const [showModal, setShowModal] = useState(false)
+    const [showEditModal, setShowEditModal] = useState(false)
+    const [showCommentsModal, setShowCommentsModal] = useState(false)
 
     const onChangeHandler = useCallback(
         (params) => {
@@ -40,17 +42,27 @@ const Post = React.memo(({
     return (
         <>
             {
-                showModal
+                showCommentsModal
+                    ? <Modal
+                        heading='Comments'
+                        closeModal={() => setShowCommentsModal(false)}>
+                        <Comments buzzId={data.buzzId} />
+                    </Modal>
+                    : null
+            }
+            {
+                showEditModal
                     ? <Modal
                         heading='Edit Buzz'
-                        closeModal={() => setShowModal(false)}>
+                        closeModal={() => setShowEditModal(false)}>
                         <Form
                             formType='Buzz'
-                            editData={{ 
-                                id: data.buzzId, 
-                                buzzText: data.text, 
-                                buzzCategory: data.category, 
-                                imageUrl: data.imageUrl }}
+                            editData={{
+                                id: data.buzzId,
+                                buzzText: data.text,
+                                buzzCategory: data.category,
+                                imageUrl: data.imageUrl
+                            }}
                             editMode />
                     </Modal>
                     : null
@@ -65,7 +77,7 @@ const Post = React.memo(({
                                 <i
                                     onClick={() => deletePost({ postId: data.buzzId })}
                                     className="deletePost fas fa-trash"></i>
-                                <i onClick={() => setShowModal(true)} className="editPost fas fa-edit"></i>
+                                <i onClick={() => setShowEditModal(true)} className="editPost fas fa-edit"></i>
                             </span>
                             : null
                     }
@@ -85,13 +97,18 @@ const Post = React.memo(({
                         &&
                         <Carousel imageArray={data.imageUrl} />
                     }
-                    <LikeDislike
-                        onChange={onChangeHandler}
-                        likeStatus={likeStatus}
-                        dislikeStatus={dislikeStatus}
-                        likeCount={likeCount}
-                        dislikeCount={dislikeCount}
-                    />
+                    <div className="PostFooter mt-15 flex-container" >
+                        <span onClick={() => setShowCommentsModal(true)}>
+                            {data.comments.length} Comments
+                        </span>
+                        <LikeDislike
+                            onChange={onChangeHandler}
+                            likeStatus={likeStatus}
+                            dislikeStatus={dislikeStatus}
+                            likeCount={likeCount}
+                            dislikeCount={dislikeCount}
+                        />
+                    </div>
                 </div>
             </div>
         </>

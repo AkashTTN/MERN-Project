@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const postSchema = new Schema(
+const commentSchema = new Schema(
     {   
-        buzzId: {
+        commentId: {
             type: String,
             required: true
         },
@@ -12,6 +12,7 @@ const postSchema = new Schema(
             default: Date.now,
             required: true
         },
+        buzzId: String,
         user: {
             email: {
                 type: String,
@@ -20,17 +21,16 @@ const postSchema = new Schema(
             googleId: {
                 type: String,
                 required: true
+            },
+            name: {
+                type: String,
+                required: true
             }
         },
+        replies: {
+            type: [String]
+        },
         text: {
-            type: String,
-            required: true
-        },
-        imageUrl: {
-            type: Array,
-            default: []
-        },
-        category: {
             type: String,
             required: true
         },
@@ -39,13 +39,10 @@ const postSchema = new Schema(
         },
         dislikedBy: {
             type: [String]
-        },
-        comments: {
-            type: [String]
         }
     }
 );
 
-const PostModel = mongoose.model('post', postSchema);
+const CommentModel = mongoose.model('comment', commentSchema);
 
-module.exports = PostModel;
+module.exports = CommentModel;

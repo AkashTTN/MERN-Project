@@ -8,6 +8,7 @@ const cloudinary = require('cloudinary').v2;
 const posts = require('../models/Post/post.controller')
 const users = require('../models/User/user.controller')
 const generateUniqueId = require('../middlewares/generateUniqueId')
+const commentsRoutes = require('./comments-routes')
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -33,6 +34,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 router
+    .use('/comments', commentsRoutes)
+
     .get('/', async (req, res, next) => {
 
         let { limit, skip, category } = req.query
@@ -168,7 +171,6 @@ router
             let imageUrlArray = []
 
             if (req.files.length !== 0) {
-                console.log('files', req.files)
                 imageUrlArray.push(
                     req.files.map(async (file) => {
                         return cloudinary.uploader.upload(file.path,
