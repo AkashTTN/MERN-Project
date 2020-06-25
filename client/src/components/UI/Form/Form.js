@@ -2,9 +2,10 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
 import { submitForm } from '../../../store/actions'
+import Spinner from '../Spinner/Spinner'
+import fetchImage from '../../utils/fetchImage'
 
 import './Form.css'
-import Spinner from '../Spinner/Spinner'
 
 const Form = ({
     loading,
@@ -15,7 +16,9 @@ const Form = ({
     submitForm,
     postSubmitted,
     complaintSubmitted,
-    formConfigError
+    formConfigError,
+    editMode = false,
+    editData = ''
 }) => {
 
     const [numFiles, setNumFiles] = useState(0)
@@ -33,17 +36,38 @@ const Form = ({
 
     const resetForm = useCallback(
         () => {
-            setFormData({
-                department: '',
-                concernText: '',
-                issueTitle: '',
-                buzzCategory: '',
-                buzzText: ''
-            })
-            setNumFiles(0)
-            setFiles('')
+
+            if (editMode && editData) {
+                (async function () {
+                    setFormData({
+                        buzzCategory: editData.buzzCategory,
+                        buzzText: editData.buzzText,
+                    })
+
+                    const imagesArray = await fetchImage(editData.imageUrl)
+                    console.log(imagesArray)
+                    const fileArray = imagesArray && imagesArray.map(async (file, index) => {
+                        return await (new Response(file)).arrayBuffer();
+                    })
+                    setFiles(fileArray)
+                    setNumFiles(fileArray.length)
+
+                })()
+
+            } else {
+                setFormData({
+                    department: '',
+                    concernText: '',
+                    issueTitle: '',
+                    buzzCategory: '',
+                    buzzText: ''
+                })
+                setNumFiles(0)
+                setFiles('')
+            }
+
         },
-        [setFormData, setNumFiles, setFiles]
+        [setFormData, setNumFiles, setFiles, editMode, editData]
     )
 
     // reset form on changing form type
@@ -115,7 +139,7 @@ const Form = ({
 
             formDataToBeSent.append("data", JSON.stringify(formData))
 
-            submitForm({ data: formDataToBeSent, type: formType })
+            submitForm({ data: formDataToBeSent, type: formType, editMode, id: editData.id })
         },
         [files, formData, submitForm, formType, userEmail, userName]
     )
@@ -201,7 +225,7 @@ const Form = ({
                             {
                                 loading
                                     ? <div><Spinner isMarginRequired /></div>
-                                    : <button id="SubmitComplaint" type="submit">Submit</button>
+                                    : <button id="SubmitComplaint" className="btn-primary" type="submit">Submit</button>
                             }
                         </div>
 
@@ -213,7 +237,10 @@ const Form = ({
                 form = (
 
                     <form onSubmit={handleOnSubmit}>
-                        <h3 className="FormHeader" ><i className="fas fa-pencil-alt"></i>&nbsp;&nbsp;Create Buzz</h3>
+                        <h3 className="FormHeader" >
+                            <i className="fas fa-pencil-alt"></i>
+                            {editMode || <span>&nbsp;&nbsp;Create Buzz</span>}
+                        </h3>
                         <div className="BuzzFormBody" >
                             <textarea id="buzz" onChange={handleOnChange} name="buzzText" value={formData.buzzText} placeholder="Share your thoughts..." required ></textarea>
                         </div>
@@ -240,9 +267,9 @@ const Form = ({
                                 {
                                     loading
                                         ? <div><Spinner isMarginRequired={false} /></div>
-                                        : <button type="submit">
-                                            Post
-                                        <i className="fas fa-caret-right"></i>
+                                        : <button className="btn-primary" type="submit">
+                                            {editMode ? 'Repost' : 'Post'}
+                                            <i className="fas fa-caret-right"></i>
                                         </button>
                                 }
                             </div>
@@ -257,7 +284,7 @@ const Form = ({
     }
 
     return (
-        <div className="Form">
+        <div className={editMode ? 'Form m-none' : 'Form'}>
             {form}
         </div>
     )

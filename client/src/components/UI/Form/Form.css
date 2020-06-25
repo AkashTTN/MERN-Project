@@ -50,16 +50,6 @@
 
 #SubmitComplaint {
 	margin-left: auto;
-	background: #f7f7f7;
-	color: #f4b585;
-	padding: 10px 40px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-}
-
-#SubmitComplaint:hover {
-	cursor: pointer;
-	background-color: #f3eded;
 }
 
 .ComplaintField {
@@ -139,21 +129,8 @@
 	align-items: center;
 	justify-content: center;
 }
-
 .SubmitBuzz > button {
-	background-color: #f7f7f7;
-	outline: none;
-	border: 1px solid #ccc;
-	padding: 5px 10px;
-	color: #f4b585;
-	border-radius: 2px;
-	display: flex;
-	align-items: center;
-}
-
-.SubmitBuzz > button:hover {
-	cursor: pointer;
-	background-color: #f3eded;
+	padding: .5em;
 }
 
 .SubmitBuzz > button > i {

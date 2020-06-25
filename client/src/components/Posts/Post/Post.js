@@ -1,8 +1,10 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import moment from 'moment'
 
 import LikeDislike from '../../LikeDislike/LikeDislike'
 import Carousel from '../../UI/Carousel/Carousel'
+import Modal from "../../UI/Modal/Modal";
+import Form from '../../UI/Form/Form'
 
 import './Post.css'
 
@@ -26,6 +28,7 @@ const Post = React.memo(({
     const date = new Date(data.createdAt)
     const day = format(date.getDate())
     const month = format(date.getMonth() + 1)
+    const [showModal, setShowModal] = useState(false)
 
     const onChangeHandler = useCallback(
         (params) => {
@@ -35,46 +38,63 @@ const Post = React.memo(({
     )
 
     return (
-        <div className="Post flex-container">
-            <div className="PostContainerOne">
-                <p id="PostCreatedDay" >{day},</p>
-                <p id="PostCreatedMonth" >{month}</p>
-                {
-                    (mode === 'myBuzz')
-                        ? <span className="PostModificationOptions">
-                            <i
-                                onClick={() => deletePost({ postId: data.buzzId })}
-                                className="deletePost fas fa-trash"></i>
-                            <i onClick={editPost} className="editPost fas fa-edit"></i>
-                        </span>
-                        : null
-                }
-            </div>
-            <div className="PostContainerTwo">
-                <p id="PostUserData" >
-                    {data.user.email}&nbsp;&middot;&nbsp;
-                    {moment(data.createdAt).fromNow()}
+        <>
+            {
+                showModal
+                    ? <Modal
+                        heading='Edit Buzz'
+                        closeModal={() => setShowModal(false)}>
+                        <Form
+                            formType='Buzz'
+                            editData={{ 
+                                id: data.buzzId, 
+                                buzzText: data.text, 
+                                buzzCategory: data.category, 
+                                imageUrl: data.imageUrl }}
+                            editMode />
+                    </Modal>
+                    : null
+            }
+            <div className="Post flex-container">
+                <div className="PostContainerOne">
+                    <p id="PostCreatedDay" >{day},</p>
+                    <p id="PostCreatedMonth" >{month}</p>
                     {
-                        data.category === 'Lost & Found'
-                            ? <span>&nbsp;&middot;&nbsp;Posted under Lost & Found</span> : null
+                        (mode === 'myBuzz')
+                            ? <span className="PostModificationOptions">
+                                <i
+                                    onClick={() => deletePost({ postId: data.buzzId })}
+                                    className="deletePost fas fa-trash"></i>
+                                <i onClick={() => setShowModal(true)} className="editPost fas fa-edit"></i>
+                            </span>
+                            : null
                     }
-                </p>
-                <p id="PostText" >{data.text}</p>
-                {
-                    data.imageUrl.length > 0
-                    &&
-                    <Carousel imageArray={data.imageUrl} />
-                }
-                {/* <Images imageUrl={data.imageUrl} type='buzz' buzzId={data.buzzId} /> */}
-                <LikeDislike
-                    onChange={onChangeHandler}
-                    likeStatus={likeStatus}
-                    dislikeStatus={dislikeStatus}
-                    likeCount={likeCount}
-                    dislikeCount={dislikeCount}
-                />
+                </div>
+                <div className="PostContainerTwo">
+                    <p id="PostUserData" >
+                        {data.user.email}&nbsp;&middot;&nbsp;
+                    {moment(data.createdAt).fromNow()}
+                        {
+                            data.category === 'Lost & Found'
+                                ? <span>&nbsp;&middot;&nbsp;Posted under Lost & Found</span> : null
+                        }
+                    </p>
+                    <p id="PostText" >{data.text}</p>
+                    {
+                        data.imageUrl.length > 0
+                        &&
+                        <Carousel imageArray={data.imageUrl} />
+                    }
+                    <LikeDislike
+                        onChange={onChangeHandler}
+                        likeStatus={likeStatus}
+                        dislikeStatus={dislikeStatus}
+                        likeCount={likeCount}
+                        dislikeCount={dislikeCount}
+                    />
+                </div>
             </div>
-        </div>
+        </>
     )
 })
 

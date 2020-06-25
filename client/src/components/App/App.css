@@ -11,3 +11,26 @@ html {
 .App {
 	background-color: #f4f8fb;
 }
+
+.btn-primary {
+	background-color: white;
+	outline: none;
+	border: 1px solid #ccc;
+	padding: 1em 2em;
+	color: #f4b585;
+	border-radius: 2px;
+}
+
+.btn-primary:hover {
+	cursor: pointer;
+	background-color: #f4b585;
+	color: white;
+}
+
+.m-none {
+	margin: 0;
+}
+
+.mt-15 {
+	margin-top: 15px;
+}

@@ -82,7 +82,7 @@ initializeGoogleStrategy(passport)
 app.use(passport.initialize())
 
 // setup routes
-app.use('/', isAuthenticated, rootRoutes)
+app.use('/', rootRoutes)
 app.use('/auth', authRoutes)
 app.use('/user', isAuthenticated, userRoutes)
 app.use('/admin', isAuthenticated, isAdmin, adminRoutes)

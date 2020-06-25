@@ -1,22 +1,12 @@
 .Complaint {
     padding: 20px 40px;
 }
+
 .Complaint > button,
 .ComplaintDetailsEditButtons > button {
     padding: 10px 30px;
-    outline: none;
-    background-color: white;
     font-size: 16px;
-    cursor: pointer;
     margin-bottom: 20px;
-    color: orange;
-    border-radius: 2px;
-    border: 1px solid #ccc;
-}
-
-.Complaint > button:hover,
-.ComplaintDetailsEditButtons > button:hover {
-    background-color: #f3eded;
 }
 
 .ComplaintDetails {

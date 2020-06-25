@@ -17,7 +17,7 @@ const Profile = ({ profilePicUrl, user }) => {
 
     return (
         <div className="Profile flex-container">
-            <button onClick={onClick}>Go back</button>
+            <button className="btn-primary" onClick={onClick}>Go back</button>
             <img src={profilePicUrl || defaultProfileImage} alt="profile" />
             <div className="ProfileDetails flex-container">
                 <p>Name</p>

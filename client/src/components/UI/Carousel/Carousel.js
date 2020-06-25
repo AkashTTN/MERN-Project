@@ -1,9 +1,6 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react'
-
-import fetchImage from '../../utils/fetchImage'
+import React, { useEffect, useCallback, useRef } from 'react'
 
 import './Carousel.css'
-
 import defaultBuzzImage from '../../../assets/images/default-buzz-image.png' 
 
 
@@ -12,7 +9,7 @@ const Carousel = ({ imageArray }) => {
     let i = 0
     let timerId
 
-    const [images, setImages] = useState(imageArray)
+    // const [images] = useState(imageArray)
     const imageElemRef = useRef(null)
 
     const changeImage = useCallback((imageArray) => {
@@ -36,19 +33,19 @@ const Carousel = ({ imageArray }) => {
     }, [])
 
     useEffect(() => {
-        if (images) {
-            changeImage(images)
-        }
-    }, [changeImage, images])
+        changeImage(imageArray)
+        // if (images) {
+        // }
+    }, [changeImage, imageArray])
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        (async function () {
-            const images = await fetchImage(imageArray)
-            setImages(images)
-        })()
+    //     (async function () {
+    //         const images = await fetchImage(imageArray)
+    //         setImages(images)
+    //     })()
 
-    }, [setImages, imageArray])
+    // }, [setImages, imageArray])
 
     return (
         <div className="Carousel">

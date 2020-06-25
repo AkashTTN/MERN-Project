@@ -17,19 +17,8 @@
 }
 
 .Profile > button {
-	padding: 10px 30px;
-    outline: none;
-    background-color: white;
     font-size: 16px;
-    cursor: pointer;
     margin-bottom: 20px;
-    color: orange;
-    border-radius: 2px;
-    border: 1px solid #ccc;
-}
-
-.Profile > button:hover {
-    background-color: #f3eded;
 }
 
 .Profile > img {

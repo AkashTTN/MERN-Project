@@ -11,13 +11,17 @@ const generateUniqueId = require('../middlewares/generateUniqueId')
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
+        let path = `./uploads/posts/${req.user.authData.userID}/${req.uniqueId}`
+        if (req.method === 'PUT') {
+            path = `./uploads/posts/${req.user.authData.userID}/${req.params.id}`
+        }
         // Create directory if not present
-        fs.mkdir(`./uploads/posts/${req.user.authData.userID}/${req.uniqueId}`,
+        fs.mkdir(path,
             { recursive: true },
             (err) => {
                 if (err) throw err;
                 // directory where the file will be stored
-                cb(null, `./uploads/posts/${req.user.authData.userID}/${req.uniqueId}`)
+                cb(null, path)
             });
     },
     filename: function (req, file, cb) {
@@ -148,6 +152,87 @@ router
 
     })
 
+    .put('/:id', upload.array('images'), async (req, res, next) => {
+
+        try {
+
+            const { buzzText, buzzCategory } = JSON.parse(req.body.data)
+            const buzzId = req.params.id
+
+            if (!buzzText || buzzText.trim().length === 0 || buzzId.trim().length === 0) {
+                return res.status(200).json(
+                    response(false, 406, "Cannot create a buzz with empty text")
+                )
+            }
+
+            let imageUrlArray = []
+
+            if (req.files.length !== 0) {
+                console.log('files', req.files)
+                imageUrlArray.push(
+                    req.files.map(async (file) => {
+                        return cloudinary.uploader.upload(file.path,
+                            {
+                                public_id: file.path,
+                            }
+
+                        );
+                    })
+                )
+
+                Promise.all(...imageUrlArray)
+                    .then(responseObjects => {
+                        return responseObjects.map(object => object.url)
+                    })
+                    .then(async (imageUrlArray) => {
+
+                        const { email } = await users.getUserById(req.user.authData.userID)
+
+                        const data = {
+                            buzzId,
+                            imageUrl: imageUrlArray,
+                            text: buzzText,
+                            category: buzzCategory,
+                            googleId: req.user.authData.userID,
+                            email
+                        }
+
+                        const post = await posts.updatePost(data)
+
+                        return res.status(200).json(
+                            response(true, 200, "Post updated successfully", post)
+                        )
+
+                    })
+                    .catch(err => next(err))
+
+            } else {
+
+                const { email } = await users.getUserById(req.user.authData.userID)
+
+                const data = {
+                    buzzId,
+                    imageUrl: imageUrlArray,
+                    text: buzzText,
+                    category: buzzCategory,
+                    googleId: req.user.authData.userID,
+                    email
+                }
+
+                const post = await posts.updatePost(data)
+
+                return res.status(200).json(
+                    response(true, 200, "Post updated successfully", post)
+                )
+            }
+
+
+        } catch (error) {
+            next(error)
+        }
+
+    })
+
     .patch('/:id', async (req, res, next) => {
 
         try {
@@ -196,7 +281,7 @@ router
             }
 
             const result = await posts.deletePostById(id)
-            
+
             if (result.deletedCount === 1) {
                 return res.status(200).json(
                     response(

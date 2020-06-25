@@ -43,3 +43,9 @@ module.exports.deletePostById = async (id) => {
     const response = await posts.deletePostById(id);
     return response;
 };
+
+module.exports.updatePost = async (data) => {
+    console.log(data)
+    const response = await posts.updatePost(data);
+    return response;
+};

@@ -3,7 +3,7 @@ import constants from '../../components/config/constants'
 import { removeAuthData, getComplaints } from './'
 
 
-export const submitForm = ({ data, type } = {}) => {
+export const submitForm = ({ data, type, editMode = false, id='' } = {}) => {
     return (dispatch, getState) => {
 
         const { token } = getState().authData
@@ -13,12 +13,12 @@ export const submitForm = ({ data, type } = {}) => {
             endpoint = '/user/complaints'
             dispatch({ type: actionTypes.SUBMIT_COMPLAINT })
         } else {
-            endpoint = '/user/posts'
+            endpoint = editMode ? `/user/posts/${id}` : '/user/posts'
             dispatch({ type: actionTypes.SUBMIT_POST })
         }
 
         fetch(constants.SERVER_URL + endpoint, {
-            method: "POST",
+            method: editMode ? "PUT" : "POST",
             body: data,
             headers: {
                 'Authorization': 'bearer ' + token

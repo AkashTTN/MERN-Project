@@ -55,7 +55,7 @@ const Complaint = ({
         setIsEditing(false)
         updateComplaint({
             complaintId: complaint.complaintId,
-            concernText: data.concernText 
+            concernText: data.concernText
         })
     }
 
@@ -113,10 +113,13 @@ const Complaint = ({
                             <button
                                 style={{ marginRight: "10px" }}
                                 onClick={handleOnClick}
+                                className="btn-primary"
                             >{isUpdated ? 'Done' : 'Cancel'}</button>
                             {
                                 isEditing
-                                && <button type="submit" onClick={handleOnSubmit} >
+                                && <button
+                                    type="submit"
+                                    className="btn-primary" onClick={handleOnSubmit} >
                                     Save</button>
                             }
                         </div>
@@ -132,7 +135,7 @@ const Complaint = ({
 
     return (
         <div className="Complaint">
-            <button onClick={() => history.goBack()}>Back</button>
+            <button className="btn-primary" onClick={() => history.goBack()}>Back</button>
             {content}
         </div>
     )

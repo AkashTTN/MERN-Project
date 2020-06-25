@@ -183,3 +183,29 @@ module.exports.deletePostById = async (id) => {
 
     return post;
 };
+
+module.exports.updatePost = async ({
+    buzzId,
+    text,
+    email,
+    imageUrl,
+    googleId,
+    category
+}) => {
+
+    const post = await PostModel.findOneAndUpdate({ buzzId }, {
+        $set: {
+            text,
+            imageUrl,
+            user: { email, googleId },
+            category
+        }
+    }, { new: true });
+    console.log(post)
+    const newPostObject = { ...post._doc }
+    delete newPostObject['_id']
+    return {
+        buzz: newPostObject
+    };
+
+};

@@ -2,9 +2,10 @@ const express = require('express')
 const router = express.Router()
 const response = require('v-response').ApiResponse
 const posts = require('../models/Post/post.controller')
+const isAuthenticated = require('../middlewares/isAuthenticated')
 
 router
-    .get('/posts', async (req, res, next) => {
+    .get('/posts', isAuthenticated, async (req, res, next) => {
 
         let { limit, skip, category } = req.query
 
