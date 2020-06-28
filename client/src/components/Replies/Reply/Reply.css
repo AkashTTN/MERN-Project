@@ -1,0 +1,8 @@
+.Reply {
+    border-bottom: 1px solid #ccc;
+    padding: 5px;
+}
+
+.Reply:last-child {
+    border-bottom: none;
+}

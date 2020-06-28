@@ -34,7 +34,7 @@ const Comments = ({ loading, buzzId, comments, error, getComments }) => {
 
     return (
         <div className="Comments">
-            <AddComment parentId={buzzId} className="mb-15" />
+            <AddComment mode='comment' buzzId={buzzId} className="mb-15" />
             {commentsArray}
         </div>
     )

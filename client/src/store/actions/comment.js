@@ -46,7 +46,7 @@ export const addComment = ({ commentText = '', buzzId, replyToId, email, name })
         const { token } = getState().authData
 
         fetch(constants.SERVER_URL + `/posts/comments?buzzId=${buzzId}`, {
-            method: replyToId ? 'PATCH' : 'POST',
+            method: 'POST',
             headers: {
                 'Authorization': 'bearer ' + token,
                 'Content-Type': 'application/json'

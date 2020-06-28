@@ -15,3 +15,17 @@
 .CommentData {
     font-size: 14px;
 }
+
+.ReplyButton {
+    font-size: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-weight: bold;
+    outline: none;
+    color: grey;
+}
+
+.ReplyButton:hover {
+    color: #f4b585;
+}

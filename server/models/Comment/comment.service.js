@@ -12,13 +12,14 @@ module.exports.addComment = async ({ commentId, buzzId, text, name, userId, emai
 }
 
 module.exports.getCommentsByPostId = async (buzzId) => {
-    const response = await CommentModel.find({ buzzId }, { _id: 0 })
+    const response = await CommentModel.find({ buzzId, replyToId: '' }, { _id: 0 })
     return response
 }
 
 module.exports.addReplyToComment = async ({
     commentId,
     replyToId,
+    name,
     buzzId, text, userId, email }) => {
 
     const commentedOn = CommentModel.find({ commentId: replyToId })
@@ -28,16 +29,19 @@ module.exports.addReplyToComment = async ({
         const comment = await CommentModel.create({
             commentId,
             buzzId,
+            replyToId,
             text,
-            user: { googleId: userId, email }
+            user: { googleId: userId, email, name }
         })
 
         if (comment) {
-            const updatedCommentedOn = CommentModel.findOneAndUpdate({
+            const updatedCommentedOn = await CommentModel.findOneAndUpdate({
                 commentId: replyToId
             }, {
-                $addToSet: { replies: comment.commentId }
-            })
+                $push: {
+                    replies: comment
+                }
+            }, { new: true })
 
             return comment
         }

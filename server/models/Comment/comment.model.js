@@ -12,6 +12,10 @@ const commentSchema = new Schema(
             default: Date.now,
             required: true
         },
+        replyToId: {
+            type: String,
+            default: ''
+        },
         buzzId: String,
         user: {
             email: {
@@ -28,7 +32,7 @@ const commentSchema = new Schema(
             }
         },
         replies: {
-            type: [String]
+            type: [Object]
         },
         text: {
             type: String,

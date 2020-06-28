@@ -5,16 +5,18 @@ import { addComment } from '../../store/actions'
 
 import './AddComment.css'
 
-const AddComment = ({ parentId, addComment, error, email, name }) => {
+const AddComment = ({ buzzId, commentId, mode, addComment, error, email, name }) => {
 
     const [commentText, setCommentText] = useState('')
 
     const onSubmit = useCallback(
         (e) => {
             e.preventDefault()
-            addComment({ commentText, buzzId: parentId, email, name })
+            mode === 'comment'
+                ? addComment({ commentText, buzzId, email, name })
+                : addComment({ commentText, buzzId, replyToId: commentId, email, name })
         },
-        [addComment, parentId, commentText, email, name]
+        [addComment, buzzId, mode, commentId, commentText, email, name]
     )
 
     const onChange = useCallback(
@@ -24,23 +26,21 @@ const AddComment = ({ parentId, addComment, error, email, name }) => {
         [setCommentText]
     )
 
-    // useEffect(() => {
-    //     if (commentAdded) {
-
-    //     }
-    // }, [commentAdded])
-
     return (
         <div className="AddCommentBox mb-15">
             {error ? <p className="mb-15">Something went wrong. Comment could not be added.</p> : null}
-            <p className="CommentBoxHeader mb-15" >Add a comment</p>
+            {
+                mode === 'comment'
+                    ? <p className="CommentBoxHeader mb-15" >Add a comment</p>
+                    : null
+            }
             <form onSubmit={onSubmit}>
                 <textarea
-                    className="CommentText"
+                    className={mode === 'comment' ? "CommentText" : "CommentText mt-15"}
                     required
                     onChange={onChange}
                     value={commentText}
-                    placeholder="Your comment..."></textarea>
+                    placeholder={mode === 'comment' ? 'Your comment...' : 'Your reply...'}></textarea>
                 <button className="btn-primary" type="submit">Submit</button>
             </form>
         </div>
