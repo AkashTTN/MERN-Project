@@ -24,7 +24,16 @@ const userSchema = new Schema(
         assignedComplaints: {
             type: Array,
             default: []
-        }
+        },
+        updateRequests: {
+            type:Number,
+            default: 0
+        },
+        updateStatus: {
+            type: Boolean,
+            default: false
+        },
+        newProfileData: {}
     }
 );
 

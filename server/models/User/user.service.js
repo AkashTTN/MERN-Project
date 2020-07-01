@@ -75,7 +75,7 @@ module.exports.assignUserToComplaint = async ({
     ])
 
     if (users.length !== 0) {
-        
+
         const userWithLeastAssignedComplaints = users[0]
 
         const { googleId } = userWithLeastAssignedComplaints
@@ -103,4 +103,13 @@ module.exports.removeComplaint = async ({ googleId, complaintId }) => {
         { $pull: { assignedComplaints: complaintId } },
         { new: true }
     )
+}
+
+module.exports.updateProfile = async ({ id, name, team }) => {
+    const response = await UserModel.findOneAndUpdate({ googleId: id }, {
+        $set: { updateStatus: true, newProfileData: { name, team } },
+        $inc: { 'updateRequests': 1 }
+    }, { new: true })
+
+    return response
 }

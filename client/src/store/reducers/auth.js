@@ -44,6 +44,12 @@ const reducer = (state=initialState, action) => {
                 error: true
             }
 
+        case actionTypes.UPDATE_PROFILE_SUCCESS:
+            return {
+                ...state,
+                user: action.payload.user
+            }
+
         default: return state
     }
 }

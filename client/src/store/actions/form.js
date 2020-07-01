@@ -3,7 +3,7 @@ import constants from '../../components/config/constants'
 import { removeAuthData, getComplaints } from './'
 
 
-export const submitForm = ({ data, type, editMode = false, id='' } = {}) => {
+export const submitForm = ({ data, type, editMode = false, id = '' } = {}) => {
     return (dispatch, getState) => {
 
         const { token } = getState().authData
@@ -12,6 +12,9 @@ export const submitForm = ({ data, type, editMode = false, id='' } = {}) => {
         if (type === 'Complaint') {
             endpoint = '/user/complaints'
             dispatch({ type: actionTypes.SUBMIT_COMPLAINT })
+        } else if (type === 'Profile') {
+            endpoint = '/user'
+            dispatch({ type: actionTypes.UPDATE_PROFILE })
         } else {
             endpoint = editMode ? `/user/posts/${id}` : '/user/posts'
             dispatch({ type: actionTypes.SUBMIT_POST })
@@ -21,6 +24,7 @@ export const submitForm = ({ data, type, editMode = false, id='' } = {}) => {
             method: editMode ? "PUT" : "POST",
             body: data,
             headers: {
+                'Content-type': 'application/json',
                 'Authorization': 'bearer ' + token
             }
         })
@@ -39,6 +43,13 @@ export const submitForm = ({ data, type, editMode = false, id='' } = {}) => {
                             })
 
                             dispatch(getComplaints({ mode: 'complaints' }))
+
+                        } else if (type === 'Profile') {
+
+                            dispatch({
+                                type: actionTypes.UPDATE_PROFILE_SUCCESS,
+                                payload: { user: response.data.user }
+                            })
 
                         } else {
 
@@ -59,6 +70,8 @@ export const submitForm = ({ data, type, editMode = false, id='' } = {}) => {
                 console.log(err)
                 if (type === 'Complaint') {
                     dispatch({ type: actionTypes.SUBMIT_COMPLAINT_FAILED })
+                } else if (type === 'Profile') {
+                    dispatch({ type: actionTypes.UPDATE_PROFILE_FAILED })
                 } else {
                     dispatch({ type: actionTypes.SUBMIT_POST_FAILED })
                 }

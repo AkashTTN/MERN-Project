@@ -24,3 +24,7 @@ module.exports.assignUserToComplaint = async (data) => {
 module.exports.removeComplaint = async (data) => {
     return await users.removeComplaint(data)
 }
+
+module.exports.updateProfile = async (data) => {
+    return await users.updateProfile(data)
+}

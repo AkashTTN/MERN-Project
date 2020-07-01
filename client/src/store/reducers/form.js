@@ -6,7 +6,8 @@ const initialState = {
     formConfigError: false,
     complaintSubmitted: false,
     postSubmitted: false,
-    formConfig: null
+    formConfig: null,
+    profileUpdated: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -74,6 +75,21 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 formConfigError: true
             }
+
+        case actionTypes.UPDATE_PROFILE: return { ...state, loading: true }
+        // Update profile success is also handled in auth reducer
+        case actionTypes.UPDATE_PROFILE_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                profileUpdated: true
+            }
+
+        case actionTypes.UPDATE_PROFILE_FAILED: return {
+            ...state,
+            profileUpdated: false,
+            loading: false
+        }
 
         default: return state
     }

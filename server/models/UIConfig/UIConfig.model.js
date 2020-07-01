@@ -3,6 +3,7 @@ const Schema = mongoose.Schema
 
 const uiconfigSchema = new Schema({
     formConfig: {
+        teams: Array,
         buzz: {
             category: {
                 type: Array,

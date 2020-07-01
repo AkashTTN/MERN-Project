@@ -8,7 +8,8 @@ const formConfig = {
         statusTypes: ['Open', 'Resolved', 'In Progress'],
         departments: ['Admin', 'HR', 'IT', 'Management'],
         types: ['Hardware', 'Infrastructure', 'Others']
-    }
+    },
+    teams: ['DEVELOPMENT', 'HR', 'IT', 'MANAGEMENT', 'ADMIN']
 }
 
 module.exports = initializeUIConfig = async () => {

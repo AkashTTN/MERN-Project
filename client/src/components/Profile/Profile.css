@@ -10,24 +10,35 @@
 }
 
 .ProfileDetails {
-    border: 1px solid orange;
-    border-radius: 2px;
+	border: 1px solid orange;
+	border-radius: 2px;
 	background-color: white;
-	padding: 30px;
+	padding: 50px 30px;
+	position: relative;
+	margin-top: 50px;
 }
 
 .Profile > button {
-    font-size: 16px;
-    margin-bottom: 20px;
+	font-size: 16px;
+	margin-bottom: 20px;
 }
 
-.Profile > img {
-	position: relative;
-    background-color: #f4f8fb;
-    top: 20px;
-    height: 50px;
-    border-radius: 50%;
-    box-shadow: 0 0 10px grey;
+.ProfileDetails > img {
+	position: absolute;
+	background-color: #f4f8fb;
+	top: -25px;
+	height: 50px;
+	border-radius: 50%;
+	box-shadow: 0 0 10px grey;
+}
+
+.ProfileUpdateStatus {
+	position: absolute;
+	top: -10px;
+	left: 10px;
+	font-size: 12px;
+	background-color: yellow;
+	padding: 2px 4px;
 }
 
 .ProfileDetails,
@@ -43,8 +54,37 @@
 	padding-top: 40px;
 }
 
+.UpdateProfileButton {
+	color: grey;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	cursor: pointer;
+}
+
+.UpdateProfileButton:hover {
+	color: orange;
+}
+
+.UpdateProfileSubmit {
+	color: green;
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+	cursor: pointer;
+}
+
+.UpdateProfileSubmit:hover {
+	font-size: larger;
+}
+
+.ProfileUpdateField {
+	padding: 5px;
+	margin-bottom: 10px;
+}
+
 @media only screen and (max-width: 420px) {
 	.Profile {
 		margin-top: 0;
 	}
-} 
+}
