@@ -308,9 +308,10 @@ router
 
     .patch('/:complaintId', async (req, res, next) => {
 
-        if (req.user.authData.role === 'admin') {
-            const complaintId = req.params.complaintId
-            const status = req.query.status
+        const complaintId = req.params.complaintId
+        const status = req.query.status
+
+        if (req.user.authData.role === 'admin' && status) {
 
             if (!complaintId || complaintId.trim().length === 0) {
                 return res.status(200).json(response(false, 406, 'Complaint ID required'))
@@ -351,10 +352,9 @@ router
             } catch (error) {
                 next(error)
             }
-        } else if (req.user.authData.role === 'employee') {
+        } else {
             try {
 
-                const { complaintId } = req.params
                 const { concernText } = req.body
 
                 if (!concernText || concernText.trim().length === 0) {

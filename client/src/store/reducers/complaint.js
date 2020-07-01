@@ -6,7 +6,7 @@ const initialState = {
     error: false,
     loading: false,
     totalComplaints: 0,
-    complaintUpdated: false
+    complaintUpdated: true
 }
 
 const reducer = (state = initialState, action) => {

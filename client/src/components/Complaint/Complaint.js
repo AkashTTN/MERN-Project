@@ -21,6 +21,7 @@ const Complaint = ({
     })
     const [isUpdated, setIsUpdated] = useState(complaintUpdated)
     const [isEditing, setIsEditing] = useState(false)
+    const [complaintUpdateError, setComplaintUpdateError] = useState('')
 
     useEffect(
         () => {
@@ -29,9 +30,10 @@ const Complaint = ({
                 setData({
                     concernText: ''
                 })
+                setComplaintUpdateError('')
             }
         },
-        [setIsUpdated, setData, complaintUpdated]
+        [setIsUpdated, setData, complaintUpdated, setComplaintUpdateError]
     )
 
     const handleOnClick = useCallback(
@@ -46,17 +48,20 @@ const Complaint = ({
             setIsEditing(true)
             setIsUpdated(false)
             const newData = { [e.target.name]: e.target.value }
+            setComplaintUpdateError(e.target.value.trim().length <= 0 ? 'Empty text not allowed' : '')
             setData((prevData) => ({ ...prevData, ...newData }))
         },
-        [setData, setIsUpdated, setIsEditing]
+        [setData, setIsUpdated, setIsEditing, setComplaintUpdateError]
     )
 
     const handleOnSubmit = () => {
         setIsEditing(false)
-        updateComplaint({
-            complaintId: complaint.complaintId,
-            concernText: data.concernText
-        })
+        if(!complaintUpdateError) {
+            updateComplaint({
+                complaintId: complaint.complaintId,
+                concernText: data.concernText
+            })
+        }
     }
 
     if (!isAuthenticated) {
@@ -89,6 +94,10 @@ const Complaint = ({
                                 : null
                         }
                     </h3>
+                    {
+                        !isUpdated && !isEditing && editMode
+                        && <p className="error">Complaint could not be updated. Try later.</p>
+                    }
                     <p>Id: {complaint.complaintId}</p>
                     <p>Created At: {new Date(complaint.createdAt).toDateString()}</p>
                     <p>Status: {complaint.status}</p>
@@ -97,6 +106,10 @@ const Complaint = ({
                     <p>Issue Title: {complaint.issueTitle}</p>
                     <p>Department: {complaint.department}</p>
                     <p>Concern: {complaint.text}</p>
+                    {
+                        complaintUpdateError && editMode
+                        && <p className="error">{complaintUpdateError}</p>
+                    }
                     {
                         editMode
                         && <textarea
