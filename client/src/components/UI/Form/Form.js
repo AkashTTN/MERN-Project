@@ -7,6 +7,46 @@ import fetchImage from '../../utils/fetchImage'
 
 import './Form.css'
 
+const initialFormState = {
+    department: '',
+    concernText: '',
+    issueTitle: '',
+    buzzCategory: '',
+    buzzText: ''
+}
+
+const initialFormErrorState = {
+    departmentError: '',
+    concernTextError: '',
+    issueTitleError: '',
+    buzzCategoryError: '',
+    buzzTextError: ''
+}
+
+const formValid = ({ formType, formErrors, formData }) => {
+    let valid = true;
+    const buzzFields = [formData.buzzCategory, formData.buzzText]
+    const complaintFields = [
+        formData.concernText,
+        formData.department,
+        formData.issueTitle
+    ]
+
+    // validate form errors being empty
+    Object.values(formErrors).forEach(val => {
+        val.length > 0 && (valid = false);
+    });
+
+    // validate the form was filled out
+    if (formType === 'Complaint') {
+        complaintFields.forEach(val => val.length <= 0 && (valid = false))
+    } else if (formType === 'Buzz') {
+        buzzFields.forEach(val => val.length <= 0 && (valid = false))
+    }
+
+    return valid;
+};
+
 const Form = ({
     loading,
     userEmail,
@@ -23,14 +63,10 @@ const Form = ({
 
     const [numFiles, setNumFiles] = useState(0)
     const [files, setFiles] = useState('')
-    const [formData, setFormData] = useState({
-        department: '',
-        concernText: '',
-        issueTitle: '',
-        buzzCategory: '',
-        buzzText: ''
-    })
+    const [formData, setFormData] = useState(initialFormState)
     const [fileKey, setFileKey] = useState(Date.now());
+    const [formErrors, setFormErrors] = useState(initialFormErrorState)
+    const [isFormValid, setIsFormValid] = useState(true)
 
     let form = null
 
@@ -55,19 +91,18 @@ const Form = ({
                 })()
 
             } else {
-                setFormData({
-                    department: '',
-                    concernText: '',
-                    issueTitle: '',
-                    buzzCategory: '',
-                    buzzText: ''
-                })
+                setFormData(initialFormState)
+                setFormErrors(initialFormErrorState)
                 setNumFiles(0)
                 setFiles('')
+                setIsFormValid(true)
             }
 
         },
-        [setFormData, setNumFiles, setFiles, editMode, editData]
+        [
+            setFormData, setNumFiles, setFiles, editMode, setIsFormValid,
+            editData, setFormErrors
+        ]
     )
 
     // reset form on changing form type
@@ -93,7 +128,51 @@ const Form = ({
     const handleOnChange = useCallback(
         (e) => {
 
-            const newFormData = { [e.target.name]: e.target.value }
+            const { name, value } = e.target
+            let updatedFormErrors = { ...formErrors }
+
+            const newFormData = { [name]: value }
+
+            switch (name) {
+                case 'department':
+                    updatedFormErrors.departmentError = value.length <= 0
+                        ? 'Choose a department'
+                        : ''
+                    break
+
+                case 'concernText':
+                    updatedFormErrors.concernTextError = value.trim().length <= 0
+                        ? 'Describe your complaint'
+                        : ''
+                    break
+
+                case 'issueTitle':
+                    updatedFormErrors.issueTitleError = value.length <= 0
+                        ? 'Issue title cannot be empty'
+                        : ''
+                    break
+
+                case 'buzzCategory':
+                    updatedFormErrors.buzzCategoryError = value.length <= 0
+                        ? 'Choose a buzz category'
+                        : ''
+                    break
+
+                case 'buzzText':
+                    updatedFormErrors.buzzTextError = value.trim().length <= 0
+                        ? 'Empty buzz not allowed'
+                        : ''
+                    break
+
+                default: return
+            }
+
+            console.log(updatedFormErrors)
+
+            setFormErrors((prevFormErrors => ({
+                ...prevFormErrors,
+                ...updatedFormErrors
+            })))
 
             setFormData((prevFormData => ({
                 ...prevFormData,
@@ -101,7 +180,7 @@ const Form = ({
             })))
 
         },
-        [setFormData]
+        [setFormData, setFormErrors, formErrors]
     )
 
     const handleOnFileUpload = useCallback(
@@ -118,7 +197,7 @@ const Form = ({
             setNumFiles(0);
             setFiles('');
         },
-        []
+        [setFileKey, setNumFiles, setFiles]
     )
 
     const handleOnSubmit = useCallback(
@@ -126,22 +205,36 @@ const Form = ({
 
             e.preventDefault()
 
-            const formDataToBeSent = new FormData();
+            if (formValid({ formType, formErrors, formData })) {
+                
+                setIsFormValid(true)
+                const formDataToBeSent = new FormData();
 
-            // Adding files to form data
-            for (let i = 0; i < files.length; i++) {
-                formDataToBeSent.append(`images`, files[i]);
+                // Adding files to form data
+                for (let i = 0; i < files.length; i++) {
+                    formDataToBeSent.append(`images`, files[i]);
+                }
+
+                // adding name and email to formData
+                formData.email = userEmail
+                formData.name = userName
+
+                formDataToBeSent.append("data", JSON.stringify(formData))
+
+                submitForm({
+                    data: formDataToBeSent,
+                    type: formType, editMode, id: editData.id
+                })
+
+            } else {
+                setIsFormValid(false)
             }
 
-            // adding name and email to formData
-            formData.email = userEmail
-            formData.name = userName
-
-            formDataToBeSent.append("data", JSON.stringify(formData))
-
-            submitForm({ data: formDataToBeSent, type: formType, editMode, id: editData.id })
         },
-        [files, formData, submitForm, formType, userEmail, userName, editMode, editData.id]
+        [
+            files, formData, submitForm, formType, formErrors,
+            userEmail, userName, editMode, editData.id
+        ]
     )
 
     if (formConfigError) {
@@ -156,27 +249,37 @@ const Form = ({
                         <h3 className="FormHeader" >Complaint Box</h3>
                         <div className="form-group flex-container">
                             <div>
-                                <label className="ComplaintFieldLabel" htmlFor="department">Select Department</label>
-
-                                <select value={formData.department} onChange={handleOnChange} className="ComplaintField" name="department" id="department" required>
+                                <label className="ComplaintFieldLabel" htmlFor="department">
+                                    Select Department
+                                </label>
+                                <p>{formErrors.departmentError}</p>
+                                <select
+                                    value={formData.department}
+                                    onChange={handleOnChange}
+                                    className="ComplaintField"
+                                    name="department" id="department" >
                                     <option value="" disabled hidden></option>
                                     {
-                                        formConfig ? formConfig.complaint.departments.map(((department, index) => {
-                                            return (
-                                                <option
-                                                    key={index}
-                                                    value={department.toUpperCase()}
-                                                >{department}</option>
-                                            )
-                                        })) : null
+                                        formConfig
+                                            ? formConfig.complaint.departments.map(((department, index) => {
+                                                return (
+                                                    <option
+                                                        key={index}
+                                                        value={department.toUpperCase()}
+                                                    >{department}</option>
+                                                )
+                                            })) : null
                                     }
                                 </select>
-
                             </div>
                             <div>
                                 <label className="ComplaintFieldLabel" htmlFor="issueTitle">Issue Title</label>
 
-                                <select value={formData.issueTitle} onChange={handleOnChange} className="ComplaintField" name="issueTitle" id="issueTitle" required>
+                                <select
+                                    value={formData.issueTitle}
+                                    onChange={handleOnChange}
+                                    className="ComplaintField"
+                                    name="issueTitle" id="issueTitle" >
                                     <option value="" disabled hidden></option>
                                     {
                                         formConfig ? formConfig.complaint.types.map(((type, index) => {
@@ -195,17 +298,38 @@ const Form = ({
                         <div className="form-group flex-container">
                             <div>
                                 <label className="ComplaintFieldLabel" htmlFor="name" >Your Name</label>
-                                <input className="ComplaintField" name="name" id="name" type="text" value={userName} disabled />
+                                <input
+                                    className="ComplaintField"
+                                    name="name"
+                                    id="name"
+                                    type="text"
+                                    value={userName} disabled
+                                />
                             </div>
                             <div>
                                 <label className="ComplaintFieldLabel" htmlFor="email" >Email Id</label>
-                                <input className="ComplaintField" name="email" id="email" type="email" value={userEmail} disabled />
+                                <input
+                                    className="ComplaintField"
+                                    name="email"
+                                    id="email"
+                                    type="email"
+                                    value={userEmail}
+                                    disabled
+                                />
                             </div>
                         </div>
 
                         <div className="form-group flex-container">
                             <label className="ComplaintFieldLabel" htmlFor="concern" >Your Concern</label>
-                            <textarea id="concern" onChange={handleOnChange} name="concernText" value={formData['concernText']} required></textarea>
+                            {formErrors.concernTextError
+                                ? <p className="error">{formErrors.concernTextError}</p>
+                                : null}
+                            <textarea
+                                id="concern"
+                                onChange={handleOnChange}
+                                name="concernText"
+                                value={formData['concernText']}
+                            ></textarea>
                         </div>
 
                         <div className="form-group flex-container">
@@ -217,7 +341,13 @@ const Form = ({
                                 }
                                 <label htmlFor="myfile">Attachments{`(${numFiles})`}&nbsp;&nbsp;</label>
                                 <i className="far fa-image"></i>
-                                <input type="file" id="ImageAttachment" key={fileKey} onChange={handleOnFileUpload} name="image" multiple accept="image/*" />
+                                <input
+                                    type="file"
+                                    id="ImageAttachment"
+                                    key={fileKey}
+                                    onChange={handleOnFileUpload}
+                                    name="image"
+                                    multiple accept="image/*" />
                             </div>
                         </div>
 
@@ -225,7 +355,10 @@ const Form = ({
                             {
                                 loading
                                     ? <div><Spinner isMarginRequired /></div>
-                                    : <button id="SubmitComplaint" className="btn-primary" type="submit">Submit</button>
+                                    : <button
+                                        id="SubmitComplaint"
+                                        className="btn-primary"
+                                        type="submit">Submit</button>
                             }
                         </div>
 
@@ -242,10 +375,25 @@ const Form = ({
                             {editMode || <span>&nbsp;&nbsp;Create Buzz</span>}
                         </h3>
                         <div className="BuzzFormBody" >
-                            <textarea id="buzz" onChange={handleOnChange} name="buzzText" value={formData.buzzText} placeholder="Share your thoughts..." required ></textarea>
+                            {formErrors.buzzTextError
+                                ? <p className="error">{formErrors.buzzTextError}</p>
+                                : null}
+                            <textarea
+                                id="buzz"
+                                onChange={handleOnChange}
+                                name="buzzText"
+                                value={formData.buzzText}
+                                placeholder="Share your thoughts..." ></textarea>
                         </div>
                         <div className="BuzzFormFooter flex-container">
-                            <select value={formData.buzzCategory} onChange={handleOnChange} className="BuzzCategory" name="buzzCategory" id="buzzCategory" required>
+                            <select
+                                value={formData.buzzCategory}
+                                onChange={handleOnChange}
+                                className="BuzzCategory"
+                                name="buzzCategory"
+                                id="buzzCategory"
+                                required
+                            >
                                 <option value="" disabled hidden>
                                     Category
                                 </option>
@@ -254,7 +402,11 @@ const Form = ({
                             </select>
 
                             <div className="image-attachment-overlay">
-                                <input type="file" onChange={handleOnFileUpload} key={fileKey} id="BuzzImageAttachment" name="image" accept="image/*" multiple />
+                                <input
+                                    type="file"
+                                    onChange={handleOnFileUpload}
+                                    key={fileKey}
+                                    id="BuzzImageAttachment" name="image" accept="image/*" multiple />
                                 <i className="far fa-image"></i>
                                 &nbsp;{`${numFiles === 0 ? '' : '(Uploaded)'}`}&nbsp;
                                 {
@@ -285,6 +437,10 @@ const Form = ({
 
     return (
         <div className={editMode ? 'Form m-none' : 'Form'}>
+            {
+                !isFormValid
+                    ? <p className="error">Form cannot be submitted. Criteria must be satisfied.</p> : null
+            }
             {form}
         </div>
     )

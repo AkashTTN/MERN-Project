@@ -1,3 +1,9 @@
+.error {
+	border: 1px solid red;
+	background-color: #fdeaea;
+	padding: 5px;
+}
+
 .Form {
 	border: 1px solid #ccc;
 	border-radius: 4px;
