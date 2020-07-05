@@ -1,0 +1,15 @@
+.Requests {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+}
+
+.Requests > p {
+    padding: 10px;
+}
+
+.RequestsHeader {
+    background-color: #f2f2f2;
+    align-items: center;
+    padding: 10px
+}

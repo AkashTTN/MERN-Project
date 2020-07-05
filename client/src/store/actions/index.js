@@ -25,6 +25,11 @@ export {
 } from './images'
 
 export {
+    getRequests,
+    changeProfileRequestStatus
+} from './requests'
+
+export {
     addComment,
     getComments
 } from './comment.js'

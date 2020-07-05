@@ -13,6 +13,11 @@ const NavList = React.memo(({ isAdmin, changeFeedMode }) => {
                 ? <NavListItem name="RESOLVED" changeFeed={changeFeedMode} />
                 : null
             }
+            {
+                isAdmin 
+                ? <NavListItem name="REQUESTS" changeFeed={changeFeedMode} />
+                : null
+            }
             <NavListItem name="MY BUZZ" changeFeed={changeFeedMode} />
         </ul>
     )

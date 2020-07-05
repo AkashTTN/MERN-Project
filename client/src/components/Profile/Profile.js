@@ -55,6 +55,7 @@ const Profile = ({ profilePicUrl, user, formConfig, submitForm, isLoading }) => 
                 case 'name':
                     editErrors.nameError = value.trim().length === 0
                         ? 'Name cannot be empty' : ''
+                    break
                 default: return
             }
 
@@ -79,7 +80,7 @@ const Profile = ({ profilePicUrl, user, formConfig, submitForm, isLoading }) => 
                 <img src={profilePicUrl || defaultProfileImage} alt="profile" />
                 {
                     user.updateStatus
-                    && <span className="ProfileUpdateStatus">{user.updateRequests+' Pending'}</span>
+                    && <span className="ProfileUpdateStatus">Pending</span>
                 }
                 <p>Name</p>
                 {

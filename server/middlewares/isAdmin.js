@@ -5,7 +5,7 @@ function isAdmin(req, res, next) {
         return res.status(200).json(
             response(
                 false,
-                403,
+                401,
                 'You are not authorized to make this request.'
             )
         )

@@ -28,3 +28,11 @@ module.exports.removeComplaint = async (data) => {
 module.exports.updateProfile = async (data) => {
     return await users.updateProfile(data)
 }
+
+module.exports.getUsersWithPendingRequests = async (data) => {
+    return await users.getUsersWithPendingRequests(data)
+}
+
+module.exports.updateRequestStatus = async (data) => {
+    return await users.updateRequestStatus(data)
+}

@@ -8,6 +8,7 @@ const UIConfig = require('../models/UIConfig/UIConfig.controller')
 const postsRoutes = require('./posts-routes')
 const complaintsRoutes = require('./complaints-routes')
 const sendEmail = require('../utils/sendEmail')
+const isEmptyString = require('../utils/isEmptyString')
 
 // Configure mailgen by setting a theme and your product info
 const mailGenerator = new Mailgen({
@@ -96,11 +97,12 @@ router
     })
 
     .put('/', async (req, res, next) => {
+
         try {
 
             const { name, team } = req.body
 
-            if (name.trim().length === 0 || team.trim().length === 0) {
+            if (isEmptyString(name) || isEmptyString(team)) {
                 return res.status(200).json(
                     response(
                         false,
@@ -110,7 +112,10 @@ router
                 )
             }
 
-            const updatedUser = await users.updateProfile({ name, team, id: req.user.authData.userID })
+            const updatedUser = await users.updateProfile({
+                name, team,
+                id: req.user.authData.userID
+            })
 
             if (updatedUser) {
 
@@ -118,7 +123,7 @@ router
 
                 const emailBody = profileUpdateEmail({
                     old: { name: userData.name, team: userData.team },
-                    new: { name: userData.newProfileData.name, team: userData.newProfileData.team }
+                    new: { name, team }
                 })
 
                 sendEmail({

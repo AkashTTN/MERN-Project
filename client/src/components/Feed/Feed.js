@@ -11,6 +11,7 @@ import Form from "../UI/Form/Form";
 import ComplaintsList from '../UI/ComplaintsList/ComplaintsList'
 import Profile from '../Profile/Profile';
 import InfinitePosts from '../InfiniteScroll/InfiniteScroll'
+import Requests from '../Requests/Requests'
 
 import './Feed.css'
 import logo from '../../assets/images/ttn-logo.png'
@@ -71,6 +72,14 @@ const Feed = React.memo(({
             feedBodyContent = (
                 <>
                     <InfinitePosts mode={mode} />
+                </>
+            )
+            break
+
+        case 'requests':
+            feedBodyContent = (
+                <>
+                    <Requests mode={mode} />
                 </>
             )
             break

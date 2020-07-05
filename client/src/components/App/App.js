@@ -38,6 +38,9 @@ function App() {
           <Route path="/resolved">
             <Feed mode="resolved" />
           </Route>
+          <Route path="/requests">
+            <Feed mode="requests" />
+          </Route>
           <Route path="/complaints/:id">
             <Complaint />
           </Route>

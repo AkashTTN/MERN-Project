@@ -1,0 +1,63 @@
+.RequestInfoPreview {
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Request {
+    padding: 10px;
+}
+
+.RequestInfoPreview .btn-danger:hover {
+    background-color: red;
+    border: 1px solid red;
+    color: white;
+}
+
+.RequestInfoPreview .btn-danger {
+    color: red;
+    border: 1px solid red;
+    background-color: white;
+}
+
+.RequestInfoPreview .btn-success:hover {
+    border: 1px solid green;
+    background-color: green;
+    color: white;
+}
+
+.RequestInfoPreview .btn-success {
+    color: green;
+    border: 1px solid green;
+    background-color: white;
+}
+
+.RequestOptions > button {
+    margin-right: 5px;
+}
+
+.RequestOptions > button:last-child {
+    margin-right: 0;
+}
+
+.RequestInfoHeading {
+    font-weight: bold;
+    font-size: 16px;
+    padding: 10px 20px;
+}
+
+.RequestInfo > div {
+    flex: 1;
+}
+
+.RequestInfo > div:first-child {
+    border-right: 1px solid #ccc;
+}
+
+.RequestInfo > div > p {
+    padding: 10px 20px;
+}
+
+.RequestInfo {
+    margin-top: 10px;
+    justify-content: space-around;
+}

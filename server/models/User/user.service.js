@@ -1,4 +1,5 @@
 const UserModel = require('./user.model');
+const { request } = require('express');
 
 module.exports.create = async ({
     googleId,
@@ -107,9 +108,38 @@ module.exports.removeComplaint = async ({ googleId, complaintId }) => {
 
 module.exports.updateProfile = async ({ id, name, team }) => {
     const response = await UserModel.findOneAndUpdate({ googleId: id }, {
-        $set: { updateStatus: true, newProfileData: { name, team } },
-        $inc: { 'updateRequests': 1 }
+        $set: { updateStatus: true, newProfileData: { name, team } }
     }, { new: true })
 
     return response
+}
+
+module.exports.updateRequestStatus = async ({ userId, status }) => {
+
+    const requestData = await UserModel.findOne({
+        googleId: userId
+    })
+
+    if (requestData.updateStatus === false) {
+        return null
+    }
+
+    return await UserModel.findOneAndUpdate(
+        { googleId: userId },
+        {
+            $set: {
+                name: requestData.newProfileData.name,
+                team: requestData.newProfileData.team,
+                role: requestData.newProfileData.team === 'ADMIN' ? 'admin' : requestData.role,
+                updateStatus: false,
+                newProfileData: {}
+            }
+        },
+        { new: true }
+    )
+
+}
+
+module.exports.getUsersWithPendingRequests = async () => {
+    return await UserModel.find({ updateStatus: true }, { _id: 0 })
 }

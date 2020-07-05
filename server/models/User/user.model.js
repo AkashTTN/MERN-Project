@@ -25,10 +25,6 @@ const userSchema = new Schema(
             type: Array,
             default: []
         },
-        updateRequests: {
-            type:Number,
-            default: 0
-        },
         updateStatus: {
             type: Boolean,
             default: false
