@@ -126,27 +126,6 @@ router
                     )
                 }
 
-                if (updateProfileUpdateStatus === 'rejected') {
-                    const emailBody = profileUpdateRejectedEmail({
-                        name: updatedUser.name,
-                        team: updatedUser.team
-                    })
-
-                    sendEmail({
-                        emailTo: updatedUser.email,
-                        emailBody,
-                        emailSubject: 'TTND-BUZZ: Profile Update Request Rejected'
-                    })
-
-                    return res.status(200).json(
-                        response(
-                            true,
-                            200,
-                            'Profile update request rejected.'
-                        )
-                    )
-                }
-
                 const updatedUser = await users.updateRequestStatus({
                     userId: req.user.authData.userID,
                     status: updateProfileUpdateStatus,
@@ -162,16 +141,31 @@ router
                     )
                 }
 
-                const emailBody = profileUpdateApprovedEmail({
-                    name: updatedUser.name,
-                    team: updatedUser.team
-                })
+                const emailBody = updateProfileUpdateStatus === 'rejected'
+                    ? profileUpdateRejectedEmail({
+                        name: updatedUser.name,
+                        team: updatedUser.team
+                    })
+                    : profileUpdateApprovedEmail({
+                        name: updatedUser.name,
+                        team: updatedUser.team
+                    })
 
                 sendEmail({
                     emailTo: updatedUser.email,
                     emailBody,
-                    emailSubject: 'TTND-BUZZ: Profile Update Request Approved'
+                    emailSubject: `TTND-BUZZ: Profile Update Request ${updateProfileUpdateStatus === 'rejected' ? 'Rejected' : 'Approved'}`
                 })
+
+                if (updateProfileUpdateStatus === 'rejected') {
+                    return res.status(200).json(
+                        response(
+                            true,
+                            200,
+                            'Profile update request rejected.'
+                        )
+                    )
+                }
 
                 return res.status(200).json(
                     response(

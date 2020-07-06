@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes'
 import constants from '../../components/config/constants'
+import { setAuthData } from '../actions'
 
 export const getRequests = () => {
 
@@ -56,6 +57,7 @@ export const changeProfileRequestStatus = ({ status }) => {
                         type: actionTypes.CHANGE_PROFILE_REQUEST_STATUS_SUCCESS,
                     })
                     dispatch(getRequests())
+                    dispatch(setAuthData())
                 } else {
                     throw new Error(res.message)
                 }

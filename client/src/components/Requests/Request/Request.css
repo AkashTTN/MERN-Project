@@ -61,3 +61,24 @@
     margin-top: 10px;
     justify-content: space-around;
 }
+
+@media only screen and (max-width: 550px) {
+    .RequestInfoPreview {
+        flex-direction: column;
+    }
+
+    .RequestOptions {
+        margin-top: 10px;
+    }
+}
+
+@media only screen and (max-width: 340px) {
+    .RequestOptions {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .RequestOptions > button {
+        margin-bottom: 5px;
+    }
+}

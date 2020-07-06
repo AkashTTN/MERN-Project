@@ -128,9 +128,9 @@ module.exports.updateRequestStatus = async ({ userId, status }) => {
         { googleId: userId },
         {
             $set: {
-                name: requestData.newProfileData.name,
-                team: requestData.newProfileData.team,
-                role: requestData.newProfileData.team === 'ADMIN' ? 'admin' : requestData.role,
+                name: status === 'approved' ? requestData.newProfileData.name : requestData.name,
+                team: status === 'approved' ? requestData.newProfileData.team : requestData.team,
+                role: (status === 'approved' && requestData.newProfileData.team === 'ADMIN') ? 'admin' : requestData.role,
                 updateStatus: false,
                 newProfileData: {}
             }
