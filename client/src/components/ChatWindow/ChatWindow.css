@@ -1,0 +1,39 @@
+.ChatWindow {
+	position: fixed;
+	bottom: 0;
+	right: 40px;
+}
+
+.ChatButton {
+	text-align: left;
+	width: 350px;
+	padding: 10px;
+	font-size: 18px;
+	background-color: white;
+	color: orange;
+	border: 1px solid orange;
+	border-radius: 5px 5px 0 0;
+	outline: none;
+}
+
+.ChatHistory {
+    padding: 5px;
+	overflow: auto;
+	width: 350px;
+	height: 300px;
+	background-color: white;
+	border-left: 1px solid orange;
+	border-right: 1px solid orange;
+}
+
+@media only screen and (max-width: 950px) {
+	.ChatWindow {
+		right: 10px;
+	}
+}
+
+@media only screen and (max-width: 700px) {
+	.ChatWindow {
+		right: 10px;
+	}
+}

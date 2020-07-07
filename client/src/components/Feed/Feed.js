@@ -12,6 +12,7 @@ import ComplaintsList from '../UI/ComplaintsList/ComplaintsList'
 import Profile from '../Profile/Profile';
 import InfinitePosts from '../InfiniteScroll/InfiniteScroll'
 import Requests from '../Requests/Requests'
+import ChatWindow from '../ChatWindow/ChatWindow'
 
 import './Feed.css'
 import logo from '../../assets/images/ttn-logo.png'
@@ -190,6 +191,7 @@ const Feed = React.memo(({
                 <a className="scroll-top-btn" href="#">
                     <i className="fa-2x fas fa-arrow-up"></i>
                 </a>
+                <ChatWindow />
             </div>
     )
 })

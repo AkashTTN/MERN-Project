@@ -33,3 +33,7 @@ export {
     addComment,
     getComments
 } from './comment.js'
+
+export {
+    getChatHistory
+} from './chat.js'

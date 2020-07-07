@@ -11,6 +11,7 @@ import formReducer from '../src/store/reducers/form'
 import imagesReducer from '../src/store/reducers/images'
 import commentReducer from '../src/store/reducers/comment'
 import requestsReducer from '../src/store/reducers/requests'
+import chatReducer from '../src/store/reducers/chat'
 
 import App from './components/App/App';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
@@ -26,7 +27,8 @@ const rootReducer = combineReducers({
   form: formReducer,
   images: imagesReducer,
   comment: commentReducer,
-  requests: requestsReducer
+  requests: requestsReducer,
+  chat: chatReducer
 })
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))
