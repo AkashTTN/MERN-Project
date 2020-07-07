@@ -91,7 +91,6 @@
 .Logout {
 	justify-content: flex-end;
 	align-items: center;
-	margin-bottom: 10px;
 	margin-right: 40px;
 }
 
@@ -124,7 +123,66 @@
 	color: #f4b585;
 }
 
+.FeedHeaderContainer {
+	justify-content: flex-end;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.FeedHeaderContainer > .Search {
+    margin-right: 40px;
+}
+
+@media only screen and (max-width: 950px) {
+	.FeedHeaderLogo {
+		left: 10px;
+	}
+	
+	.Logout {
+		margin-right: 10px;
+	}
+	
+	.FeedBody {
+		flex-direction: column;
+		padding: 20px 10px;
+	}
+	
+	.FeedBodyNav {
+		margin-right: 0;
+		margin-bottom: 40px;
+	}
+}
+
+@media only screen and (max-width: 700px) {
+	.FeedHeaderContainer {
+		flex-direction: column-reverse;
+		align-items: flex-end;
+	}
+	
+	.LogoutButton {
+		margin-right: 0;
+	}
+	
+	.FeedHeaderContainer > .Search {
+		margin-right: 10px;
+	}
+	
+	.Logout {
+		margin-bottom: 10px;
+	}
+	
+}
+
 @media only screen and (max-width: 420px) {
+
+	.FeedHeaderContainer {
+		padding: 5px;
+	}
+
+	.FeedHeaderContainer > .Search {
+		width: 100%;
+	}
+
 	.Logout {
 		flex-direction: column;
 		align-items: flex-end;
@@ -133,15 +191,8 @@
 	.Logout > * {
 		margin-bottom: 5px;
 	}
-}
 
-@media only screen and (max-width: 950px) {
-	.FeedBody {
-		flex-direction: column;
-		padding: 20px 10px;
-	}
-	.FeedBodyNav {
+	.FeedHeaderGreeting, .FeedHeaderContainer > .Search {
 		margin-right: 0;
-		margin-bottom: 40px;
 	}
 }

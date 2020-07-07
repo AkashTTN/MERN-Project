@@ -1,0 +1,65 @@
+.SearchInputField {
+	outline: none;  
+    border: none;
+	font-size: 18px;
+	background: transparent;
+	padding-bottom: 5px;
+}
+
+.Search {
+	position: relative;
+}
+
+.SearchBox {
+	border-bottom: 1px solid #ccc;
+}
+
+.CloseSearchIcon {
+    float: right;
+    margin-right: 5px;
+}
+
+.SearchIcon {
+	float: right;
+}
+
+.SearchIcon:hover,
+.CloseSearchIcon:hover {
+	color: #f4b585;
+	cursor: pointer;
+}
+
+.SearchResultsList {
+	position: absolute;
+	background-color: white;
+	border-radius: 0 0 5px 5px;
+	width: 100%;
+	border: 1px solid #ccc;
+}
+
+.SearchResultsList p {
+    padding: 10px;
+}
+
+.SearchResultsListItem {
+    list-style: none;
+}
+
+.SearchResultsListItem > p:first-child {
+	padding: 10px 10px 5px 10px;
+}
+
+.SearchResultsListItem > p:last-child {
+	padding-top: 0;
+	font-size: 12px;
+	color: grey;
+}
+
+.SearchResultsListItem:hover {
+	background-color: #f5f5f5;
+	cursor: pointer;
+}
+
+.SearchError {
+	border-bottom: 1px solid red;
+}

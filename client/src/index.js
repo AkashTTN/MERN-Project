@@ -12,6 +12,7 @@ import imagesReducer from '../src/store/reducers/images'
 import commentReducer from '../src/store/reducers/comment'
 import requestsReducer from '../src/store/reducers/requests'
 import chatReducer from '../src/store/reducers/chat'
+import usersReducer from '../src/store/reducers/users'
 
 import App from './components/App/App';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
@@ -28,7 +29,8 @@ const rootReducer = combineReducers({
   images: imagesReducer,
   comment: commentReducer,
   requests: requestsReducer,
-  chat: chatReducer
+  chat: chatReducer,
+  users: usersReducer
 })
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))

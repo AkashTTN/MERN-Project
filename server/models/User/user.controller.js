@@ -36,3 +36,7 @@ module.exports.getUsersWithPendingRequests = async (data) => {
 module.exports.updateRequestStatus = async (data) => {
     return await users.updateRequestStatus(data)
 }
+
+module.exports.getUsersByName = async (data) => {
+    return await users.getUsersByName(data)
+}

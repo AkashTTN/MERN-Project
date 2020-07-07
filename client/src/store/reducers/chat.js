@@ -8,7 +8,7 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.GET_CHAT_HISTORY: return initialState
+        case actionTypes.GET_CHAT_HISTORY: return { ...state, loading: true, chatHistoryError: false }
         case actionTypes.GET_CHAT_HISTORY_SUCCESS: return chatHistorySuccess(state, action.payload)
         case actionTypes.GET_CHAT_HISTORY_FAILED: return { ...state, loading: false, chatHistoryError: true }
         default: return state

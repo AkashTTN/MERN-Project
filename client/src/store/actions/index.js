@@ -37,3 +37,5 @@ export {
 export {
     getChatHistory
 } from './chat.js'
+
+export { getUsers } from './users'

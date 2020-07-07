@@ -13,6 +13,7 @@ import Profile from '../Profile/Profile';
 import InfinitePosts from '../InfiniteScroll/InfiniteScroll'
 import Requests from '../Requests/Requests'
 import ChatWindow from '../ChatWindow/ChatWindow'
+import Search from '../Search/Search'
 
 import './Feed.css'
 import logo from '../../assets/images/ttn-logo.png'
@@ -130,16 +131,19 @@ const Feed = React.memo(({
         feed = (
             <>
                 <div className="FeedHeader">
-                    <div className="Logout flex-container">
-                        <Link
-                            to="/profile"
-                        >
-                            <img className="ProfileImage" src={profilePicUrl || defaultProfileImage} alt="profile" />
-                        </Link>
-                        <span className="FeedHeaderGreeting">{`Hi ${user.name.split(' ')[0]}!`}</span>
-                        <button className="LogoutButton" onClick={logoutHandler}>
-                            Logout <i className="fas fa-sign-out-alt"></i>
-                        </button>
+                    <div className="FeedHeaderContainer flex-container">
+                        <Search />
+                        <div className="Logout flex-container">
+                            <Link
+                                to="/profile"
+                            >
+                                <img className="ProfileImage" src={profilePicUrl || defaultProfileImage} alt="profile" />
+                            </Link>
+                            <span className="FeedHeaderGreeting">{`Hi ${user.name.split(' ')[0]}!`}</span>
+                            <button className="LogoutButton" onClick={logoutHandler}>
+                                Logout <i className="fas fa-sign-out-alt"></i>
+                            </button>
+                        </div>
                     </div>
                     {
                         mode !== 'profile'

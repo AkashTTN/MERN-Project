@@ -147,4 +147,35 @@ router
         }
     })
 
+    .get('/search-user', async (req, res, next) => {
+        try {
+
+            const { name } = req.query
+
+            if (isEmptyString(name)) {
+                return res.status(200).json(
+                    response(
+                        false,
+                        406,
+                        'Name to search is empty',
+                    )
+                )
+            }
+
+            const matchingUsers = await users.getUsersByName({ name })
+
+            return res.status(200).json(
+                response(
+                    true,
+                    200,
+                    'All users matching the given name',
+                    { users: matchingUsers }
+                )
+            )
+
+        } catch (err) {
+            next(err)
+        }
+    })
+
 module.exports = router

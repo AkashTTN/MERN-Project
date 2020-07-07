@@ -143,3 +143,12 @@ module.exports.updateRequestStatus = async ({ userId, status }) => {
 module.exports.getUsersWithPendingRequests = async () => {
     return await UserModel.find({ updateStatus: true }, { _id: 0 })
 }
+
+module.exports.getUsersByName = async ({ name }) => {
+
+    return await UserModel.find(
+        { $text: { $search: name } },
+        { score: { $meta: "textScore" } }
+    ).sort( { score: { $meta: "textScore" } } )
+    
+}
