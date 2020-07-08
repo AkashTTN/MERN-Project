@@ -67,3 +67,79 @@ export const setAuthData = () => {
             })
     }
 }
+
+export const changeFriendStatus = ({ changedStatus, userId }) => {
+    return (dispatch, getState) => {
+
+        dispatch({ type: actionTypes.CHANGE_FRIEND_STATUS })
+
+        const { token } = getState().authData
+        const endpoint = `/user/friend?userId=${userId}&status=${changedStatus}`
+
+        fetch(constants.SERVER_URL + endpoint, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': 'bearer ' + token
+            }
+        })
+            .then(res => res.json())
+            .then(response => {
+                if (response.code === 403) {
+                    dispatch(removeAuthData())
+                    throw new Error(response.message)
+                } else {
+                    if (response.code === 200) {
+                        dispatch({
+                            type: actionTypes.CHANGE_FRIEND_STATUS_SUCCESS
+                        })
+                        dispatch(setAuthData())
+                    } else {
+                        throw new Error(response.message)
+                    }
+                }
+
+            })
+            .catch(err => {
+                console.log(err)
+                dispatch({ type: actionTypes.CHANGE_FRIEND_STATUS_FAILED })
+            })
+    }
+}
+
+export const changeFollowStatus = ({ changedStatus, userId }) => {
+    return (dispatch, getState) => {
+
+        dispatch({ type: actionTypes.CHANGE_FOLLOW_STATUS })
+
+        const { token } = getState().authData
+        const endpoint = `/user/follow?userId=${userId}&status=${changedStatus}`
+
+        fetch(constants.SERVER_URL + endpoint, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': 'bearer ' + token
+            }
+        })
+            .then(res => res.json())
+            .then(response => {
+                if (response.code === 403) {
+                    dispatch(removeAuthData())
+                    throw new Error(response.message)
+                } else {
+                    if (response.code === 200) {
+                        dispatch({
+                            type: actionTypes.CHANGE_FOLLOW_STATUS_SUCCESS
+                        })
+                        dispatch(setAuthData())
+                    } else {
+                        throw new Error(response.message)
+                    }
+                }
+
+            })
+            .catch(err => {
+                console.log(err)
+                dispatch({ type: actionTypes.CHANGE_FOLLOW_STATUS_FAILED })
+            })
+    }
+}

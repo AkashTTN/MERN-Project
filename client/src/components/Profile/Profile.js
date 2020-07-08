@@ -4,11 +4,20 @@ import { useHistory } from 'react-router-dom'
 
 import { submitForm } from '../../store/actions'
 import Spinner from '../UI/Spinner/Spinner'
+import { changeFriendStatus, changeFollowStatus } from '../../store/actions/auth'
 
 import './Profile.css'
 import defaultProfileImage from '../../assets/images/default-profile-image.png'
 
-const Profile = ({ selfMode = true, profilePicUrl, user, formConfig, submitForm, isLoading }) => {
+const Profile = ({
+    selfMode = true,
+    profilePicUrl,
+    user,
+    formConfig,
+    submitForm,
+    changeFollowStatus,
+    changeFriendStatus,
+    isLoading, currentUserId }) => {
 
     const [editMode, setEditMode] = useState(false)
     const [profileData, setProfileData] = useState({
@@ -70,6 +79,23 @@ const Profile = ({ selfMode = true, profilePicUrl, user, formConfig, submitForm,
         [setEditMode]
     )
 
+    const handleChangeSocialConnect = useCallback(
+        (e) => {
+            switch (e.target.name) {
+                case 'friendButton':
+                    const isFriend = user.friends.includes(currentUserId)
+                    changeFriendStatus({ changedStatus: !isFriend, userId: user.googleId })
+                    break
+                case 'followButton':
+                    const isFollowing = user.followers.includes(currentUserId)
+                    changeFollowStatus({ changedStatus: !isFollowing, userId: user.googleId })
+                    break
+                default: return 'Wrong choice'
+            }
+        },
+        [changeFriendStatus, changeFollowStatus, user, currentUserId]
+    )
+
     return (
         <div className="Profile flex-container">
             <button className="btn-primary" onClick={onClick}>Go back</button>
@@ -125,6 +151,36 @@ const Profile = ({ selfMode = true, profilePicUrl, user, formConfig, submitForm,
                         : <p>{user.team}</p>
                 }
                 {
+                    !selfMode &&
+                    <div className="SocialConnectOptions">
+                        <button
+                            onClick={handleChangeSocialConnect}
+                            name="followButton"
+                            className="SocialConnectButton FollowButton">
+                            {
+                                user.followers.includes(currentUserId)
+                                    ? '- Unfollow' : '+ Follow'
+                            }
+                        </button>
+                        <button
+                            onClick={handleChangeSocialConnect}
+                            name="friendButton"
+                            className="SocialConnectButton FriendButton">
+                            {
+                                user.friends.includes(currentUserId)
+                                    ? '- Unfriend' : '+ Make friend'
+                            }
+                        </button>
+                    </div>
+                }
+                <div className="SocialInfoBadges">
+                    <span className="Badge bg-purple">{user.friends.length}&nbsp;Friends</span>
+                    <span>&nbsp;&middot;&nbsp;</span>
+                    <span className="Badge bg-olive">{user.followers.length}&nbsp;Followers</span>
+                    <span>&nbsp;&middot;&nbsp;</span>
+                    <span className="Badge bg-maroon">{user.following.length}&nbsp;Following</span>
+                </div>
+                {
                     editMode
                         ? <i
                             onClick={onSubmit}
@@ -144,13 +200,16 @@ const Profile = ({ selfMode = true, profilePicUrl, user, formConfig, submitForm,
 const mapStateToProps = state => {
     return {
         formConfig: state.form.formConfig,
-        isLoading: state.form.loading
+        isLoading: state.form.loading,
+        currentUserId: state.authData.user.googleId
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        submitForm: (data) => dispatch(submitForm(data))
+        submitForm: (data) => dispatch(submitForm(data)),
+        changeFollowStatus: (data) => dispatch(changeFollowStatus(data)),
+        changeFriendStatus: (data) => dispatch(changeFriendStatus(data))
     }
 }
 

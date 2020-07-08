@@ -40,3 +40,11 @@ module.exports.updateRequestStatus = async (data) => {
 module.exports.getUsersByName = async (data) => {
     return await users.getUsersByName(data)
 }
+
+module.exports.updateFriendStatus = async (data) => {
+    return await users.updateFriendStatus(data)
+}
+
+module.exports.updateFollowStatus = async (data) => {
+    return await users.updateFollowStatus(data)
+}

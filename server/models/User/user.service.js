@@ -149,6 +149,71 @@ module.exports.getUsersByName = async ({ name }) => {
     return await UserModel.find(
         { $text: { $search: name } },
         { score: { $meta: "textScore" } }
-    ).sort( { score: { $meta: "textScore" } } )
-    
+    ).sort({ score: { $meta: "textScore" } })
+
+}
+
+module.exports.updateFriendStatus = async ({ id, status, friendId }) => {
+
+    if (status) {
+        const response = await UserModel.findOneAndUpdate(
+            { googleId: id },
+            { $addToSet: { friends: friendId } },
+            { new: true }
+        )
+
+        await UserModel.findOneAndUpdate(
+            { googleId: friendId },
+            { $addToSet: { friends: id } },
+            { new: true }
+        )
+
+        return response
+
+    } else {
+        const response = await UserModel.findOneAndUpdate(
+            { googleId: id },
+            { $pull: { friends: friendId } },
+            { new: true }
+        )
+
+        await UserModel.findOneAndUpdate(
+            { googleId: friendId },
+            { $pull: { friends: id } },
+            { new: true }
+        )
+
+        return response
+    }
+}
+
+module.exports.updateFollowStatus = async ({ id, status, followId }) => {
+
+    if (status) {
+        const response = await UserModel.findOneAndUpdate(
+            { googleId: id },
+            { $addToSet: { following: followId } },
+            { new: true }
+        )
+
+        await UserModel.findOneAndUpdate(
+            { googleId: followId },
+            { $addToSet: { followers: id } }
+        )
+
+        return response
+    } else {
+        const response = await UserModel.findOneAndUpdate(
+            { googleId: id },
+            { $pull: { following: followId } },
+            { new: true }
+        )
+
+        await UserModel.findOneAndUpdate(
+            { googleId: followId },
+            { $pull: { followers: id } }
+        )
+
+        return response
+    }
 }

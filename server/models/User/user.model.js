@@ -29,6 +29,9 @@ const userSchema = new Schema(
             type: Boolean,
             default: false
         },
+        followers: [String],
+        following: [String],
+        friends: [String],
         newProfileData: {}
     }
 );

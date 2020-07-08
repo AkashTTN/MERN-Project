@@ -83,6 +83,47 @@
 	margin-bottom: 10px;
 }
 
+.Badge {
+	font-size: 12px;
+    border-radius: 3px;
+    padding: 2px;
+    color: white;
+}
+
+.bg-purple {
+	background-color: purple;
+}
+
+.bg-maroon {
+	background-color: maroon;
+}
+
+.bg-olive {
+	background-color: darkolivegreen;
+}
+
+.SocialConnectOptions {
+	margin-bottom: 10px;
+}
+
+.SocialConnectButton {
+	padding: 2px 5px;
+    background: #e4e4e4;
+    border: 1px solid #e4e4e4;
+    border-radius: 3px;
+    color: black;
+    font-weight: bold;
+}
+
+.SocialConnectButton:first-child {
+	margin-right: 10px;
+}
+
+.SocialConnectButton:hover {
+	cursor: pointer;
+	border: 1px solid black;
+}
+
 @media only screen and (max-width: 420px) {
 	.Profile {
 		margin-top: 0;

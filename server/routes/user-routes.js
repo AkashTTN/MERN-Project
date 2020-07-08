@@ -178,4 +178,78 @@ router
         }
     })
 
+    .patch('/follow', async (req, res, next) => {
+
+        try {
+            let { userId, status } = req.query
+
+            if (isEmptyString(userId) || isEmptyString(status)) {
+                return res.status(200).json(
+                    response(
+                        false,
+                        406,
+                        'Invalid query parameters'
+                    )
+                )
+            }
+
+            status = status === 'false' ? false : true
+
+            const updatedRecord = await users.updateFollowStatus({
+                id: req.user.authData.userID,
+                followId: userId,
+                status,
+            })
+
+            return res.status(200).json(
+                response(
+                    true,
+                    200,
+                    'Follow status changed'
+                )
+            )
+
+        } catch (err) {
+            next(err)
+        }
+
+    })
+
+    .patch('/friend', async (req, res, next) => {
+
+        try {
+            let { userId, status } = req.query
+
+            if (isEmptyString(userId) || isEmptyString(status)) {
+                return res.status(200).json(
+                    response(
+                        false,
+                        406,
+                        'Invalid query parameters'
+                    )
+                )
+            }
+
+            status = status === 'false' ? false : true
+
+            const updatedRecord = await users.updateFriendStatus({
+                id: req.user.authData.userID,
+                friendId: userId,
+                status,
+            })
+
+            return res.status(200).json(
+                response(
+                    true,
+                    200,
+                    'Friend status changed'
+                )
+            )
+
+        } catch (err) {
+            next(err)
+        }
+
+    })
+
 module.exports = router

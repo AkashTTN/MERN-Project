@@ -1,6 +1,8 @@
 export {
     setAuthData,
-    removeAuthData
+    removeAuthData,
+    changeFollowStatus,
+    changeFriendStatus
 } from './auth'
 
 export {
