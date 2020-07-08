@@ -4,9 +4,9 @@ import { getUsers } from '../../store/actions'
 import { connect } from 'react-redux'
 
 import './Search.css'
+import { Link } from 'react-router-dom'
 
 const Search = ({ users, error, loading, getUsers }) => {
-    console.log(users);
 
     const [searchText, setSearchText] = useState('')
     const [isSearching, setIsSearching] = useState(false)
@@ -38,13 +38,15 @@ const Search = ({ users, error, loading, getUsers }) => {
     } else if (loading) {
         searchListContent = <p>Loading...</p>
     } else {
-        if(users.length === 0) {
+        if (users.length === 0) {
             searchListContent = <p>No users found</p>
         } else {
-            searchListContent = users.map(user => {
+            searchListContent = users.map((user, index) => {
                 return <li className="SearchResultsListItem" key={user}>
-                    <p> {user.name}</p>
-                    <p> {user.email}</p>
+                    <Link to={'/user-profile/'+index}>
+                        <p> {user.name}</p>
+                        <p> {user.email}</p>
+                    </Link>
                 </li>
             })
         }

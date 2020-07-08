@@ -8,7 +8,7 @@ import Spinner from '../UI/Spinner/Spinner'
 import './Profile.css'
 import defaultProfileImage from '../../assets/images/default-profile-image.png'
 
-const Profile = ({ profilePicUrl, user, formConfig, submitForm, isLoading }) => {
+const Profile = ({ selfMode = true, profilePicUrl, user, formConfig, submitForm, isLoading }) => {
 
     const [editMode, setEditMode] = useState(false)
     const [profileData, setProfileData] = useState({
@@ -28,8 +28,8 @@ const Profile = ({ profilePicUrl, user, formConfig, submitForm, isLoading }) => 
     }, [editMode, setEditErrors, setProfileData, user])
 
     const onSubmit = () => {
-        if(editErrors.length > 0) {
-            setEditErrors((prevValue) => 'Cannot submit request.'+prevValue)
+        if (editErrors.length > 0) {
+            setEditErrors((prevValue) => 'Cannot submit request.' + prevValue)
         } else {
             submitForm({ data: JSON.stringify(profileData), editMode: true, type: 'Profile' })
         }
@@ -74,9 +74,12 @@ const Profile = ({ profilePicUrl, user, formConfig, submitForm, isLoading }) => 
         <div className="Profile flex-container">
             <button className="btn-primary" onClick={onClick}>Go back</button>
             <div className="ProfileDetails flex-container">
-                <i
-                    onClick={toggleEditMode}
-                    className="UpdateProfileButton fas fa-edit"></i>
+                {
+                    selfMode &&
+                    <i
+                        onClick={toggleEditMode}
+                        className="UpdateProfileButton fas fa-edit"></i>
+                }
                 <img src={profilePicUrl || defaultProfileImage} alt="profile" />
                 {
                     user.updateStatus

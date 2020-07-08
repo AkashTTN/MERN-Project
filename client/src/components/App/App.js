@@ -32,6 +32,9 @@ function App() {
           <Route path="/profile" >
             <Feed mode="profile" />
           </Route>
+          <Route path="/user-profile/:userIndex" >
+            <Feed mode='otherUserProfile' />
+          </Route>
           <Route exact path="/complaints" >
             <Feed mode="complaints" />
           </Route>

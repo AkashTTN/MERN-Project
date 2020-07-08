@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect, Link, useParams, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux'
 
 import { removeAuthData, setAuthData, getFormConfig } from '../../store/actions'
@@ -25,6 +25,8 @@ const Feed = React.memo(({
     getFormConfig,
     mode,
     user,
+    otherUsers,
+    onlyNavMode = false,
     isAuthenticated
 }) => {
 
@@ -33,6 +35,7 @@ const Feed = React.memo(({
 
     let feed = null
     let feedBodyContent = null
+    let navMode = onlyNavMode
 
     switch (mode) {
         case 'buzz':
@@ -63,9 +66,28 @@ const Feed = React.memo(({
             break
 
         case 'profile':
+        case 'otherUserProfile':
+            let userInfo = user
+            let selfProfileMode = true
+            let userPic = profilePicUrl
+            navMode = true
+            if (mode === 'otherUserProfile') {
+                let { userIndex } = useParams()
+                userInfo = otherUsers[userIndex]
+                if (!userInfo) {
+                    const history = useHistory()
+                    history.goBack()
+                } else {
+                    // if user searches and selects his own account
+                    if (user.googleId !== userInfo.googleId) {
+                        selfProfileMode = false
+                        userPic = userInfo.profilePicture
+                    }
+                }
+            }
             feedBodyContent = (
                 <>
-                    <Profile user={user} profilePicUrl={profilePicUrl} />
+                    <Profile selfMode={selfProfileMode} user={userInfo} profilePicUrl={userPic} />
                 </>
             )
             break
@@ -146,7 +168,7 @@ const Feed = React.memo(({
                         </div>
                     </div>
                     {
-                        mode !== 'profile'
+                        !navMode
                         &&
                         <div className="FeedHeaderImage flex-container darken">
                             {
@@ -163,7 +185,7 @@ const Feed = React.memo(({
                 </div>
                 <div className="FeedBody flex-container">
                     {
-                        mode !== 'profile'
+                        !navMode
                         &&
                         <div className="FeedBodyNav" >
                             <NavList isAdmin={user.role === 'admin'} />
@@ -178,7 +200,7 @@ const Feed = React.memo(({
                             </div>
                         </div>
                     }
-                    <div className={mode === 'profile' ? 'flex-100' : 'flex-80'}>
+                    <div className={navMode ? 'flex-100' : 'flex-80'}>
                         {feedBodyContent}
                     </div>
                 </div>
@@ -203,7 +225,8 @@ const Feed = React.memo(({
 const mapStateToProps = state => {
     return {
         isAuthenticated: !!state.authData.token,
-        user: state.authData.user
+        user: state.authData.user,
+        otherUsers: state.users.users
     }
 }
 

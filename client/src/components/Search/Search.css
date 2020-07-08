@@ -45,11 +45,16 @@
     list-style: none;
 }
 
-.SearchResultsListItem > p:first-child {
-	padding: 10px 10px 5px 10px;
+.SearchResultsListItem > a {
+	text-decoration: none;
 }
 
-.SearchResultsListItem > p:last-child {
+.SearchResultsListItem > a > p:first-child {
+	padding: 10px 10px 5px 10px;
+	color: black;
+}
+
+.SearchResultsListItem > a > p:last-child {
 	padding-top: 0;
 	font-size: 12px;
 	color: grey;
