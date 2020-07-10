@@ -1,5 +1,4 @@
 const UserModel = require('./user.model');
-const { request } = require('express');
 
 module.exports.create = async ({
     googleId,

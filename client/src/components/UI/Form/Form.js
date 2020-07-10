@@ -167,8 +167,6 @@ const Form = ({
                 default: return
             }
 
-            console.log(updatedFormErrors)
-
             setFormErrors((prevFormErrors => ({
                 ...prevFormErrors,
                 ...updatedFormErrors

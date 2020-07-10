@@ -12,7 +12,7 @@ import defaultProfileImage from '../../assets/images/default-profile-image.png'
 const Profile = ({
     selfMode = true,
     profilePicUrl,
-    user,
+    user={},
     formConfig,
     submitForm,
     changeFollowStatus,

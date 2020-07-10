@@ -20,11 +20,17 @@ export const submitForm = ({ data, type, editMode = false, id = '' } = {}) => {
             dispatch({ type: actionTypes.SUBMIT_POST })
         }
 
+        const headers = (type === 'Profile')
+        ? {
+            'Content-type': 'application/json'
+        }   
+        : {}
+
         fetch(constants.SERVER_URL + endpoint, {
             method: editMode ? "PUT" : "POST",
             body: data,
             headers: {
-                'Content-type': 'application/json',
+                ...headers,
                 'Authorization': 'bearer ' + token
             }
         })
