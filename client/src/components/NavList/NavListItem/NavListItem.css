@@ -11,12 +11,15 @@
 }
 
 .active {
-    color: #f4b585;
+	color: #f4b585;
+	background: #fff7f1;
+    font-size: 1.2em;
 }
 
 .NavListItem:hover,
 .NavListItem i:hover {
 	color: #f4b585;
+	background-color: inherit;
 	cursor: pointer;
 	transform: translateX(10px);
 	transition: all .3s;
