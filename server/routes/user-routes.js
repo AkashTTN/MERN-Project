@@ -82,6 +82,42 @@ router
 
     })
 
+    .get('/chats', async (req, res, next) => {
+        try {
+            const chats = await users.getChats({ id: req.user.authData.userID })
+            res.status(200).json(
+                response(true, 200, 'Chat data', { chats })
+            )
+        } catch (error) {
+            next(error)
+        }
+    })
+
+    .delete('/chats/:id', async (req, res, next) => {
+        try {
+
+            const { id } = req.params
+
+            if (isEmptyString(id)) {
+                return res.status(200).json(
+                    response(
+                        false,
+                        406,
+                        'Chat id required'
+                    )
+                )
+            }
+
+            const chats = await users.deleteChat({ id })
+
+            res.status(200).json(
+                response(true, 200, 'Chat data', { chats })
+            )
+        } catch (error) {
+            next(error)
+        }
+    })
+
     .get('/form-config', async (req, res, next) => {
 
         try {

@@ -32,11 +32,12 @@ const userSchema = new Schema(
         followers: [String],
         following: [String],
         friends: [String],
+        chats: [{ type: String, ref: 'chat' }],
         newProfileData: {}
     }
 );
 
-userSchema.index({name: 'text'})
+userSchema.index({ name: 'text' })
 
 const UserModel = mongoose.model('user', userSchema);
 

@@ -13,6 +13,7 @@ import commentReducer from '../src/store/reducers/comment'
 import requestsReducer from '../src/store/reducers/requests'
 import chatReducer from '../src/store/reducers/chat'
 import usersReducer from '../src/store/reducers/users'
+import socketReducer from '../src/store/reducers/socket'
 
 import App from './components/App/App';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
@@ -30,7 +31,8 @@ const rootReducer = combineReducers({
   comment: commentReducer,
   requests: requestsReducer,
   chat: chatReducer,
-  users: usersReducer
+  users: usersReducer,
+  socket: socketReducer
 })
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))

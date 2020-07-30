@@ -48,3 +48,15 @@ module.exports.updateFriendStatus = async (data) => {
 module.exports.updateFollowStatus = async (data) => {
     return await users.updateFollowStatus(data)
 }
+
+module.exports.getChats = async (data) => {
+    return await users.getChats(data)
+}
+
+module.exports.deleteChat = async (data) => {
+    return await users.deleteChat(data)
+}
+
+module.exports.addChat = async (data) => {
+    return await users.addChat(data)
+}

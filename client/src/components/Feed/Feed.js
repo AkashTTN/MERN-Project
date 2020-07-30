@@ -217,7 +217,7 @@ const Feed = React.memo(({
                 <a className="scroll-top-btn" href="#">
                     <i className="fa-2x fas fa-arrow-up"></i>
                 </a>
-                <ChatWindow />
+                <ChatWindow currentUserId={user?.googleId} />
             </div>
     )
 })

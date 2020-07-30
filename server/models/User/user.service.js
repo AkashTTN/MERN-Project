@@ -1,4 +1,6 @@
 const UserModel = require('./user.model');
+const chats = require('../Chat/chat.controller')
+const shortid = require('shortid')
 
 module.exports.create = async ({
     googleId,
@@ -48,7 +50,7 @@ module.exports.createAdmin = async ({
 };
 
 module.exports.getUserById = async (id) => {
-    const user = await UserModel.find({ googleId: id });
+    const user = await UserModel.find({ googleId: id }, { _id: 0, __v: 0 });
     return user;
 };
 
@@ -215,4 +217,57 @@ module.exports.updateFollowStatus = async ({ id, status, followId }) => {
 
         return response
     }
+}
+
+module.exports.getChats = async ({ id }) => {
+    const { chats: userChats } = await UserModel
+        .findOne({ googleId: id }, { _id: 0, chats: 1 })
+
+    const chatsArray = await chats.getChats(userChats)
+
+    return chatsArray
+
+}
+
+module.exports.deleteChat = async ({ id }) => {
+
+    const chat = await chats.findChatById(id)
+
+    const userOne = await UserModel.findOneAndUpdate({
+        googleId: chat.participants[0].googleId
+    }, { $pull: { chats: id } })
+
+    const userTwo = await UserModel.findOneAndUpdate({
+        googleId: chat.participants[1].googleId
+    }, { $pull: { chats: id } })
+
+    const deletedChat = await chats.deleteChatById(id)
+
+    return deletedChat
+
+}
+
+module.exports.addChat = async ({ id, participantId }) => {
+
+    const chat = await chats.findChatByParticipant({ id, participantId })
+    console.log('chat exists?', chat)
+    if (chat) return chat
+
+    const newChat = await chats.create({
+        chatId: shortid.generate(),
+        participants: [id, participantId],
+    })
+
+    const userOne = await UserModel.findOneAndUpdate({ googleId: id }, {
+        $addToSet: { chats: newChat.chatId }
+    }, { new: true })
+
+    const userTwo = await UserModel.findOneAndUpdate({ googleId: participantId }, {
+        $addToSet: { chats: newChat.chatId }
+    }, { new: true })
+
+    if (userOne.chats.includes(newChat.chatId) && userTwo.chats.includes(newChat.chatId)) {
+        return newChat
+    }
+
 }
