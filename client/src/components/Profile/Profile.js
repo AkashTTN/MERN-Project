@@ -1,18 +1,22 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import { useQuery } from 'react-query'
 
 import { submitForm } from '../../store/actions'
 import Spinner from '../UI/Spinner/Spinner'
+import Modal from '../UI/Modal/Modal'
 import { changeFriendStatus, changeFollowStatus } from '../../store/actions/auth'
 
 import './Profile.css'
 import defaultProfileImage from '../../assets/images/default-profile-image.png'
+import constants from '../config/constants'
 
 const Profile = ({
+    token,
     selfMode = true,
     profilePicUrl,
-    user={},
+    user = {},
     formConfig,
     submitForm,
     changeFollowStatus,
@@ -25,6 +29,38 @@ const Profile = ({
         team: user.team
     })
     const [editErrors, setEditErrors] = useState({})
+    const [showFollowersModal, setShowFollowersModal] = useState(false)
+    const [showFollowingModal, setShowFollowingModal] = useState(false)
+    const [showFriendsModal, setShowFriendsModal] = useState(false)
+    const { data: followers, status: followersStatus } = useQuery('Followers', async () => {
+        const res = await fetch(constants.SERVER_URL + '/user/followers', {
+            headers: {
+                'Authorization': 'bearer ' + token
+            }
+        }).then(res => res.json())
+
+        return res.data.followers
+    })
+
+    const { data: following, status: followingStatus } = useQuery('Following', async () => {
+        const res = await fetch(constants.SERVER_URL + '/user/following', {
+            headers: {
+                'Authorization': 'bearer ' + token
+            }
+        }).then(res => res.json())
+
+        return res.data.following
+    })
+
+    const { data: friends, status: friendsStatus } = useQuery('Friends', async () => {
+        const res = await fetch(constants.SERVER_URL + '/user/friends', {
+            headers: {
+                'Authorization': 'bearer ' + token
+            }
+        }).then(res => res.json())
+
+        return res.data.friends
+    })
 
     const history = useHistory()
 
@@ -174,11 +210,17 @@ const Profile = ({
                     </div>
                 }
                 <div className="SocialInfoBadges">
-                    <span className="Badge bg-purple">{user.friends.length}&nbsp;Friends</span>
+                    <span className="Badge bg-purple" onClick={() => setShowFriendsModal(true)}>
+                        {user.friends.length}&nbsp;Friends
+                    </span>
                     <span>&nbsp;&middot;&nbsp;</span>
-                    <span className="Badge bg-olive">{user.followers.length}&nbsp;Followers</span>
+                    <span className="Badge bg-olive" onClick={() => setShowFollowersModal(true)} >
+                        {user.followers.length}&nbsp;Followers
+                    </span>
                     <span>&nbsp;&middot;&nbsp;</span>
-                    <span className="Badge bg-maroon">{user.following.length}&nbsp;Following</span>
+                    <span className="Badge bg-maroon" onClick={() => setShowFollowingModal(true)}>
+                        {user.following.length}&nbsp;Following
+                    </span>
                 </div>
                 {
                     editMode
@@ -192,6 +234,75 @@ const Profile = ({
                     &&
                     <Spinner isMarginRequired={false} />
                 }
+                {
+                    showFollowersModal &&
+                    <Modal heading="Followers" closeModal={() => setShowFollowersModal(false)} >
+                        {
+                            followersStatus === 'error' && <p>Something went wrong.</p>
+                        }
+                        {
+                            followersStatus === 'loading' && <p>Loading...</p>
+                        }
+                        {
+                            followersStatus === 'success' &&
+                            <div className="users-list">
+                                {
+                                    followers.length !== 0
+                                        ? followers.map(follower => {
+                                            return <p key={follower.googleId}>{follower.name + ' - ' + follower.email}</p>
+                                        })
+                                        : <p>No followers yet.</p>
+                                }
+                            </div>
+                        }
+                    </Modal>
+                }
+                {
+                    showFollowingModal &&
+                    <Modal heading="Following" closeModal={() => setShowFollowingModal(false)} >
+                        {
+                            followingStatus === 'error' && <p>Something went wrong.</p>
+                        }
+                        {
+                            followingStatus === 'loading' && <p>Loading...</p>
+                        }
+                        {
+                            followingStatus === 'success' &&
+                            <div className="users-list">
+                                {
+                                    following.length !== 0
+                                        ? following.map(user => {
+                                            return <p key={user.googleId}>{user.name + ' - ' + user.email}</p>
+                                        })
+                                        : <p>You are not following anyone.</p>
+                                }
+                            </div>
+                        }
+                    </Modal>
+                }
+                {
+                    showFriendsModal &&
+                    <Modal heading="Friends" closeModal={() => setShowFriendsModal(false)} >
+                        {
+                            friendsStatus === 'error' && <p>Something went wrong.</p>
+                        }
+                        {
+                            friendsStatus === 'loading' && <p>Loading...</p>
+                        }
+                        {
+                            friendsStatus === 'success' &&
+                            <div className="users-list">
+                                {
+                                    friends.length !== 0
+                                        ? friends.map(user => {
+                                            return <p key={user.googleId}>{user.name + ' - ' + user.email}</p>
+                                        })
+                                        : <p>No friends yet.</p>
+                                }
+                            </div>
+                        }
+                    </Modal>
+                }
             </div>
         </div>
     )
@@ -201,7 +312,8 @@ const mapStateToProps = state => {
     return {
         formConfig: state.form.formConfig,
         isLoading: state.form.loading,
-        currentUserId: state.authData.user.googleId
+        currentUserId: state.authData.user.googleId,
+        token: state.authData.token
     }
 }
 
@@ -209,7 +321,7 @@ const mapDispatchToProps = dispatch => {
     return {
         submitForm: (data) => dispatch(submitForm(data)),
         changeFollowStatus: (data) => dispatch(changeFollowStatus(data)),
-        changeFriendStatus: (data) => dispatch(changeFriendStatus(data))
+        changeFriendStatus: (data) => dispatch(changeFriendStatus(data)),
     }
 }
 

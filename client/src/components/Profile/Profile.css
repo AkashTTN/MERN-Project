@@ -90,6 +90,23 @@
     color: white;
 }
 
+.Badge:hover {
+	cursor: pointer;
+}
+
+.users-list {
+	padding: 15px;
+	background-color: white;
+}
+
+.users-list > p {
+	margin-bottom: 5px;
+}
+
+.users-list > p:last-child {
+	margin-bottom: 0;
+}
+
 .bg-purple {
 	background-color: purple;
 }

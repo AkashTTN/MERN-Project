@@ -36,7 +36,27 @@ const userSchema = new Schema(
     }
 );
 
-userSchema.index({name: 'text'})
+userSchema.virtual('followersData', {
+    ref: 'user',
+    localField: 'followers',
+    foreignField: 'googleId'
+});
+
+userSchema.virtual('followingData', {
+    ref: 'user',
+    localField: 'following',
+    foreignField: 'googleId'
+});
+
+userSchema.virtual('friendsData', {
+    ref: 'user',
+    localField: 'friends',
+    foreignField: 'googleId'
+});
+
+userSchema.index({ name: 'text' })
+userSchema.set('toObject', { virtuals: true });
+userSchema.set('toJSON', { virtuals: true });
 
 const UserModel = mongoose.model('user', userSchema);
 

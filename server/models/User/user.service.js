@@ -152,6 +152,33 @@ module.exports.getUsersByName = async ({ name }) => {
 
 }
 
+module.exports.getFollowers = async ({ id }) => {
+
+    return await UserModel.findOne(
+        { googleId: id },
+        { _id: 0 }
+    ).populate('followersData')
+
+}
+
+module.exports.getFollowing = async ({ id }) => {
+
+    return await UserModel.findOne(
+        { googleId: id },
+        { _id: 0 }
+    ).populate('followingData')
+
+}
+
+module.exports.getFriends = async ({ id }) => {
+
+    return await UserModel.findOne(
+        { googleId: id },
+        { _id: 0 }
+    ).populate('friendsData')
+
+}
+
 module.exports.updateFriendStatus = async ({ id, status, friendId }) => {
 
     if (status) {

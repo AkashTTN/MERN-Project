@@ -96,6 +96,51 @@ router
 
     })
 
+    .get('/followers', async (req, res, next) => {
+
+        try {
+
+            const { followersData } = await users.getFollowers({ id: req.user.authData.userID })
+
+            res.status(200).json(
+                response(true, 200, 'Followers Data', { followers: followersData })
+            )
+        } catch (error) {
+            next(error)
+        }
+
+    })
+
+    .get('/following', async (req, res, next) => {
+
+        try {
+
+            const { followingData } = await users.getFollowing({ id: req.user.authData.userID })
+
+            res.status(200).json(
+                response(true, 200, 'Following users Data', { following: followingData })
+            )
+        } catch (error) {
+            next(error)
+        }
+
+    })
+
+    .get('/friends', async (req, res, next) => {
+
+        try {
+
+            const { friendsData } = await users.getFriends({ id: req.user.authData.userID })
+
+            res.status(200).json(
+                response(true, 200, 'Friends Data', { friends: friendsData })
+            )
+        } catch (error) {
+            next(error)
+        }
+
+    })
+
     .put('/', async (req, res, next) => {
 
         try {

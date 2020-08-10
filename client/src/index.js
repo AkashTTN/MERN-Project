@@ -16,6 +16,7 @@ import usersReducer from '../src/store/reducers/users'
 
 import App from './components/App/App';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
+import { ReactQueryDevtools } from 'react-query-devtools'
 
 import './index.css'
 
@@ -41,6 +42,7 @@ ReactDOM.render(
     <ErrorBoundary>
       <Provider store={store}>
         <App />
+        <ReactQueryDevtools initialIsOpen={false} />
       </Provider>
     </ErrorBoundary>
   </React.StrictMode>,
