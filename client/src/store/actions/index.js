@@ -37,7 +37,10 @@ export {
 } from './comment.js'
 
 export {
-    getChatHistory
+    getChats,
+    deleteChat
 } from './chat.js'
 
 export { getUsers } from './users'
+
+export { initialiseSocket } from './socket'

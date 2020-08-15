@@ -1,12 +1,13 @@
 import React, { useState, useCallback } from 'react'
 
-import { getUsers } from '../../store/actions'
+import { getUsers, initialiseSocket } from '../../store/actions'
 import { connect } from 'react-redux'
 
 import './Search.css'
 import { Link } from 'react-router-dom'
 
-const Search = ({ users, error, loading, getUsers }) => {
+const Search = ({ users, error, loading, getUsers, currentUserId,
+    socket, initialiseSocket }) => {
 
     const [searchText, setSearchText] = useState('')
     const [isSearching, setIsSearching] = useState(false)
@@ -31,6 +32,17 @@ const Search = ({ users, error, loading, getUsers }) => {
         [searchTextError, searchText, getUsers, setIsSearching]
     )
 
+    const startChat = useCallback(
+        (name, googleId) => {
+            if (!socket) {
+                return initialiseSocket()
+            }
+            console.log('socket message')
+            socket.emit('create-new-chat', { userId: currentUserId, name, participantId: googleId })
+        },
+        [initialiseSocket, socket, currentUserId]
+    )
+
     let searchListContent = null
 
     if (error) {
@@ -42,11 +54,18 @@ const Search = ({ users, error, loading, getUsers }) => {
             searchListContent = <p>No users found</p>
         } else {
             searchListContent = users.map((user, index) => {
-                return <li className="SearchResultsListItem" key={user}>
-                    <Link to={'/user-profile/'+index}>
+                return <li className="SearchResultsListItem flex-container" key={user}>
+                    <Link to={'/user-profile/' + index}>
                         <p> {user.name}</p>
                         <p> {user.email}</p>
                     </Link>
+                    {
+                        user.googleId !== currentUserId
+                        && <i
+                            onClick={() => startChat(user.name, user.googleId)}
+                            className="StartChatIcon far fa-comment-alt">
+                        </i>
+                    }
                 </li>
             })
         }
@@ -86,13 +105,16 @@ const mapStateToProps = (state) => {
     return {
         users: state.users.users,
         error: state.users.error,
-        loading: state.users.loading
+        loading: state.users.loading,
+        currentUserId: state.authData.user.googleId,
+        socket: state.socket.socket
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        getUsers: (data) => dispatch(getUsers(data))
+        getUsers: (data) => dispatch(getUsers(data)),
+        initialiseSocket: () => { dispatch(initialiseSocket()) }
     }
 }
 
