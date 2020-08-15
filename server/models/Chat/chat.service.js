@@ -12,6 +12,10 @@ module.exports.getChats = async (chatIdArray) => {
 
 }
 
+module.exports.getChatParticipantsData = async ({ chatId }) => {
+    return await ChatModel.findOne({ chatId }).populate('participants')
+}
+
 module.exports.create = async ({ chatId, participants }) => {
     return await ChatModel.create({ chatId, participants })
 }

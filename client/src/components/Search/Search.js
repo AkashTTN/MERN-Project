@@ -6,7 +6,8 @@ import { connect } from 'react-redux'
 import './Search.css'
 import { Link } from 'react-router-dom'
 
-const Search = ({ users, error, loading, getUsers, currentUserId, socket, initialiseSocket }) => {
+const Search = ({ users, error, loading, getUsers, currentUserId,
+    socket, initialiseSocket }) => {
 
     const [searchText, setSearchText] = useState('')
     const [isSearching, setIsSearching] = useState(false)
@@ -39,7 +40,7 @@ const Search = ({ users, error, loading, getUsers, currentUserId, socket, initia
             console.log('socket message')
             socket.emit('create-new-chat', { userId: currentUserId, name, participantId: googleId })
         },
-        [initialiseSocket, socket]
+        [initialiseSocket, socket, currentUserId]
     )
 
     let searchListContent = null

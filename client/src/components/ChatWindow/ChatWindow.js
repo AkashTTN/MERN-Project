@@ -24,6 +24,24 @@ const ChatWindow = ({
 
     useEffect(
         () => {
+            const chatButton = document.getElementsByClassName("ChatButton")[0]
+            chatButton.addEventListener('click', () => {
+                if (window.innerWidth < 500) {
+                    const style = getComputedStyle(chatButton)
+                    const chatButtonWidth = parseInt(style.width)
+                    if(chatButtonWidth >= 350) {
+                        chatButton.style.width = 'unset'
+                    } else {
+                        chatButton.style.width = '350px'
+                    }
+                }
+            })
+        },
+        []
+    )
+
+    useEffect(
+        () => {
             if (socket) {
                 socket.off('new-message').on('new-message', (data) => {
                     setNewMessage(true)
@@ -44,22 +62,7 @@ const ChatWindow = ({
                     setChats(newChats)
                 })
                 socket.off('message-not-saved').on('message-not-saved', (error) => {
-                    // setNewMessage(true)
                     console.log('message not saved', error)
-                    // const newChats = chats.map(chat => {
-                    //     if (chat.chatId === data.chatId) {
-                    //         const newChat = {
-                    //             ...chat,
-                    //             messages: [...chat.messages, data.message]
-                    //         }
-                    //         if (showChatRoom) {
-                    //             setChatRoomChat(newChat)
-                    //         }
-                    //         return newChat
-                    //     }
-                    //     return chat
-                    // })
-                    // setChats(newChats)
                 })
                 socket.off('chat-room-created').on('chat-room-created', (roomInfo) => {
                     setShowChat(true)

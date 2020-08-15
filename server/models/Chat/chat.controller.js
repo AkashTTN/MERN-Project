@@ -19,3 +19,7 @@ module.exports.findChatByParticipant = async (data) => {
 module.exports.deleteChatById = async (data) => {
     return await chats.deleteChatById(data)
 }
+
+module.exports.getChatParticipantsData = async (data) => {
+    return await chats.getChatParticipantsData(data)
+}

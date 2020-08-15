@@ -29,6 +29,7 @@ const constants = require('./config/constants')
 const config = require('./config/config')
 const users = require('./models/User/user.controller')
 const messages = require('./models/Message/Message.controller')
+const chats = require('./models/Chat/chat.controller')
 
 // connecting to our database
 mongoose.connect(constants.db.url, {
@@ -107,15 +108,15 @@ socketServer.on('connection', (socket) => {
     socket.on('create-new-chat', async data => {
         console.log('new chat request', data)
         const response = await users.addChat({ id: data.userId, participantId: data.participantId })
-        console.log('response of add chat', response)
+        const chatWithParticipantsInfo = await chats.getChatParticipantsData({ chatId: response.chatId })
+        const chatRoomInfo = { ...response._doc, participants: chatWithParticipantsInfo.participants }
+        console.log('response of add chat', chatRoomInfo)
         socket.emit('chat-room-created', {
-            room: typeof response === 'boolean' ? {} : response,
+            room: typeof response === 'boolean' ? {} : chatRoomInfo,
             new: typeof response === 'object'
         })
     })
     socket.on('message', async data => {
-        // console.log('new message', messageData)
-        // let data = JSON.parse(messageData)
         const response = await messages.create({
             message: data.message,
             chatId: data.chatId,

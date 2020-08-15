@@ -11,9 +11,15 @@ export function initialiseSocket({ url = constants.SERVER_URL, id = '' } = {}) {
             }
 
             if (url) {
-                dispatch({ type: actionTypes.SOCKET_CONNECTION_ESTABLISHED, payload: { socket: io(url) } })
+                dispatch({
+                    type: actionTypes.SOCKET_CONNECTION_ESTABLISHED,
+                    payload: { socket: io(url) }
+                })
             } else {
-                dispatch({ type: actionTypes.SOCKET_CONNECTION_ESTABLISHED, payload: { socket: io(id) } })
+                dispatch({
+                    type: actionTypes.SOCKET_CONNECTION_ESTABLISHED,
+                    payload: { socket: io(id) }
+                })
             }
 
         } catch (err) {

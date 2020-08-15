@@ -7,13 +7,11 @@ import './ChatRoom.css'
 const ChatRoom = ({ participant = {}, chat = {}, toggelChatRoom, sendMessage }) => {
 
     const [message, setMessage] = useState('')
-    // const [isTyping, setIsTyping] = useState(false)
     const [sendMessageError, setSendMessageError] = useState('')
 
     const handleChange = (e) => {
-        // setIsTyping(true)
         setSendMessageError('')
-        const { value, name } = e.target
+        const { value } = e.target
         setMessage(value)
     }
 

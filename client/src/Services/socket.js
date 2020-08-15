@@ -20,9 +20,8 @@ export class Socket {
             }
 
         } catch (err) {
-            throw new Error(err)
+            console.err(err)
         }
     }
-
 
 }

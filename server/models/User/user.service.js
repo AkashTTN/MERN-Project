@@ -190,16 +190,19 @@ module.exports.updateFriendStatus = async ({ id, status, friendId }) => {
 
 module.exports.updateFollowStatus = async ({ id, status, followId }) => {
 
+    const session = await UserModel.startSession()
+
     if (status) {
         const response = await UserModel.findOneAndUpdate(
             { googleId: id },
             { $addToSet: { following: followId } },
-            { new: true }
+            { new: true, session }
         )
 
         await UserModel.findOneAndUpdate(
             { googleId: followId },
-            { $addToSet: { followers: id } }
+            { $addToSet: { followers: id } },
+            { session }
         )
 
         return response
@@ -207,12 +210,13 @@ module.exports.updateFollowStatus = async ({ id, status, followId }) => {
         const response = await UserModel.findOneAndUpdate(
             { googleId: id },
             { $pull: { following: followId } },
-            { new: true }
+            { new: true, session }
         )
 
         await UserModel.findOneAndUpdate(
             { googleId: followId },
-            { $pull: { followers: id } }
+            { $pull: { followers: id } },
+            { session }
         )
 
         return response

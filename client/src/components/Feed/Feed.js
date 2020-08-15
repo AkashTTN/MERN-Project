@@ -29,13 +29,15 @@ const Feed = React.memo(({
     onlyNavMode = false,
     isAuthenticated
 }) => {
-
+    
     const [redirect, setRedirect] = useState(false)
     const [profilePicUrl, setProfilePicUrl] = useState('')
-
+    
     let feed = null
     let feedBodyContent = null
     let navMode = onlyNavMode
+    let { userIndex } = useParams()
+    const history = useHistory()
 
     switch (mode) {
         case 'buzz':
@@ -72,10 +74,8 @@ const Feed = React.memo(({
             let userPic = profilePicUrl
             navMode = true
             if (mode === 'otherUserProfile') {
-                let { userIndex } = useParams()
                 userInfo = otherUsers[userIndex]
                 if (!userInfo) {
-                    const history = useHistory()
                     history.goBack()
                 } else {
                     // if user searches and selects his own account
