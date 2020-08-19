@@ -54,7 +54,7 @@ const Search = ({ users, error, loading, getUsers, currentUserId,
             searchListContent = <p>No users found</p>
         } else {
             searchListContent = users.map((user, index) => {
-                return <li className="SearchResultsListItem flex-container" key={user}>
+                return <li className="SearchResultsListItem flex-container" key={user.googleId}>
                     <Link to={'/user-profile/' + index}>
                         <p> {user.name}</p>
                         <p> {user.email}</p>

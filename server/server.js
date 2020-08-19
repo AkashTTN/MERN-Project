@@ -104,7 +104,7 @@ const server = app.listen(4000, () => {
 const socketServer = io(server)
 
 socketServer.on('connection', (socket) => {
-    console.log('made socket connect')
+    console.log('made socket connect', socket.id)
     socket.on('create-new-chat', async data => {
         console.log('new chat request', data)
         const response = await users.addChat({ id: data.userId, participantId: data.participantId })
@@ -116,15 +116,25 @@ socketServer.on('connection', (socket) => {
             new: typeof response === 'object'
         })
     })
-    socket.on('message', async data => {
-        const response = await messages.create({
-            message: data.message,
-            chatId: data.chatId,
-            userId: data.userId
+
+    socket.on('joinChat', ({ chatId }) => {
+        socket.join(chatId, () => {
+            console.log('clients connected', socket.rooms)
+            socketServer.of('/').in(chatId).clients((err, clients)=>{
+                console.log('clients', clients)
+            })
+            socket.on('message', async data => {
+                const response = await messages.create({
+                    message: data.message,
+                    chatId: data.chatId,
+                    userId: data.userId
+                })
+                if (response.chatId === data.chatId && data.message === response.message) {
+                    return socketServer.in(data.chatId).emit('new-message', response)
+                }
+                return socket.emit('message-not-saved', response)
+            })
         })
-        if (response.chatId === data.chatId && data.message === response.message) {
-            return socket.emit('new-message', response)
-        }
-        socket.emit('message-not-saved', response)
     })
+
 })

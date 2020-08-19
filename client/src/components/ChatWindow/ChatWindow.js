@@ -24,24 +24,6 @@ const ChatWindow = ({
 
     useEffect(
         () => {
-            const chatButton = document.getElementsByClassName("ChatButton")[0]
-            chatButton.addEventListener('click', () => {
-                if (window.innerWidth < 500) {
-                    const style = getComputedStyle(chatButton)
-                    const chatButtonWidth = parseInt(style.width)
-                    if(chatButtonWidth >= 350) {
-                        chatButton.style.width = 'unset'
-                    } else {
-                        chatButton.style.width = '350px'
-                    }
-                }
-            })
-        },
-        []
-    )
-
-    useEffect(
-        () => {
             if (socket) {
                 socket.off('new-message').on('new-message', (data) => {
                     setNewMessage(true)
@@ -94,6 +76,12 @@ const ChatWindow = ({
         }, [setShowChatRoom, setChatRoomUser, showChatRoom]
     )
 
+    const joinChat = useCallback(
+        (chat) => {
+            socket.emit('joinChat', { chatId: chat.chatId })
+        }, [socket]
+    )
+
     useEffect(
         () => {
             if (showChat) {
@@ -128,7 +116,13 @@ const ChatWindow = ({
                 const user = chat.participants.find(participant => {
                     return participant.googleId !== currentUserId
                 })
-                return <div key={chat.chatId} onClick={() => toggelChatRoom(user, chat)} className="chat-room flex-container">
+                return <div
+                    key={chat.chatId}
+                    onClick={() => {
+                        toggelChatRoom(user, chat)
+                        joinChat(chat)
+                    }}
+                    className="chat-room flex-container">
                     <img className="participant-image" src={user.profilePicture} alt="participant-profile" />
                     <span className="participant-name" >{user.name}</span>
                     <i

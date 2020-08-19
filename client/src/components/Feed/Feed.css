@@ -173,6 +173,12 @@
 	
 }
 
+@media only screen and (max-width: 450px) {
+	.scroll-top-btn {
+		bottom: 60px;
+	}
+}
+
 @media only screen and (max-width: 420px) {
 
 	.FeedHeaderContainer {

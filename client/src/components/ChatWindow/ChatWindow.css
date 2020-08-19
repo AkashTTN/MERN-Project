@@ -68,8 +68,13 @@
 	}
 }
 
-@media only screen and (max-width: 500px) {
-	.ChatButton {
-		width: unset;
+@media only screen and (max-width: 450px) {
+	.ChatWindow {
+		position: sticky;
 	}
+
+	.ChatButton, .ChatHistory, .ChatWindow {
+		width: 100%;
+	}
+
 }
