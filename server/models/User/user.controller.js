@@ -13,6 +13,10 @@ module.exports.getUserById = async (id) => {
     return response[0];
 };
 
+module.exports.getUserSocialDataById = async (id) => {
+    return await users.getUserSocialDataById(id);
+};
+
 module.exports.getAdminUsersCount = async () => {
     return await users.getAdminUsersCount();
 };

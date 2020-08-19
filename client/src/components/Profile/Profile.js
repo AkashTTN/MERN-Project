@@ -1,66 +1,39 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { useQuery } from 'react-query'
+import { connect } from 'react-redux'
 
 import { submitForm } from '../../store/actions'
 import Spinner from '../UI/Spinner/Spinner'
 import Modal from '../UI/Modal/Modal'
-import { changeFriendStatus, changeFollowStatus } from '../../store/actions/auth'
+import Badge from '../Badge/Badge'
+import { changeFriendStatus, changeFollowStatus, getUserSocialData } from '../../store/actions/index'
 
 import './Profile.css'
 import defaultProfileImage from '../../assets/images/default-profile-image.png'
-import constants from '../config/constants'
 
 const Profile = ({
-    token,
-    selfMode = true,
-    profilePicUrl,
-    user = {},
+    user,
+    userError,
+    userLoading,
+    userSocialData,
+    socialDataError,
+    socialDataLoading,
     formConfig,
     submitForm,
     changeFollowStatus,
     changeFriendStatus,
+    getUserSocialData,
     isLoading, currentUserId }) => {
 
     const [editMode, setEditMode] = useState(false)
     const [profileData, setProfileData] = useState({
-        name: user.name,
-        team: user.team
+        name: user && user.name,
+        team: user && user.team
     })
     const [editErrors, setEditErrors] = useState({})
     const [showFollowersModal, setShowFollowersModal] = useState(false)
     const [showFollowingModal, setShowFollowingModal] = useState(false)
     const [showFriendsModal, setShowFriendsModal] = useState(false)
-    const { data: followers, status: followersStatus } = useQuery('Followers', async () => {
-        const res = await fetch(constants.SERVER_URL + '/user/followers', {
-            headers: {
-                'Authorization': 'bearer ' + token
-            }
-        }).then(res => res.json())
-
-        return res.data.followers
-    })
-
-    const { data: following, status: followingStatus } = useQuery('Following', async () => {
-        const res = await fetch(constants.SERVER_URL + '/user/following', {
-            headers: {
-                'Authorization': 'bearer ' + token
-            }
-        }).then(res => res.json())
-
-        return res.data.following
-    })
-
-    const { data: friends, status: friendsStatus } = useQuery('Friends', async () => {
-        const res = await fetch(constants.SERVER_URL + '/user/friends', {
-            headers: {
-                'Authorization': 'bearer ' + token
-            }
-        }).then(res => res.json())
-
-        return res.data.friends
-    })
 
     const history = useHistory()
 
@@ -132,17 +105,18 @@ const Profile = ({
         [changeFriendStatus, changeFollowStatus, user, currentUserId]
     )
 
-    return (
-        <div className="Profile flex-container">
-            <button className="btn-primary" onClick={onClick}>Go back</button>
-            <div className="ProfileDetails flex-container">
+    let content = null
+
+    if (!userLoading && !userError && user) {
+        content = (
+            <>
                 {
-                    selfMode &&
+                    currentUserId === user.googleId &&
                     <i
                         onClick={toggleEditMode}
                         className="UpdateProfileButton fas fa-edit"></i>
                 }
-                <img src={profilePicUrl || defaultProfileImage} alt="profile" />
+                <img src={user.profilePicture} onError={(e) => { e.target.src = defaultProfileImage }} alt="profile" />
                 {
                     user.updateStatus
                     && <span className="ProfileUpdateStatus">Pending</span>
@@ -187,7 +161,7 @@ const Profile = ({
                         : <p>{user.team}</p>
                 }
                 {
-                    !selfMode &&
+                    currentUserId !== user.googleId &&
                     <div className="SocialConnectOptions">
                         <button
                             onClick={handleChangeSocialConnect}
@@ -210,17 +184,20 @@ const Profile = ({
                     </div>
                 }
                 <div className="SocialInfoBadges">
-                    <span className="Badge bg-purple" onClick={() => setShowFriendsModal(true)}>
-                        {user.friends.length}&nbsp;Friends
-                    </span>
+                    <Badge
+                        name='Friends'
+                        data={user} fetchData={getUserSocialData}
+                        color='purple' showModal={setShowFriendsModal} />
                     <span>&nbsp;&middot;&nbsp;</span>
-                    <span className="Badge bg-olive" onClick={() => setShowFollowersModal(true)} >
-                        {user.followers.length}&nbsp;Followers
-                    </span>
+                    <Badge
+                        name='Followers' data={user}
+                        fetchData={getUserSocialData} color='olive'
+                        showModal={setShowFollowersModal} />
                     <span>&nbsp;&middot;&nbsp;</span>
-                    <span className="Badge bg-maroon" onClick={() => setShowFollowingModal(true)}>
-                        {user.following.length}&nbsp;Following
-                    </span>
+                    <Badge
+                        name='Following'
+                        data={user} fetchData={getUserSocialData}
+                        color='maroon' showModal={setShowFollowingModal} />
                 </div>
                 {
                     editMode
@@ -238,17 +215,17 @@ const Profile = ({
                     showFollowersModal &&
                     <Modal heading="Followers" closeModal={() => setShowFollowersModal(false)} >
                         {
-                            followersStatus === 'error' && <p>Something went wrong.</p>
+                            socialDataError && <p>Something went wrong.</p>
                         }
                         {
-                            followersStatus === 'loading' && <p>Loading...</p>
+                            socialDataLoading && <p>Loading...</p>
                         }
                         {
-                            followersStatus === 'success' &&
+                            !socialDataLoading && !socialDataError &&
                             <div className="users-list">
                                 {
-                                    followers.length !== 0
-                                        ? followers.map(follower => {
+                                    userSocialData.followers.length !== 0
+                                        ? userSocialData.followers.map(follower => {
                                             return <p key={follower.googleId}>{follower.name + ' - ' + follower.email}</p>
                                         })
                                         : <p>No followers yet.</p>
@@ -261,17 +238,17 @@ const Profile = ({
                     showFollowingModal &&
                     <Modal heading="Following" closeModal={() => setShowFollowingModal(false)} >
                         {
-                            followingStatus === 'error' && <p>Something went wrong.</p>
+                            socialDataError && <p>Something went wrong.</p>
                         }
                         {
-                            followingStatus === 'loading' && <p>Loading...</p>
+                            socialDataLoading && <p>Loading...</p>
                         }
                         {
-                            followingStatus === 'success' &&
+                            !socialDataLoading && !socialDataError &&
                             <div className="users-list">
                                 {
-                                    following.length !== 0
-                                        ? following.map(user => {
+                                    userSocialData.following.length !== 0
+                                        ? userSocialData.following.map(user => {
                                             return <p key={user.googleId}>{user.name + ' - ' + user.email}</p>
                                         })
                                         : <p>You are not following anyone.</p>
@@ -284,17 +261,17 @@ const Profile = ({
                     showFriendsModal &&
                     <Modal heading="Friends" closeModal={() => setShowFriendsModal(false)} >
                         {
-                            friendsStatus === 'error' && <p>Something went wrong.</p>
+                            socialDataError && <p>Something went wrong.</p>
                         }
                         {
-                            friendsStatus === 'loading' && <p>Loading...</p>
+                            socialDataLoading && <p>Loading...</p>
                         }
                         {
-                            friendsStatus === 'success' &&
+                            !socialDataLoading && !socialDataError &&
                             <div className="users-list">
                                 {
-                                    friends.length !== 0
-                                        ? friends.map(user => {
+                                    userSocialData.friends.length !== 0
+                                        ? userSocialData.friends.map(user => {
                                             return <p key={user.googleId}>{user.name + ' - ' + user.email}</p>
                                         })
                                         : <p>No friends yet.</p>
@@ -303,6 +280,21 @@ const Profile = ({
                         }
                     </Modal>
                 }
+            </>
+        )
+    }
+
+    return (
+        <div className="Profile flex-container">
+            <button className="btn-primary" onClick={onClick}>Go back</button>
+            <div className="ProfileDetails flex-container">
+                {
+                    userLoading && <p>Loading</p>
+                }
+                {
+                    userError && <p>Something went wrong</p>
+                }
+                {content}
             </div>
         </div>
     )
@@ -313,7 +305,12 @@ const mapStateToProps = state => {
         formConfig: state.form.formConfig,
         isLoading: state.form.loading,
         currentUserId: state.authData.user.googleId,
-        token: state.authData.token
+        user: state.search.selectedUser,
+        userLoading: state.search.selectedUserLoading,
+        userError: state.search.selectedUserError,
+        userSocialData: state.social.socialData,
+        socialDataError: state.social.error,
+        socialDataLoading: state.social.loading
     }
 }
 
@@ -322,6 +319,7 @@ const mapDispatchToProps = dispatch => {
         submitForm: (data) => dispatch(submitForm(data)),
         changeFollowStatus: (data) => dispatch(changeFollowStatus(data)),
         changeFriendStatus: (data) => dispatch(changeFriendStatus(data)),
+        getUserSocialData: (userId) => dispatch(getUserSocialData(userId))
     }
 }
 

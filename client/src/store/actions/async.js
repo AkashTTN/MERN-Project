@@ -1,13 +1,16 @@
-import * as actionTypes from '../actions/actionTypes'
+// test file
+// should contain all async actions
+
+import * as actionTypes from './actionTypes'
 import constants from '../../components/config/constants'
 
-export function getUsers({ name }) {
+export const getUserSocialData = (id) => {
     return (dispatch, getState) => {
-        dispatch({ type: actionTypes.GET_USERS })
 
         const { token } = getState().authData
 
-        fetch(constants.SERVER_URL + `/user/search-user?name=${name}`, {
+        dispatch({ type: actionTypes.GET_USER_SOCIAL_DATA })
+        fetch(constants.SERVER_URL + `/user/social-data?id=${id}`, {
             headers: {
                 'Authorization': 'bearer ' + token
             }
@@ -16,8 +19,8 @@ export function getUsers({ name }) {
             .then(res => {
                 if (res.code === 200) {
                     dispatch({
-                        type: actionTypes.GET_USERS_SUCCESS,
-                        payload: { users: res.data.users }
+                        type: actionTypes.GET_USER_SOCIAL_DATA_SUCCESS,
+                        payload: { socialData: res.data.socialData }
                     })
                 } else {
                     throw new Error(res.message)
@@ -25,7 +28,7 @@ export function getUsers({ name }) {
             })
             .catch(err => {
                 console.error(err)
-                dispatch({ type: actionTypes.GET_USERS_FAILED })
+                dispatch({ type: actionTypes.GET_USER_SOCIAL_DATA_FAILED })
             })
     }
 }

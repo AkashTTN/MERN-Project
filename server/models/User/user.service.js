@@ -54,6 +54,16 @@ module.exports.getUserById = async (id) => {
     return user;
 };
 
+module.exports.getUserSocialDataById = async (id) => {
+    const { followersData, followingData, friendsData } = await UserModel.findOne({ googleId: id }, { _id: 0, __v: 0 }).populate('followersData').populate('friendsData').populate('followingData');
+    const socialData = {
+        friends: friendsData,
+        following: followingData,
+        followers: followersData
+    }
+    return socialData;
+};
+
 module.exports.getAdminUsersCount = async () => {
     return await UserModel.find({ role: 'admin' }).countDocuments();
 };

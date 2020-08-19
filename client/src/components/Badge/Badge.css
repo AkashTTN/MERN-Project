@@ -1,0 +1,22 @@
+.Badge {
+	font-size: 12px;
+    border-radius: 3px;
+    padding: 2px;
+    color: white;
+}
+
+.Badge:hover {
+	cursor: pointer;
+}
+
+.bg-purple {
+	background-color: purple;
+}
+
+.bg-maroon {
+	background-color: maroon;
+}
+
+.bg-olive {
+	background-color: darkolivegreen;
+}

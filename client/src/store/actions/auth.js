@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes'
 import constants from '../../components/config/constants'
+import { setProfileUserData } from './index'
 
 
 export const removeAuthData = () => {
@@ -93,6 +94,7 @@ export const changeFriendStatus = ({ changedStatus, userId }) => {
                             type: actionTypes.CHANGE_FRIEND_STATUS_SUCCESS
                         })
                         dispatch(setAuthData())
+                        dispatch(setProfileUserData(userId))
                     } else {
                         throw new Error(response.message)
                     }
@@ -131,6 +133,7 @@ export const changeFollowStatus = ({ changedStatus, userId }) => {
                             type: actionTypes.CHANGE_FOLLOW_STATUS_SUCCESS
                         })
                         dispatch(setAuthData())
+                        dispatch(setProfileUserData(userId))
                     } else {
                         throw new Error(response.message)
                     }

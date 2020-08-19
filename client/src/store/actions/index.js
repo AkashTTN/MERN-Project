@@ -41,6 +41,8 @@ export {
     deleteChat
 } from './chat.js'
 
-export { getUsers } from './users'
+export { getUsers, setProfileUserData } from './search'
+
+export { getUserSocialData } from './async'
 
 export { initialiseSocket } from './socket'
