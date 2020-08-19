@@ -21,19 +21,20 @@ cd client && npm start
 ```
 
 ### Main Features:  
-Application has 3 features listed below:
+Application has 5 top level features listed below:
 1. Buzz
 2. Complaints
 3. Resolve
 4. User's Buzz
 5. Requests  
 
-  Email notification for important events are sent to the users email.
+  Email notification for important events are sent to the user's email.
 
 ### Buzz: 
 User can create two categories of buzz
 1. Activity buzz
-2. Lost and found buzz  
+2. Lost and found buzz   
+
   Buzz can also include image(s).  
   User can delete or edit posts he created.  
   User can like/dislike a post.  
