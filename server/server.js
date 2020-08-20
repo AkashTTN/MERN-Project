@@ -119,10 +119,10 @@ socketServer.on('connection', (socket) => {
 
     socket.on('joinChat', ({ chatId }) => {
         socket.join(chatId, () => {
-            console.log('clients connected', socket.rooms)
-            socketServer.of('/').in(chatId).clients((err, clients)=>{
-                console.log('clients', clients)
-            })
+            // console.log('clients connected', socket.rooms)
+            // socketServer.of('/').in(chatId).clients((err, clients)=>{
+            //     console.log('clients', clients)
+            // })
             socket.on('message', async data => {
                 const response = await messages.create({
                     message: data.message,

@@ -35,14 +35,14 @@ export const getRequests = () => {
     }
 }
 
-export const changeProfileRequestStatus = ({ status }) => {
+export const changeProfileRequestStatus = ({ status, id }) => {
 
     return (dispatch, getState) => {
 
         dispatch({ type: actionTypes.CHANGE_PROFILE_REQUEST_STATUS })
 
         const { token } = getState().authData
-        const endpoint = `/admin/requests?updateProfileUpdateStatus=${status}`
+        const endpoint = `/admin/requests?id=${id}&updateProfileUpdateStatus=${status}`
 
         fetch(constants.SERVER_URL + endpoint, {
             method: 'PUT',
