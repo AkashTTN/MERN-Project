@@ -5,6 +5,7 @@ import { getChats, initialiseSocket, deleteChat } from '../../store/actions'
 import ChatRoom from '../ChatRoom/ChatRoom'
 
 import './ChatWindow.css'
+import CustomAvatar from '../UI/CustomAvatar/CustomAvatar'
 
 const ChatWindow = ({
     getChats, loading, error, initialChats, socket,
@@ -123,7 +124,7 @@ const ChatWindow = ({
                         joinChat(chat)
                     }}
                     className="chat-room flex-container">
-                    <img className="participant-image" src={user.profilePicture} alt="participant-profile" />
+                    <CustomAvatar src={user.profilePicture} alt={user.name} />
                     <span className="participant-name" >{user.name}</span>
                     <i
                         onClick={(e) => { e.stopPropagation(); deleteChat(chat.chatId) }}

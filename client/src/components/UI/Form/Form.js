@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
+import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
 
 import { submitForm } from '../../../store/actions'
 import Spinner from '../Spinner/Spinner'
@@ -204,7 +206,7 @@ const Form = ({
             e.preventDefault()
 
             if (formValid({ formType, formErrors, formData })) {
-                
+
                 setIsFormValid(true)
                 const formDataToBeSent = new FormData();
 
@@ -415,12 +417,24 @@ const Form = ({
                             </div>
                             <div className="SubmitBuzz flex-container">
                                 {
+                                    // loading
+                                    //     ? <div><Spinner isMarginRequired={false} /></div>
+                                    //     : <button className="btn-primary" type="submit">
+                                    //         {editMode ? 'Repost' : 'Post'}
+                                    //         <i className="fas fa-caret-right"></i>
+                                    //     </button>
+
                                     loading
                                         ? <div><Spinner isMarginRequired={false} /></div>
-                                        : <button className="btn-primary" type="submit">
+                                        : <Button
+                                        variant="contained"
+                                        size="small"
+                                        color="primary"
+                                        component="button"
+                                        startIcon={<Icon className="fas fa-caret-right"></Icon>}
+                                        >
                                             {editMode ? 'Repost' : 'Post'}
-                                            <i className="fas fa-caret-right"></i>
-                                        </button>
+                                        </Button>
                                 }
                             </div>
 

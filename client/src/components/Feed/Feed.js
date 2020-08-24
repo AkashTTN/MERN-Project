@@ -14,10 +14,10 @@ import InfinitePosts from '../InfiniteScroll/InfiniteScroll'
 import Requests from '../Requests/Requests'
 import ChatWindow from '../ChatWindow/ChatWindow'
 import Search from '../Search/Search'
+import CustomAvatar from '../UI/CustomAvatar/CustomAvatar'
 
 import './Feed.css'
 import logo from '../../assets/images/ttn-logo.png'
-import defaultProfileImage from '../../assets/images/default-profile-image.png'
 
 const Feed = React.memo(({
     setProfileUserData,
@@ -26,7 +26,6 @@ const Feed = React.memo(({
     getFormConfig,
     mode,
     user,
-    selectedUser,
     onlyNavMode = false,
     isAuthenticated
 }) => {
@@ -143,7 +142,7 @@ const Feed = React.memo(({
                                 onClick={() => { setProfileUserData(user.googleId) }}
                                 to="/profile"
                             >
-                                <img className="ProfileImage" src={profilePicUrl || defaultProfileImage} alt="profile" />
+                                <CustomAvatar alt={user.name} src={profilePicUrl} />
                             </Link>
                             <span className="FeedHeaderGreeting">{`Hi ${user.name.split(' ')[0]}!`}</span>
                             <button className="LogoutButton" onClick={logoutHandler}>
@@ -210,7 +209,6 @@ const mapStateToProps = state => {
     return {
         isAuthenticated: !!state.authData.token,
         user: state.authData.user,
-        selectedUser: state.search.selectedUser
     }
 }
 

@@ -10,62 +10,6 @@ const initialState = {
     changeLikeDislikeError: false
 }
 
-const resetErrorLoading = (state) => {
-    return {
-        ...state,
-        error: false,
-        loading: true
-    }
-}
-
-const deletePost = (state) => {
-    const newState = resetErrorLoading(state)
-    return {
-        ...newState,
-        postDeleted: false
-    }
-}
-
-const deletePostSuccess = state => {
-    return {
-        ...state,
-        loading: false,
-        postDeleted: true
-    }
-}
-
-const deletePostFailed = state => {
-    return {
-        ...state,
-        error: true,
-        loading: false
-    }
-}
-
-const changeLikeDislike = (state, action) => {
-
-    const updatedPosts = state.posts.map(post => {
-        if (post.buzzId === action.payload.updatedPost.buzzId) {
-            return {
-                ...post,
-                likedBy: action.payload.updatedPost.likedBy,
-                dislikedBy: action.payload.updatedPost.dislikedBy,
-                dislikeCount: action.payload.updatedPost.dislikeCount,
-                likeCount: action.payload.updatedPost.likeCount
-            }
-        } else {
-            return post
-        }
-
-    })
-
-    return {
-        ...state,
-        posts: updatedPosts
-    }
-
-}
-
 const reducer = (state = initialState, action) => {
     switch (action.type) {
 
@@ -129,6 +73,62 @@ const reducer = (state = initialState, action) => {
 
         default: return state
     }
+}
+
+const resetErrorLoading = (state) => {
+    return {
+        ...state,
+        error: false,
+        loading: true
+    }
+}
+
+const deletePost = (state) => {
+    const newState = resetErrorLoading(state)
+    return {
+        ...newState,
+        postDeleted: false
+    }
+}
+
+const deletePostSuccess = state => {
+    return {
+        ...state,
+        loading: false,
+        postDeleted: true
+    }
+}
+
+const deletePostFailed = state => {
+    return {
+        ...state,
+        error: true,
+        loading: false
+    }
+}
+
+const changeLikeDislike = (state, action) => {
+
+    const updatedPosts = state.posts.map(post => {
+        if (post.buzzId === action.payload.updatedPost.buzzId) {
+            return {
+                ...post,
+                likedBy: action.payload.updatedPost.likedBy,
+                dislikedBy: action.payload.updatedPost.dislikedBy,
+                dislikeCount: action.payload.updatedPost.dislikeCount,
+                likeCount: action.payload.updatedPost.likeCount
+            }
+        } else {
+            return post
+        }
+
+    })
+
+    return {
+        ...state,
+        posts: updatedPosts
+    }
+
 }
 
 export default reducer

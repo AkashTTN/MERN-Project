@@ -48,11 +48,12 @@
 }
 
 .delete-chat {
-	position: absolute;
-    right: 13px;
+	margin-left: auto;	
 }
 
 .delete-chat:hover {
+	transition: all .3s;
+	transform: translateY(-3px);
 	color: red;
 }
 

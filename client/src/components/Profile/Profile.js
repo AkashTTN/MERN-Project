@@ -7,9 +7,9 @@ import Spinner from '../UI/Spinner/Spinner'
 import Modal from '../UI/Modal/Modal'
 import Badge from '../Badge/Badge'
 import { changeFriendStatus, changeFollowStatus, getUserSocialData } from '../../store/actions/index'
+import CustomAvatar from '../UI/CustomAvatar/CustomAvatar'
 
 import './Profile.css'
-import defaultProfileImage from '../../assets/images/default-profile-image.png'
 
 const Profile = ({
     user,
@@ -116,7 +116,7 @@ const Profile = ({
                         onClick={toggleEditMode}
                         className="UpdateProfileButton fas fa-edit"></i>
                 }
-                <img src={user.profilePicture} onError={(e) => { e.target.src = defaultProfileImage }} alt="profile" />
+                <CustomAvatar src={user.profilePicture} alt={user.name} />
                 {
                     user.updateStatus
                     && <span className="ProfileUpdateStatus">Pending</span>

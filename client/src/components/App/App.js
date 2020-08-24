@@ -7,6 +7,7 @@ import Feed from '../Feed/Feed';
 import Complaint from '../Complaint/Complaint'
 import About from '../About/About'
 import Help from '../Help/Help'
+import Toasts from '../Toasts/Toasts'
 
 import './App.css';
 
@@ -15,6 +16,7 @@ function App() {
   return (
     <Router>
       <div className="App">
+        <Toasts />
         <Switch>
           <Route exact path='/' component={SignIn} />
           <Route path="/about-us" >
