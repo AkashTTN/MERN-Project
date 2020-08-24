@@ -129,7 +129,7 @@ module.exports.updateRequestStatus = async ({ userId, status }) => {
             $set: {
                 name: status === 'approved' ? requestData.newProfileData.name : requestData.name,
                 team: status === 'approved' ? requestData.newProfileData.team : requestData.team,
-                role: (status === 'approved' && requestData.newProfileData.team === 'ADMIN') ? 'admin' : requestData.role,
+                role: (status === 'approved' && requestData.newProfileData.team === 'ADMIN') ? 'admin' : 'employee',
                 updateStatus: false,
                 newProfileData: {}
             }
