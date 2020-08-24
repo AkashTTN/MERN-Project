@@ -1,0 +1,29 @@
+.ChatRoomUserName {
+	margin-left: 10px;
+}
+
+.ChatRoom {
+	position: relative;
+	height: 100%;
+	overflow-y: auto;
+}
+
+.ChatRoomHeader {
+	padding: 10px;
+	border-bottom: 1px solid #d0c7c7;
+}
+
+.ChatRoomHeader > i:hover {
+	cursor: pointer;
+	color: orange;
+}
+
+.message-form {
+	position: sticky;
+	bottom: 0px;
+}
+
+.SendMessage {
+	width: 100%;
+	font-size: 25px;
+}

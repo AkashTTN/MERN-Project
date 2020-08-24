@@ -1,17 +1,13 @@
-import * as actionTypes from './actionTypes'
+import * as actionTypes from '../actions/actionTypes'
 import constants from '../../components/config/constants'
-import { setAuthData } from '../actions'
 
-export const getRequests = () => {
-
+export function getUsers({ name }) {
     return (dispatch, getState) => {
-
-        dispatch({ type: actionTypes.GET_REQUESTS })
+        dispatch({ type: actionTypes.GET_USERS })
 
         const { token } = getState().authData
-        const endpoint = `/admin/requests`
 
-        fetch(constants.SERVER_URL + endpoint, {
+        fetch(constants.SERVER_URL + `/user?name=${name}`, {
             headers: {
                 'Authorization': 'bearer ' + token
             }
@@ -20,8 +16,8 @@ export const getRequests = () => {
             .then(res => {
                 if (res.code === 200) {
                     dispatch({
-                        type: actionTypes.GET_REQUESTS_SUCCESS,
-                        payload: { requests: res.data.users }
+                        type: actionTypes.GET_USERS_SUCCESS,
+                        payload: { users: res.data.users }
                     })
                 } else {
                     throw new Error(res.message)
@@ -29,23 +25,18 @@ export const getRequests = () => {
             })
             .catch(err => {
                 console.error(err)
-                dispatch({ type: actionTypes.GET_REQUESTS_FAILED })
+                dispatch({ type: actionTypes.GET_USERS_FAILED })
             })
-
     }
 }
 
-export const changeProfileRequestStatus = ({ status, id }) => {
-
+export function setProfileUserData(userToFetch) {
     return (dispatch, getState) => {
+        const {token} = getState().authData
+        dispatch({ type: actionTypes.SELECT_USER })
+        dispatch({ type: actionTypes.GET_PROFILE_USER_INFO })
 
-        dispatch({ type: actionTypes.CHANGE_PROFILE_REQUEST_STATUS })
-
-        const { token } = getState().authData
-        const endpoint = `/admin/requests?id=${id}&updateProfileUpdateStatus=${status}`
-
-        fetch(constants.SERVER_URL + endpoint, {
-            method: 'PUT',
+        fetch(constants.SERVER_URL + `/user?id=${userToFetch}`, {
             headers: {
                 'Authorization': 'bearer ' + token
             }
@@ -54,17 +45,16 @@ export const changeProfileRequestStatus = ({ status, id }) => {
             .then(res => {
                 if (res.code === 200) {
                     dispatch({
-                        type: actionTypes.CHANGE_PROFILE_REQUEST_STATUS_SUCCESS,
+                        type: actionTypes.GET_PROFILE_USER_INFO_SUCCESS,
+                        payload: { user: res.data.user }
                     })
-                    dispatch(getRequests())
-                    dispatch(setAuthData())
                 } else {
                     throw new Error(res.message)
                 }
             })
             .catch(err => {
                 console.error(err)
-                dispatch({ type: actionTypes.CHANGE_PROFILE_REQUEST_STATUS_FAILED })
+                dispatch({ type: actionTypes.GET_PROFILE_USER_INFO_FAILED })
             })
 
     }

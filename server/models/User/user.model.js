@@ -32,6 +32,7 @@ const userSchema = new Schema(
         followers: [String],
         following: [String],
         friends: [String],
+        chats: [{ type: String, ref: 'chat' }],
         newProfileData: {}
     }
 );

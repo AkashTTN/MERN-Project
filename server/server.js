@@ -5,6 +5,7 @@ const cors = require('cors')
 const flash = require('connect-flash')
 const mongoose = require('mongoose')
 const cloudinary = require('cloudinary').v2;
+const io = require('socket.io');
 require('custom-env').env()
 
 // importing middlerwares
@@ -26,6 +27,9 @@ const setAdmin = require('./seeds/setAdmin')
 
 const constants = require('./config/constants')
 const config = require('./config/config')
+const users = require('./models/User/user.controller')
+const messages = require('./models/Message/Message.controller')
+const chats = require('./models/Chat/chat.controller')
 
 // connecting to our database
 mongoose.connect(constants.db.url, {
@@ -76,6 +80,7 @@ app.use(flash())
 
 // setup login strategies
 const initializeGoogleStrategy = require('./config/passport-config')
+const { changeStatusById } = require('./models/Complaint/complaint.service')
 initializeGoogleStrategy(passport)
 
 // initialize passport
@@ -92,6 +97,44 @@ app.use(logErrors)
 app.use(clientErrorHandler)
 app.use(errorHandler)
 
-app.listen(4000, () => {
+const server = app.listen(4000, () => {
     console.log('Server listening on port 4000')
+})
+
+const socketServer = io(server)
+
+socketServer.on('connection', (socket) => {
+    console.log('made socket connect', socket.id)
+    socket.on('create-new-chat', async data => {
+        console.log('new chat request', data)
+        const response = await users.addChat({ id: data.userId, participantId: data.participantId })
+        const chatWithParticipantsInfo = await chats.getChatParticipantsData({ chatId: response.chatId })
+        const chatRoomInfo = { ...response._doc, participants: chatWithParticipantsInfo.participants }
+        console.log('response of add chat', chatRoomInfo)
+        socket.emit('chat-room-created', {
+            room: typeof response === 'boolean' ? {} : chatRoomInfo,
+            new: typeof response === 'object'
+        })
+    })
+
+    socket.on('joinChat', ({ chatId }) => {
+        socket.join(chatId, () => {
+            // console.log('clients connected', socket.rooms)
+            // socketServer.of('/').in(chatId).clients((err, clients)=>{
+            //     console.log('clients', clients)
+            // })
+            socket.on('message', async data => {
+                const response = await messages.create({
+                    message: data.message,
+                    chatId: data.chatId,
+                    userId: data.userId
+                })
+                if (response.chatId === data.chatId && data.message === response.message) {
+                    return socketServer.in(data.chatId).emit('new-message', response)
+                }
+                return socket.emit('message-not-saved', response)
+            })
+        })
+    })
+
 })

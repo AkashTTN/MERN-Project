@@ -24,13 +24,13 @@ const Request = ({ data, changeRequestStatus, index, loading }) => {
                         {viewRequest ? 'Hide' : 'View'}
                     </button>
                     <button
-                        onClick={(e) => changeRequestStatus({ status: e.target.name })}
+                        onClick={(e) => changeRequestStatus({ status: e.target.name, id: data.googleId })}
                         name="rejected"
                         className="btn-primary btn-danger">
                         Reject
                     </button>
                     <button
-                        onClick={(e) => changeRequestStatus({ status: e.target.name })}
+                        onClick={(e) => changeRequestStatus({ status: e.target.name, id: data.googleId })}
                         name="approved"
                         className="btn-primary btn-success">
                         Approve

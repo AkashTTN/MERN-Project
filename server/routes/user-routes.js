@@ -70,10 +70,147 @@ router
 
         try {
 
-            const user = await users.getUserById(req.user.authData.userID)
+            if (req.query.name) {
+                const { name } = req.query
+                if (isEmptyString(name)) {
+                    return res.status(200).json(
+                        response(
+                            false,
+                            406,
+                            'Name to search is empty',
+                        )
+                    )
+                }
 
-            return res.status(200).json(
-                response(true, 200, "Retrieved user data", { user })
+                const matchingUsers = await users.getUsersByName({ name })
+
+                return res.status(200).json(
+                    response(
+                        true,
+                        200,
+                        'All users matching the given name',
+                        { users: matchingUsers }
+                    )
+                )
+            } else if (req.query.id) {
+
+                const id = req.query.id
+
+                if (isEmptyString(id)) {
+                    console.log('empty')
+                    return res.json(
+                        response(
+                            false,
+                            200,
+                            'Id is empty',
+                        )
+                    )
+                }
+
+                const user = await users.getUserById(id)
+
+                return res.json(
+                    response(true, 200, "Retrieved user data", { user })
+                )
+
+            } else {
+
+                const user = await users.getUserById(req.user.authData.userID)
+
+                return res.json(
+                    response(true, 200, "Retrieved user data", { user })
+                )
+            }
+
+        } catch (err) {
+            next(err)
+        }
+
+    })
+
+    .get('/chats', async (req, res, next) => {
+        try {
+            const chats = await users.getChats({ id: req.user.authData.userID })
+            res.status(200).json(
+                response(true, 200, 'Chat data', { chats })
+            )
+        } catch (error) {
+            next(error)
+        }
+    })
+
+    .get('/followers', async (req, res, next) => {
+
+        const id = req.query.id
+
+        try {
+
+            const { followersData } = await users.getFollowers({ id })
+
+            res.status(200).json(
+                response(true, 200, 'Followers Data', { followers: followersData })
+            )
+        } catch (error) {
+            next(error)
+        }
+
+    })
+
+    .get('/following', async (req, res, next) => {
+
+        const id = req.query.id
+
+        try {
+
+            const { followingData } = await users.getFollowing({ id })
+
+            res.status(200).json(
+                response(true, 200, 'Following users Data', { following: followingData })
+            )
+        } catch (error) {
+            next(error)
+        }
+
+    })
+
+    .get('/friends', async (req, res, next) => {
+
+        const id = req.query.id
+
+        try {
+
+            const { friendsData } = await users.getFriends({ id })
+
+            res.status(200).json(
+                response(true, 200, 'Friends Data', { friends: friendsData })
+            )
+        } catch (error) {
+            next(error)
+        }
+
+    })
+
+    .get('/social-data', async (req, res) => {
+
+        const id = req.query.id
+
+        try {
+
+            if (isEmptyString(id)) {
+                console.log('empty')
+                return res.json(
+                    response(
+                        false,
+                        200,
+                        'Id is empty',
+                    )
+                )
+            }
+
+            const socialData = await users.getUserSocialDataById(id)
+
+            return res.json(
+                response(true, 200, "Retrieved user social data", { socialData })
             )
 
         } catch (error) {
@@ -96,49 +233,29 @@ router
 
     })
 
-    .get('/followers', async (req, res, next) => {
-
+    .delete('/chats/:id', async (req, res, next) => {
         try {
 
-            const { followersData } = await users.getFollowers({ id: req.user.authData.userID })
+            const { id } = req.params
+
+            if (isEmptyString(id)) {
+                return res.status(200).json(
+                    response(
+                        false,
+                        406,
+                        'Chat id required'
+                    )
+                )
+            }
+
+            const chats = await users.deleteChat({ id })
 
             res.status(200).json(
-                response(true, 200, 'Followers Data', { followers: followersData })
+                response(true, 200, 'Chat data', { chats })
             )
         } catch (error) {
             next(error)
         }
-
-    })
-
-    .get('/following', async (req, res, next) => {
-
-        try {
-
-            const { followingData } = await users.getFollowing({ id: req.user.authData.userID })
-
-            res.status(200).json(
-                response(true, 200, 'Following users Data', { following: followingData })
-            )
-        } catch (error) {
-            next(error)
-        }
-
-    })
-
-    .get('/friends', async (req, res, next) => {
-
-        try {
-
-            const { friendsData } = await users.getFriends({ id: req.user.authData.userID })
-
-            res.status(200).json(
-                response(true, 200, 'Friends Data', { friends: friendsData })
-            )
-        } catch (error) {
-            next(error)
-        }
-
     })
 
     .put('/', async (req, res, next) => {
@@ -189,37 +306,6 @@ router
 
         } catch (error) {
             next(error)
-        }
-    })
-
-    .get('/search-user', async (req, res, next) => {
-        try {
-
-            const { name } = req.query
-
-            if (isEmptyString(name)) {
-                return res.status(200).json(
-                    response(
-                        false,
-                        406,
-                        'Name to search is empty',
-                    )
-                )
-            }
-
-            const matchingUsers = await users.getUsersByName({ name })
-
-            return res.status(200).json(
-                response(
-                    true,
-                    200,
-                    'All users matching the given name',
-                    { users: matchingUsers }
-                )
-            )
-
-        } catch (err) {
-            next(err)
         }
     })
 

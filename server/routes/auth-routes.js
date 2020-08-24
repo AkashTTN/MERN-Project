@@ -10,7 +10,7 @@ const users = require('../models/User/user.controller')
 
 router.get('/google', passport.authenticate('google', {
     // Only show accounts that match the hosted domain.
-    hd: config.google.GOOGLE_USER_HOST_DOMAIN,
+    // hd: config.google.GOOGLE_USER_HOST_DOMAIN,
     // Ensure the user can always select an account when sent to Google.
     prompt: 'select_account',
     scope: ['profile', 'email'],

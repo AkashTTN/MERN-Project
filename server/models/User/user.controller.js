@@ -13,6 +13,10 @@ module.exports.getUserById = async (id) => {
     return response[0];
 };
 
+module.exports.getUserSocialDataById = async (id) => {
+    return await users.getUserSocialDataById(id);
+};
+
 module.exports.getAdminUsersCount = async () => {
     return await users.getAdminUsersCount();
 };
@@ -61,3 +65,14 @@ module.exports.getFriends = async (data) => {
     return await users.getFriends(data)
 }
 
+module.exports.getChats = async (data) => {
+    return await users.getChats(data)
+}
+
+module.exports.deleteChat = async (data) => {
+    return await users.deleteChat(data)
+}
+
+module.exports.addChat = async (data) => {
+    return await users.addChat(data)
+}

@@ -12,11 +12,12 @@ import imagesReducer from '../src/store/reducers/images'
 import commentReducer from '../src/store/reducers/comment'
 import requestsReducer from '../src/store/reducers/requests'
 import chatReducer from '../src/store/reducers/chat'
-import usersReducer from '../src/store/reducers/users'
+import searchReducer from '../src/store/reducers/search'
+import socketReducer from '../src/store/reducers/socket'
+import socialReducer from '../src/store/reducers/social'
 
 import App from './components/App/App';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
-import { ReactQueryDevtools } from 'react-query-devtools'
 
 import './index.css'
 
@@ -31,7 +32,9 @@ const rootReducer = combineReducers({
   comment: commentReducer,
   requests: requestsReducer,
   chat: chatReducer,
-  users: usersReducer
+  search: searchReducer,
+  socket: socketReducer,
+  social: socialReducer
 })
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))
@@ -42,7 +45,6 @@ ReactDOM.render(
     <ErrorBoundary>
       <Provider store={store}>
         <App />
-        <ReactQueryDevtools initialIsOpen={false} />
       </Provider>
     </ErrorBoundary>
   </React.StrictMode>,

@@ -112,22 +112,22 @@ router
     .put('/requests', async (req, res, next) => {
         try {
 
-            const { updateProfileUpdateStatus } = req.query
+            const { updateProfileUpdateStatus, id } = req.query
 
-            if (updateProfileUpdateStatus) {
+            if (updateProfileUpdateStatus && id) {
 
-                if (isEmptyString(updateProfileUpdateStatus)) {
+                if (isEmptyString(updateProfileUpdateStatus) || isEmptyString(id)) {
                     return res.status(200).json(
                         response(
                             false,
                             406,
-                            'Updated status required'
+                            'Inadequate data sent.'
                         )
                     )
                 }
 
                 const updatedUser = await users.updateRequestStatus({
-                    userId: req.user.authData.userID,
+                    userId: id,
                     status: updateProfileUpdateStatus,
                 })
 
@@ -175,6 +175,8 @@ router
                     )
                 )
 
+            } else {
+                throw new Error('Query parameter not found.')
             }
 
         } catch (error) {

@@ -8,14 +8,16 @@ function initialize(passport) {
         callbackURL: '/auth/google/redirect'
     }, (accessToken, refreshToken, profile, done) => {
 
-        const userHostDomain = profile._json.hd;
+        // const userHostDomain = profile._json.hd;
 
         // Additional check to verify host domain of authentication user
-        if (userHostDomain === config.google.GOOGLE_USER_HOST_DOMAIN) {
-            return done(null, profile)
-        }
+        // if (userHostDomain === config.google.GOOGLE_USER_HOST_DOMAIN) {
+        //     return done(null, profile)
+        // }
 
-        return done(null, false, { message: 'Invalid host domain.' })
+        // return done(null, false, { message: 'Invalid host domain.' })
+
+        return done(null, profile)
 
     }))
 }

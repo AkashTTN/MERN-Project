@@ -1,8 +1,8 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { Redirect, Link, useParams, useHistory } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 
-import { removeAuthData, setAuthData, getFormConfig } from '../../store/actions'
+import { removeAuthData, setAuthData, getFormConfig, setProfileUserData } from '../../store/actions'
 import fetchImage from '../utils/fetchImage'
 
 import NavList from '../NavList/NavList';
@@ -20,12 +20,13 @@ import logo from '../../assets/images/ttn-logo.png'
 import defaultProfileImage from '../../assets/images/default-profile-image.png'
 
 const Feed = React.memo(({
+    setProfileUserData,
     removeAuthData,
     setAuthData,
     getFormConfig,
     mode,
     user,
-    otherUsers,
+    selectedUser,
     onlyNavMode = false,
     isAuthenticated
 }) => {
@@ -66,28 +67,10 @@ const Feed = React.memo(({
             break
 
         case 'profile':
-        case 'otherUserProfile':
-            let userInfo = user
-            let selfProfileMode = true
-            let userPic = profilePicUrl
             navMode = true
-            if (mode === 'otherUserProfile') {
-                let { userIndex } = useParams()
-                userInfo = otherUsers[userIndex]
-                if (!userInfo) {
-                    const history = useHistory()
-                    history.goBack()
-                } else {
-                    // if user searches and selects his own account
-                    if (user.googleId !== userInfo.googleId) {
-                        selfProfileMode = false
-                        userPic = userInfo.profilePicture
-                    }
-                }
-            }
             feedBodyContent = (
                 <>
-                    <Profile selfMode={selfProfileMode} user={userInfo} profilePicUrl={userPic} />
+                    <Profile />
                 </>
             )
             break
@@ -157,6 +140,7 @@ const Feed = React.memo(({
                         <Search />
                         <div className="Logout flex-container">
                             <Link
+                                onClick={() => { setProfileUserData(user.googleId) }}
                                 to="/profile"
                             >
                                 <img className="ProfileImage" src={profilePicUrl || defaultProfileImage} alt="profile" />
@@ -217,7 +201,7 @@ const Feed = React.memo(({
                 <a className="scroll-top-btn" href="#">
                     <i className="fa-2x fas fa-arrow-up"></i>
                 </a>
-                <ChatWindow />
+                <ChatWindow currentUserId={user?.googleId} />
             </div>
     )
 })
@@ -226,8 +210,17 @@ const mapStateToProps = state => {
     return {
         isAuthenticated: !!state.authData.token,
         user: state.authData.user,
-        otherUsers: state.users.users
+        selectedUser: state.search.selectedUser
     }
 }
 
-export default connect(mapStateToProps, { removeAuthData, setAuthData, getFormConfig })(Feed)
+const mapDispatchToProps = dispatch => {
+    return {
+        removeAuthData: () => dispatch(removeAuthData()),
+        setAuthData: () => dispatch(setAuthData()),
+        getFormConfig: () => dispatch(getFormConfig()),
+        setProfileUserData: (user) => dispatch(setProfileUserData(user))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feed)

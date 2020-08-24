@@ -42,11 +42,22 @@
 }
 
 .SearchResultsListItem {
-    list-style: none;
+	list-style: none;
+	align-items: center;
 }
 
 .SearchResultsListItem > a {
 	text-decoration: none;
+	flex: .95;
+}
+
+.StartChatIcon {
+	flex: .05;
+	padding-right: 10px;
+}
+
+.StartChatIcon:hover {
+	color: orange;
 }
 
 .SearchResultsListItem > a > p:first-child {
