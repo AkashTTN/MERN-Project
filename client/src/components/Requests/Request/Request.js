@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 
-import Spinner from '../../UI/Spinner/Spinner'
-
 import './Request.css'
 
-const Request = ({ data, changeRequestStatus, index, loading }) => {
+const Request = ({ data, changeRequestStatus, index }) => {
 
     const [viewRequest, setViewRequest] = useState(false)
 
@@ -12,11 +10,6 @@ const Request = ({ data, changeRequestStatus, index, loading }) => {
         <div className="Request">
             <div className="RequestInfoPreview flex-container">
                 <p>#{index}&nbsp;&nbsp;&nbsp;{data.name}</p>
-                {
-                    loading
-                        ? <Spinner isMarginRequired={false} />
-                        : null
-                }
                 <div className="RequestOptions">
                     <button
                         onClick={() => setViewRequest(prev => !prev)}

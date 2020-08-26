@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import Request from './Request/Request'
+import MaterialRequest from '../Material-UI/Request/Request'
 import { getRequests, changeProfileRequestStatus } from '../../store/actions'
 
 import './Requests.css'
+import Spinner from '../UI/Spinner/Spinner'
 
 const Requests = ({ loading, requests, getRequests, changeProfileRequestStatus }) => {
 
@@ -15,24 +16,32 @@ const Requests = ({ loading, requests, getRequests, changeProfileRequestStatus }
         [getRequests]
     )
 
+    let requestsContent = null
+
+    if (!loading) {
+        if (requests.length === 0) {
+            requestsContent = <p>No requests to be shown.</p>
+        } else {
+            requestsContent = requests.map((request, index) =>
+                <MaterialRequest
+                    changeRequestStatus={changeProfileRequestStatus}
+                    index={index + 1}
+                    data={request}
+                    key={request.googleId}
+                />
+            )
+        }
+    }
+
     return (
         <div className="Requests">
             <div class="RequestsHeader">
                 <h3>Requests</h3>
             </div>
             {
-                requests.length === 0
-                    ? <p>No requests to be shown.</p>
-                    : requests.map((request, index) =>
-                        <Request
-                            changeRequestStatus={changeProfileRequestStatus}
-                            loading={loading}
-                            index={index + 1}
-                            data={request}
-                            key={request.googleId}
-                        />
-                    )
+                loading && <Spinner isMarginRequired={true} />
             }
+            {requestsContent}
         </div>
     )
 }
