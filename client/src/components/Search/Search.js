@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
+import TextField from '@material-ui/core/TextField';
 
 import { getUsers, initialiseSocket, setProfileUserData } from '../../store/actions'
 import { connect } from 'react-redux'
@@ -11,25 +12,38 @@ const Search = ({ users, error, loading, getUsers, currentUserId,
 
     const [searchText, setSearchText] = useState('')
     const [isSearching, setIsSearching] = useState(false)
-    const [searchTextError, setSearchTextError] = useState('')
+    const [searchCompleted, setSearchCompleted] = useState(false)
+    const [searchTextError, setSearchTextError] = useState(false)
 
     const onChange = useCallback(
         (e) => {
             setSearchText(e.target.value)
-            setIsSearching(false)
-            setSearchTextError(e.target.value.trim().length === 0 ? 'Empty search text' : '')
+            setIsSearching(true)
+            setSearchCompleted(false)
+            setSearchTextError(e.target.value.trim().length === 0)
         },
-        [setSearchText, setIsSearching, setSearchTextError]
+        [setSearchText, setIsSearching, setSearchTextError, setSearchCompleted]
+    )
+
+    const resetSearch = useCallback(
+        () => {
+            setIsSearching(false)
+            setSearchTextError(false)
+            setSearchCompleted(false)
+            setSearchText('')
+        },
+        [setIsSearching, setSearchText, setSearchTextError, setSearchCompleted]
     )
 
     const handleSearch = useCallback(
         () => {
-            if (!searchTextError) {
-                setIsSearching(true)
+            if (searchTextError === false && isSearching) {
+                setIsSearching(false)
+                setSearchCompleted(true)
                 getUsers({ name: searchText })
             }
         },
-        [searchTextError, searchText, getUsers, setIsSearching]
+        [searchTextError, searchText, getUsers, isSearching, setIsSearching, setSearchCompleted]
     )
 
     const startChat = useCallback(
@@ -76,29 +90,41 @@ const Search = ({ users, error, loading, getUsers, currentUserId,
 
     return (
         <div className="Search">
-            <div className={searchTextError ? "SearchError SearchBox" : "SearchBox"}>
-                <input
-                    className="SearchInputField"
+            <div className="SearchBox">
+                <TextField
+                    fullWidth
+                    error={searchTextError}
+                    label="Search"
+                    size="small"
                     value={searchText}
                     onChange={onChange}
                     type="text"
-                    placeholder="Search by name" />
-                <i onClick={handleSearch} className="SearchIcon fas fa-search"></i>
-                {isSearching &&
-                    <span
-                        className="CloseSearchIcon"
-                        onClick={() => setIsSearching(false)}>
-                        &#10005;&nbsp;&nbsp;
-                    </span>
-                }
+                    placeholder="Search by name"
+                    variant="outlined"
+                    helperText={searchTextError && "Invalid search value."}
+                    InputProps={{
+                        startAdornment: (
+                            <i
+                                onClick={handleSearch}
+                                className="SearchIcon fas fa-search fa-xs"
+                            >
+                            </i>
+                        ),
+                        endAdornment: (
+                            <span
+                                className="CloseSearchIcon"
+                                onClick={resetSearch}>
+                                &#10005;&nbsp;&nbsp;
+                            </span>
+                        )
+                    }}
+                />
             </div>
             {
-                isSearching
-                    ?
-                    <ul className="SearchResultsList">
-                        {searchListContent}
-                    </ul>
-                    : null
+                searchCompleted && !isSearching &&
+                <ul className="SearchResultsList">
+                    {searchListContent}
+                </ul>
             }
         </div>
     )

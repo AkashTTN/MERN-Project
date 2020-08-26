@@ -10,17 +10,10 @@
 	position: relative;
 }
 
-.SearchBox {
-	border-bottom: 1px solid #ccc;
-}
-
-.CloseSearchIcon {
-    float: right;
-    margin-right: 5px;
-}
-
 .SearchIcon {
-	float: right;
+	font-size: 1rem;
+    padding-left: 1px;
+    margin-right: 10px;
 }
 
 .SearchIcon:hover,
