@@ -4,7 +4,7 @@ const constants = {
             url: 'http://localhost:3000'
         },
         db: {
-            url: 'mongodb://localhost:27017/ttnd-buzz'
+            url: 'mongodb://mongo/ttnd-buzz'
         }
     },
     stage: {
@@ -17,7 +17,7 @@ const constants = {
     },
     prod: {
         client: {
-            url: 'http://localhost:3000'
+            url: 'http://mern-app-client:3000'
         },
         db: {
             url: 'mongodb://localhost:27017/ttnd-buzz'
