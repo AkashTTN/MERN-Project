@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo
+    volumes:
+      - mern-app-data:/var/lib/mongodb
+    ports:
+      - "27017:27017"
+
+  mongo-ui:
+    image: mongo-express
+    ports:
+      - "8081:8081"
+    depends_on: 
+      - mongo
+    volumes:
+      - mern-app-data:/var/lib/mongodb
+
+  server:
+    image: mern-app-server:v1
+    container_name: mern-app-server
+    command: npm start
+    volumes:
+      - mern-app-data:/var/lib/mongodb
+    ports:
+      - "4000:4000"
+    depends_on: 
+      - mongo
+
+  client:
+    image: mern-app-fe:v1
+    container_name: mern-app-client
+    command: npm start
+    depends_on: 
+      - server
+    tty: true
+    ports:
+      - "3000:3000"
+    links: 
+      - server
+
+volumes:
+  mern-app-data:
+    driver: local
